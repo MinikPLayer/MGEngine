@@ -17,7 +17,6 @@ class Engine {
 	GLFWInput input;
 public:
 	Engine();
-	void init();
 	void run();
 };
 

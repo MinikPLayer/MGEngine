@@ -3,6 +3,7 @@
 #include "Vector3.h"
 #include "Vector2.h"
 #include "Config.h"
+#include "GameObject.h"
 
 struct Vertex {
 	Vector3<float> position;
@@ -10,7 +11,7 @@ struct Vertex {
 	Vector2<float> uv;
 };
 
-class Mesh {
+class Mesh : public GameObject {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 

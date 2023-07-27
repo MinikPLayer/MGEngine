@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include <iostream>
+#include "GameObject.h"
 
 #if USE_GL 
 #pragma message("[INFO] Using OpenGL renderer")
@@ -13,15 +14,17 @@ void Engine::checkConfiguration() {
 #endif
 }
 
-Engine::Engine() : render(input) {}
-
-void Engine::init() {
+Engine::Engine() : render(input) {
 	render.init();
 }
 
+
 void Engine::run() {
 	checkConfiguration();
+
+	GameObject::__RunStart();
 	while (render.events()) {
+		GameObject::__RunEvents();
 		render.clear();
 		render.draw();
 	}
