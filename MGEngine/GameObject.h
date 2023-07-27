@@ -39,19 +39,26 @@ public:
 	Transform transform;
 
 	template<typename T>
-	static std::shared_ptr<GameObject> Instantiate(T* object, std::shared_ptr<GameObject> parent = nullptr) {
+	static std::shared_ptr<T> Instantiate(std::shared_ptr<T> object, std::shared_ptr<GameObject> parent = nullptr) {
 		static_assert(std::is_base_of<GameObject, T>::value, "T must derive from GameObject");
 
-		auto objPtr = std::shared_ptr<GameObject>(object);
-		__objects.push_back(objPtr);
+		__objects.push_back(object);
 
-		objPtr->self = objPtr;
-		objPtr->hash = typeid(T).hash_code();
+		object->self = object;
+		object->hash = typeid(T).hash_code();
 		if (parent != nullptr) {
-			parent->AddComponent(objPtr);
+			parent->AddComponent(object);
 		}
 
-		return objPtr;
+		return object;
+	}
+
+	template<typename T>
+	static std::shared_ptr<T> Instantiate(T* object, std::shared_ptr<GameObject> parent = nullptr) {
+		static_assert(std::is_base_of<GameObject, T>::value, "T must derive from GameObject");
+
+		auto objPtr = std::shared_ptr<T>(object);
+		return Instantiate<T>(objPtr, parent);
 	}
 
 	static void Destroy(std::shared_ptr<GameObject> object, bool removeFromObjects = true) {
@@ -108,9 +115,8 @@ public:
 	GameObject(const GameObject&) = delete;
 	GameObject& operator=(const GameObject&) = delete;
 
-	// Disable move constructor and assignment operator
-	GameObject(GameObject&&) = delete;
-	GameObject& operator=(GameObject&&) = delete;
+	GameObject(GameObject&&) = default;
+	GameObject& operator=(GameObject&&) = default;
 
 	GameObject() {}
 	~GameObject();

@@ -7,3 +7,14 @@
 #include <glad/glad.h>
 #include "GL_RAII.h"
 #endif
+
+#if NDEBUG
+#define SECURITY_CHECKS 1
+#else
+#define SECURITY_CHECKS 3
+#endif
+
+#define SC_NONE SECURITY_CHECKS == 0
+#define SC_FATAL_ON SECURITY_CHECKS >= 1
+#define SC_ERROR_ON SECURITY_CHECKS >= 2
+#define SC_WARNING_ON SECURITY_CHECKS >= 3

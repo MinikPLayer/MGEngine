@@ -1,6 +1,7 @@
 #include "GLRenderer.h"
 #include "Log.h"
 #include "ErrorCodes.h"
+#include "Camera.h"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -13,6 +14,9 @@ GLRenderer::~GLRenderer() {
 }
 
 void GLRenderer::clear() {
+	auto clearColor = Camera::getMainCamera()->getClearColor();
+
+	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -56,4 +60,5 @@ void GLRenderer::init() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	ELOG_INFO("OpenGL renderer initialized");
 }

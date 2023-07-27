@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include <iostream>
 #include "GameObject.h"
+#include "Camera.h"
 
 #if USE_GL 
 #pragma message("[INFO] Using OpenGL renderer")
@@ -16,8 +17,10 @@ void Engine::checkConfiguration() {
 
 Engine::Engine() : render(input) {
 	render.init();
+	auto mainCamera = std::make_shared<Camera>(Camera::createDefault());
+	GameObject::Instantiate(mainCamera);
+	Camera::setMainCamera(mainCamera);
 }
-
 
 void Engine::run() {
 	checkConfiguration();
