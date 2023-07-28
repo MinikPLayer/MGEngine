@@ -27,12 +27,22 @@ public:
 
 	// Move constructors
 	MOO(MOO&& o) {
+		if (value.has_value()) {
+			__dispose();
+		}
+
 		value = std::move(o.value);
 		o.value = std::nullopt;
 	}
 	MOO& operator=(MOO&& o) {
+		if (value.has_value()) {
+			__dispose();
+		}
+
 		value = std::move(o.value);
 		o.value = std::nullopt;
+
+		return *this;
 	}
 
 	MOO() {

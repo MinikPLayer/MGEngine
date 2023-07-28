@@ -42,12 +42,13 @@ public:
 	static std::shared_ptr<T> Instantiate(std::shared_ptr<T> object, std::shared_ptr<GameObject> parent = nullptr) {
 		static_assert(std::is_base_of<GameObject, T>::value, "T must derive from GameObject");
 
-		__objects.push_back(object);
-
 		object->self = object;
 		object->hash = typeid(T).hash_code();
 		if (parent != nullptr) {
 			parent->AddComponent(object);
+		}
+		else {
+			__objects.push_back(object);
 		}
 
 		return object;
@@ -104,11 +105,25 @@ public:
 		return hash == typeid(T).hash_code();
 	}
 
+	std::weak_ptr<GameObject> getSelfPtr() {
+#if SC_FATAL_ON
+		if (self.lock() == nullptr) {
+			ELOG_FATAL("Self pointer invalid. This could happen if getSelfPtr is called from the constructor. If that's the case, try calling it from the Start() method");
+		}
+#endif
+
+		return self;
+	}
+
 	virtual void OnDestroy() {}
 	virtual void Start() {}
 	virtual void Update() {}
 
 	void AddComponent(std::shared_ptr<GameObject> child);
+	template<typename T>
+	std::shared_ptr<GameObject> AddComponent(T* child) {
+		return Instantiate<T>(child, self.lock());
+	}
 	void RemoveComponent(std::shared_ptr<GameObject> child);
 
 	// Disable copy constructor and assignment operator

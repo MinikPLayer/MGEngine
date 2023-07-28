@@ -29,6 +29,6 @@ void Engine::run() {
 	while (render.events()) {
 		GameObject::__RunEvents();
 		render.clear();
-		render.draw();
+		render.draw(Mesh::__meshes);
 	}
 }
