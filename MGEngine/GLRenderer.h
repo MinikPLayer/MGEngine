@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "GLFWInput.h"
 #include "Mesh.h"
+#include "GLShader.h"
 
 class GLRenderer {
 	GLFWwindow* window = nullptr;
@@ -10,8 +11,8 @@ class GLRenderer {
 	GLFWInput& inputSystem;
 
 	// TODO: Move shader to the mesh
-	GLuint basicShaderProgram = 0;
-	void createDefaultShader();
+	Shader basicShaderProgram;
+	void initShaders();
 public:
 	GLRenderer(const GLRenderer&) = delete;
 	GLRenderer& operator=(const GLRenderer&) = delete;

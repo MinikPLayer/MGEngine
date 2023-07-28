@@ -21,6 +21,10 @@ public:
 		return value.value();
 	}
 
+	bool has_value() {
+		return value.has_value();
+	}
+
 	// Disable copy constructors 
 	MOO(const MOO&) = delete;
 	MOO& operator=(const MOO&) = delete;

@@ -112,6 +112,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -129,6 +133,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
@@ -138,6 +146,7 @@
     <ClCompile Include="GLFWInput.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -147,17 +156,25 @@
     <ClInclude Include="Dirty.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="ErrorCodes.h" />
+    <ClInclude Include="File.h" />
     <ClInclude Include="FloatUtils.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GLFWInput.h" />
     <ClInclude Include="GLRenderer.h" />
+    <ClInclude Include="GL_DebugLayers.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="RAII.h" />
     <ClInclude Include="GL_RAII.h" />
+    <ClInclude Include="GLShader.h" />
+    <ClInclude Include="StringUtils.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\mainShader.frag" />
+    <None Include="assets\mainShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

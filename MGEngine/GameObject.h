@@ -43,6 +43,7 @@ public:
 		static_assert(std::is_base_of<GameObject, T>::value, "T must derive from GameObject");
 
 		object->self = object;
+		object->transform.setGameObject(object);
 		object->hash = typeid(T).hash_code();
 		if (parent != nullptr) {
 			parent->AddComponent(object);

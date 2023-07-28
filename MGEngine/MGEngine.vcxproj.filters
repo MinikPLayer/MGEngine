@@ -45,6 +45,9 @@
     <ClCompile Include="Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -98,5 +101,25 @@
     <ClInclude Include="Dirty.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="StringUtils.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GLShader.h">
+      <Filter>Header Files\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL_DebugLayers.h">
+      <Filter>Header Files\OpenGL</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\mainShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\mainShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

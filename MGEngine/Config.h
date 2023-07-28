@@ -6,6 +6,13 @@
 #if USE_GL
 #include <glad/glad.h>
 #include "GL_RAII.h"
+
+#if NDEBUG
+#define USE_GL_DEBUG 0
+#else
+#define USE_GL_DEBUG 1
+#endif
+
 #endif
 
 #if NDEBUG
