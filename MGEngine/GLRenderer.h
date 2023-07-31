@@ -13,7 +13,15 @@ class GLRenderer {
 	// TODO: Move shader to the mesh
 	Shader basicShaderProgram;
 	void initShaders();
+
+	unsigned int windowWidth = 0;
+	unsigned int windowHeight = 0;
 public:
+	void setWindowSize(unsigned int width, unsigned int height) {
+		windowWidth = width;
+		windowHeight = height;
+	}
+
 	GLRenderer(const GLRenderer&) = delete;
 	GLRenderer& operator=(const GLRenderer&) = delete;
 

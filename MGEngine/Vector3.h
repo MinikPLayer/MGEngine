@@ -2,6 +2,7 @@
 #include <math.h>
 #include "FloatUtils.h"
 #include <string>
+#include <glm/glm.hpp>
 
 template<typename T>
 class Vector3 {
@@ -22,6 +23,10 @@ public:
 		return FloatUtils::IsEqualApproximate(x, v.x, epsilon) &&
 			FloatUtils::IsEqualApproximate(y, v.y, epsilon) &&
 			FloatUtils::IsEqualApproximate(z, v.z, epsilon);
+	}
+
+	glm::vec3 toGlm() {
+		return glm::vec3(x, y, z);
 	}
 
 	Vector3<T> operator+(Vector3<T> const& v) {

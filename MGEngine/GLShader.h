@@ -15,6 +15,9 @@ class Shader {
 	bool good = false;
 	static GL_Shader load_GL(std::string vertexPath, std::string fragmentPath);
 public:
+	unsigned int modelUniformLocation = 0;
+	unsigned int vpUniformLocation = 1;
+
 	bool load(std::string vertexPath, std::string fragmentPath);
 	void use();
 

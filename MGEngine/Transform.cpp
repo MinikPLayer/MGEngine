@@ -26,6 +26,16 @@ void Transform::setLocalScale(Vector3<float> scale) {
 	this->scale = scale;
 }
 
+Vector3<float> Transform::getForwardVector() {
+	ELOG_WARNING("Forward vector is not implemented - rotation is not implemented");
+	return Vector3<float>(0, 0, 1);
+}
+
+Vector3<float> Transform::getUpVector() {
+	ELOG_WARNING("Up vector is not implemented - rotation is not implemented");
+	return Vector3<float>(0, 1, 0);
+}
+
 // TODO: Implement based on the parent transform
 Vector3<float> Transform::getPosition() {
 	ELOG_WARNING("World position get not implemented");

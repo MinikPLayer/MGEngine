@@ -6,6 +6,9 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
+
+	auto glRenderer = static_cast<GLRenderer*>(glfwGetWindowUserPointer(window));
+	glRenderer->setWindowSize(width, height);
 }
 
 void GLRenderer::initShaders() {
@@ -35,8 +38,8 @@ bool GLRenderer::events() {
 
 void GLRenderer::draw(std::vector<std::weak_ptr<Mesh>> meshes) {
 	basicShaderProgram.use();
-	basicShaderProgram.setUniformMat4f(0, glm::mat4(1.0f)); // Model identity
-	basicShaderProgram.setUniformMat4f(1, glm::mat4(1.0f)); // VP identity
+	basicShaderProgram.setUniformMat4f(basicShaderProgram.modelUniformLocation, glm::mat4(1.0f)); // Model identity
+	basicShaderProgram.setUniformMat4f(basicShaderProgram.vpUniformLocation, Camera::getMainCamera()->getVPMatrix(windowWidth / (float)windowHeight)); // VP identity
 
 	for (auto mesh : meshes) {
 		mesh.lock()->draw();
@@ -75,6 +78,7 @@ void GLRenderer::init() {
 	}
 
 	glViewport(0, 0, 800, 600);
+	glfwSetWindowUserPointer(window, this);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	initShaders();

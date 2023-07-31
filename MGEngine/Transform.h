@@ -20,6 +20,9 @@ public:
 	void setLocalPosition(Vector3<float> position);
 	void setLocalScale(Vector3<float> scale);
 
+	Vector3<float> getForwardVector();
+	Vector3<float> getUpVector();
+
 	Vector3<float> getPosition();
 	Vector3<float> getScale();
 
