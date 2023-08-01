@@ -12,8 +12,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void GLRenderer::initShaders() {
-	if (!basicShaderProgram.load("assets/mainShader.vert", "assets/mainShader.frag")) {
-		ELOG_FATAL("Cannot compile the basic shader program.");
+	if (!basicShaderProgram.load("assets/engine/mainShader.vert", "assets/engine/mainShader.frag")) {
+		ELOG_FATAL("Cannot compile the basic shader program."); 
 		exit(1);
 	}
 }
