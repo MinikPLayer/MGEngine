@@ -6,6 +6,10 @@ void GameObject::AddComponent(std::shared_ptr<GameObject> child) {
 		child->parent.lock().get()->RemoveComponent(child);
 	}
 
+	if (child->self.lock() == nullptr) {
+		child->self = child;
+	}
+
 	child->parent = self;
 }
 

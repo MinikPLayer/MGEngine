@@ -2,6 +2,7 @@
 #include <iostream>
 #include "GameObject.h"
 #include "Camera.h"
+#include "TimeUtils.h"
 
 #if USE_GL 
 #pragma message("[INFO] Using OpenGL renderer")
@@ -27,6 +28,7 @@ void Engine::run() {
 
 	GameObject::__RunStart();
 	while (render.events()) {
+		Time::__update();
 		GameObject::__RunEvents();
 		render.clear();
 		render.draw(Mesh::__meshes);

@@ -48,6 +48,9 @@
     <ClCompile Include="GLShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TimeUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="GL_DebugLayers.h">
       <Filter>Header Files\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeUtils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

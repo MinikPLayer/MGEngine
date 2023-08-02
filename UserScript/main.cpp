@@ -2,8 +2,10 @@
 #include <GameObject.h>
 #include <Log.h>
 #include <Mesh.h>
+#include <TimeUtils.h>
 
 class TestGameObject : public GameObject {
+	std::shared_ptr<Mesh> mesh;
 public:
 	void Start() override {
 		LOG_INFO("TestGameObject::Start()");
@@ -17,7 +19,15 @@ public:
 		std::vector<unsigned int> indices = {
 			0, 1, 3, 1, 2, 3
 		};
-		AddComponent(new Mesh(vertices, indices));
+		mesh = std::shared_ptr<Mesh>(new Mesh(vertices, indices));
+		AddComponent(mesh);
+	}
+
+
+	void Update() override {
+		auto position = mesh->transform.getPosition();
+		position.y = sin(Time::elapsedTime());
+		mesh->transform.setPosition(position);
 	}
 };
 

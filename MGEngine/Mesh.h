@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include "Config.h"
 #include "GameObject.h"
+#include "GLShader.h"
 
 struct Vertex {
 	Vector3<float> position;
@@ -80,9 +81,20 @@ private:
 	void initialize() {
 		initRenderer();
 	}
+
+	// TODO: Add dirty / clean based on transform changes
+	glm::mat4 getModelMatrix() {
+		glm::mat4 mat(1.0f);
+		auto pos = transform.getPosition().toGlm();
+		mat = glm::translate(mat, pos);
+		
+		// TODO: Add rotation and scaling
+
+		return mat;
+	}
 public:
 #if USE_GL
-	void draw();
+	void draw(Shader& currentShader);
 #endif
 
 	// Disable copy constructor 

@@ -42,7 +42,7 @@ void GLRenderer::draw(std::vector<std::weak_ptr<Mesh>> meshes) {
 	basicShaderProgram.setUniformMat4f(basicShaderProgram.vpUniformLocation, Camera::getMainCamera()->getVPMatrix(windowWidth / (float)windowHeight)); // VP identity
 
 	for (auto mesh : meshes) {
-		mesh.lock()->draw();
+		mesh.lock()->draw(basicShaderProgram);
 	}
 	glfwSwapBuffers(window);
 }

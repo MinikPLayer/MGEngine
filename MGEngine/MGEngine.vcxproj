@@ -167,6 +167,7 @@
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="GLShader.cpp" />
+    <ClCompile Include="TimeUtils.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +189,7 @@
     <ClInclude Include="GL_RAII.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="TimeUtils.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
