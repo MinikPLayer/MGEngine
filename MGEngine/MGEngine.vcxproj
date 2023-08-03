@@ -165,6 +165,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GLFWInput.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="MatrixUtils.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="TimeUtils.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="GL_DebugLayers.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="MatrixUtils.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="RAII.h" />
     <ClInclude Include="GL_RAII.h" />

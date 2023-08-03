@@ -43,7 +43,7 @@ public:
 		static_assert(std::is_base_of<GameObject, T>::value, "T must derive from GameObject");
 
 		object->self = object;
-		object->transform.setGameObject(object);
+		// object->transform.setGameObject(object);
 		object->hash = typeid(T).hash_code();
 		if (parent != nullptr) {
 			parent->AddComponent(object);
@@ -116,6 +116,18 @@ public:
 		return self;
 	}
 
+	std::weak_ptr<GameObject> getParent() {
+		return parent;
+	}
+
+	Transform& getTransform() {
+		return transform;
+	}
+
+	std::vector<std::shared_ptr<GameObject>> getChildren() {
+		return children;
+	}
+
 	virtual void OnDestroy() {}
 	virtual void Start() {}
 	virtual void Update() {}
@@ -134,6 +146,6 @@ public:
 	GameObject(GameObject&&) = default;
 	GameObject& operator=(GameObject&&) = default;
 
-	GameObject() {}
+	GameObject() : transform(*this) {}
 	~GameObject();
 };

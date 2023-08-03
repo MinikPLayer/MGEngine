@@ -1,77 +1,111 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "Config.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
+#include "MatrixUtils.h"
 
-Transform::Transform() {}
+glm::mat4 Transform::calculateLocalModelMatrix() {
+	glm::mat4 trans(1.0f);
+	trans = glm::translate(trans, this->localPosition.toGlm());
+	// TODO: Add rotation here
+	trans = glm::scale(trans, this->localScale.toGlm());
 
-Transform::Transform(Vector3<float> position, Vector3<float> scale) {}
-
-// TODO: Implement based on the parent transform
-void Transform::setPosition(Vector3<float> position) {
-	ELOG_WARNING("World position set not implemented");
-	this->position = position;
+	return trans;
 }
 
-// TODO: Implement based on the parent transform
+void Transform::updateMatrix() {
+	auto parent = gameObject.getParent();
+	auto parentMatrix = (parent.lock() == nullptr) ? glm::mat4(1.0f) : parent.lock()->getTransform().getWorldSpaceMatrix();
+	auto localMatrix = calculateLocalModelMatrix();
+	worldSpaceModelMatrix = parentMatrix * localMatrix;
+
+	// TODO: Find a faster way to do this? 
+	// Decompose is probably not the fastest way to do this
+	// But should work for now
+	auto dec = MatrixUtils::decomposeMatrix(worldSpaceModelMatrix);
+
+	this->globalPosition = Vector3<float>(dec.translation);
+	this->globalScale = Vector3<float>(dec.scale);
+	// TODO: Add rotation here
+
+	for (auto child : gameObject.getChildren()) {
+		child->getTransform().updateMatrix();
+	}
+}
+
+Transform::Transform(GameObject& gameObject) : gameObject(gameObject) {}
+
+Transform::Transform(GameObject& gameObject, Vector3<float> position, Vector3<float> scale) : gameObject(gameObject) {
+	setPosition(position);
+	setScale(scale);
+}
+
+glm::mat4 Transform::getWorldSpaceMatrix() {
+	return worldSpaceModelMatrix;
+}
+
+void Transform::setPosition(Vector3<float> position) {
+	auto parent = gameObject.getParent();
+	if (parent.lock() != nullptr) {
+		auto parentMatrix = parent.lock()->getTransform().getWorldSpaceMatrix();
+		auto parentInverse = glm::inverse(parentMatrix);
+		auto localPosition = glm::vec4(position.toGlm(), 1.0f);
+		auto relativePosition = parentInverse * localPosition;
+		this->localPosition = Vector3<float>(relativePosition);
+	}
+	else {
+		this->localPosition = position;
+	}
+
+	updateMatrix();
+}
+
 void Transform::setScale(Vector3<float> scale) {
-	ELOG_WARNING("World scale set not implemented");
-	this->scale = scale;
+	this->localScale = scale;
+
+	updateMatrix(); 
 }
 
 void Transform::setLocalPosition(Vector3<float> position) {
-	this->position = position;
+	this->localPosition = position;
+
+	updateMatrix();
 }
 
 void Transform::setLocalScale(Vector3<float> scale) {
-	this->scale = scale;
+	this->localScale = scale;
+
+	updateMatrix();
 }
 
 Vector3<float> Transform::getForwardVector() {
-	ELOG_WARNING("Forward vector is not implemented - rotation is not implemented");
+	// TODO: Implement after implementing rotation
 	return Vector3<float>(0, 0, 1);
 }
 
 Vector3<float> Transform::getUpVector() {
-	ELOG_WARNING("Up vector is not implemented - rotation is not implemented");
+	// TODO: Implement after implementing rotation
 	return Vector3<float>(0, 1, 0);
 }
 
-// TODO: Implement based on the parent transform
 Vector3<float> Transform::getPosition() {
-	ELOG_WARNING("World position get not implemented");
-	return this->position;
+	return this->globalPosition;
 }
 
-// TODO: Implement based on the parent transform
 Vector3<float> Transform::getScale() {
-	ELOG_WARNING("World scale get not implemented");
-	return this->scale;
+	return this->globalScale;
 }
 
 Vector3<float> Transform::getLocalPosition() {
-	return this->position;
+	return this->localPosition;
 }
 
 Vector3<float> Transform::getLocalScale() {
-	return this->scale;
+	return this->localScale;
 }
 
-void Transform::setGameObject(std::weak_ptr<GameObject> gameObject) {
-#if SC_WARNING_ON 
-	if (this->gameObject.lock() != nullptr) {
-		ELOG_WARNING("Trying to set a gameObject to a transform that already has one");
-	}
-#endif
-	this->gameObject = gameObject;
-}
-
-std::weak_ptr<GameObject> Transform::getGameObject() {
-#if SC_FATAL_ON
-	if (this->gameObject.lock() != nullptr) {
-		ELOG_FATAL("Trying to get a gameObject from a transform that doesn't have one");
-		return std::weak_ptr<GameObject>();
-	}
-#endif
-
+GameObject& Transform::getGameObject() {
 	return this->gameObject;
 }

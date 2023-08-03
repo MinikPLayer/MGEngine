@@ -5,14 +5,26 @@
 
 class GameObject;
 class Transform {
-	Vector3<float> position;
-	// TODO: rotation
-	Vector3<float> scale;
+	glm::mat4 worldSpaceModelMatrix = glm::mat4(1.0f);
+	GameObject& gameObject;
 
-	std::weak_ptr<GameObject> gameObject;
+	Vector3<float> localPosition = Vector3<float>(0.0f, 0.0f, 0.0f);
+	// TODO: rotation
+	Vector3<float> localScale = Vector3<float>(1.0f, 1.0f, 1.0f);
+
+	Vector3<float> globalPosition;
+	// TODO: rotation
+	Vector3<float> globalScale;
+
+	glm::mat4 calculateLocalModelMatrix();
+
+	void updateMatrix();
+	
 public:
-	Transform();
-	Transform(Vector3<float> position, Vector3<float> scale);
+	Transform(GameObject& gameObject);
+	Transform(GameObject& gameObject, Vector3<float> position, Vector3<float> scale);
+
+	glm::mat4 getWorldSpaceMatrix();
 
 	void setPosition(Vector3<float> position);
 	void setScale(Vector3<float> scale);
@@ -29,7 +41,6 @@ public:
 	Vector3<float> getLocalPosition();
 	Vector3<float> getLocalScale();
 
-	void setGameObject(std::weak_ptr<GameObject> gameObject);
-	std::weak_ptr<GameObject> getGameObject();
+	GameObject& getGameObject();
 };
 

@@ -21,13 +21,15 @@ public:
 		};
 		mesh = std::shared_ptr<Mesh>(new Mesh(vertices, indices));
 		AddComponent(mesh);
+		this->transform.setLocalScale(Vector3<float>(2.0f, 1.0f, 1.0f));
+		mesh->transform.setScale(Vector3<float>(0.5f, 1.0f, 1.0f));
 	}
 
-
 	void Update() override {
-		auto position = mesh->transform.getPosition();
+		auto position = mesh->transform.getLocalPosition();
+		position.x = cos(Time::elapsedTime());
 		position.y = sin(Time::elapsedTime());
-		mesh->transform.setPosition(position);
+		mesh->transform.setLocalPosition(position);
 	}
 };
 

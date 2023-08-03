@@ -84,13 +84,7 @@ private:
 
 	// TODO: Add dirty / clean based on transform changes
 	glm::mat4 getModelMatrix() {
-		glm::mat4 mat(1.0f);
-		auto pos = transform.getPosition().toGlm();
-		mat = glm::translate(mat, pos);
-		
-		// TODO: Add rotation and scaling
-
-		return mat;
+		return transform.getWorldSpaceMatrix();
 	}
 public:
 #if USE_GL

@@ -15,6 +15,12 @@ public:
 		this->z = z;
 	}
 
+	Vector3(glm::vec3 v) {
+		x = v.x;
+		y = v.y;
+		z = v.z;
+	}
+
 	bool IsEqualExact(Vector3<T> const& v) const {
 		return x == v.x && y == v.y && z == v.z;
 	}
