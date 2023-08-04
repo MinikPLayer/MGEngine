@@ -6,7 +6,7 @@
 
 class File {
 public:
-	static std::string loadAllText(std::string path) {
+	static std::string LoadAllText(std::string path) {
 		std::string text;
 		std::string line;
 		std::ifstream file(path);
@@ -23,7 +23,7 @@ public:
 		return text;
 	}
 
-	static std::vector<std::string> loadAllLines(std::string path) {
+	static std::vector<std::string> LoadAllLines(std::string path) {
 		std::vector<std::string> ret;
 		std::string line;
 		std::ifstream file(path);

@@ -18,7 +18,7 @@ class GameObject {
 	bool isStarted = false;
 	bool isDestroyed = false;
 
-	void __runEvents() {
+	void __run_events() {
 #if !NDEBUG
 		if (isDestroyed) {
 			ELOG_ERROR("Destroyed object is still running events");
@@ -26,14 +26,14 @@ class GameObject {
 #endif
 
 		if (!isStarted) {
-			Start();
+			start();
 			isStarted = true;
 		}
 
-		Update();
+		update();
 
 		for (auto c : children) {
-			c->__runEvents();
+			c->__run_events();
 		}
 	}
 public:
@@ -73,10 +73,10 @@ public:
 #endif
 
 		if (!object->parent.expired()) {
-			object->parent.lock()->RemoveComponent(object);
+			object->parent.lock()->remove_component(object);
 		}
 
-		object->OnDestroy();
+		object->on_destroy();
 		object->isDestroyed = true;
 		for (auto child : object->children) {
 			Destroy(child, false);
@@ -90,7 +90,7 @@ public:
 	static void __RunStart() {
 		for (auto obj : __objects) {
 			if (!obj->isStarted) {
-				obj->Start();
+				obj->start();
 				obj->isStarted = true;
 			}
 
@@ -99,16 +99,16 @@ public:
 
 	static void __RunEvents() {
 		for (auto obj : __objects) {
-			obj->__runEvents();
+			obj->__run_events();
 		}
 	}
 
 	template<typename T>
-	bool isType() {
+	bool is_type() {
 		return hash == typeid(T).hash_code();
 	}
 
-	std::weak_ptr<GameObject> getSelfPtr() {
+	std::weak_ptr<GameObject> get_self_ptr() {
 #if SC_FATAL_ON
 		if (self.lock() == nullptr) {
 			ELOG_FATAL("Self pointer invalid. This could happen if getSelfPtr is called from the constructor. If that's the case, try calling it from the Start() method");
@@ -125,28 +125,28 @@ public:
 		return _has_parent;
 	}
 
-	std::weak_ptr<GameObject> getParent() {
+	std::weak_ptr<GameObject> get_parent() {
 		return parent;
 	}
 
-	Transform& getTransform() {
+	Transform& get_transform() {
 		return transform;
 	}
 
-	std::vector<std::shared_ptr<GameObject>> getChildren() {
+	std::vector<std::shared_ptr<GameObject>> get_children() {
 		return children;
 	}
 
-	virtual void OnDestroy() {}
-	virtual void Start() {}
-	virtual void Update() {}
+	virtual void on_destroy() {}
+	virtual void start() {}
+	virtual void update() {}
 
-	void AddComponent(std::weak_ptr<GameObject> child);
+	void add_component(std::weak_ptr<GameObject> child);
 	template<typename T>
-	std::shared_ptr<GameObject> AddComponent(T* child) {
+	std::shared_ptr<GameObject> add_component(T* child) {
 		return Instantiate<T>(child, self.lock());
 	}
-	void RemoveComponent(std::weak_ptr<GameObject> child);
+	void remove_component(std::weak_ptr<GameObject> child);
 
 	// Disable copy constructor and assignment operator
 	GameObject(const GameObject&) = delete;

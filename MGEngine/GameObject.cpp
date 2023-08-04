@@ -2,16 +2,16 @@
 
 void GameObject::remove_parent() {
 	if (has_parent()) {
-		parent.lock()->RemoveComponent(self);
+		parent.lock()->remove_component(self);
 	}
 
 	_has_parent = false;
 	parent.reset();
 }
 void GameObject::set_parent(std::shared_ptr<GameObject> _parent) {
-	_parent->AddComponent(this->self);
+	_parent->add_component(this->self);
 }
-void GameObject::AddComponent(std::weak_ptr<GameObject> child) {
+void GameObject::add_component(std::weak_ptr<GameObject> child) {
 	auto c = child.lock();
 	children.push_back(c);
 
@@ -25,7 +25,7 @@ void GameObject::AddComponent(std::weak_ptr<GameObject> child) {
 	c->_has_parent = true;
 }
 
-void GameObject::RemoveComponent(std::weak_ptr<GameObject> child) {
+void GameObject::remove_component(std::weak_ptr<GameObject> child) {
 	child.lock().get()->parent = std::weak_ptr<GameObject>();
 	for (auto it = children.begin(); it != children.end(); ++it) {
 		if (*it == child.lock()) {
@@ -41,7 +41,7 @@ GameObject::~GameObject() {
 	}
 
 	if (!isDestroyed) {
-		OnDestroy();
+		on_destroy();
 		isDestroyed = true;
 	}
 

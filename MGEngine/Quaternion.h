@@ -9,7 +9,7 @@
 class Quaternion : public glm::quat {
 public:
 	static Quaternion from_euler(Vector3<float> v) {
-		return {glm::quat(v.toGlm())};
+		return { glm::quat(v.to_glm()) };
 	}
 
 	[[nodiscard]]

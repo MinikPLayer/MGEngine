@@ -12,12 +12,12 @@ class GLRenderer {
 
 	// TODO: Move shader to the mesh
 	Shader basicShaderProgram;
-	void initShaders();
+	void init_shaders();
 
 	unsigned int windowWidth = 0;
 	unsigned int windowHeight = 0;
 public:
-	void setWindowSize(unsigned int width, unsigned int height) {
+	void set_window_size(unsigned int width, unsigned int height) {
 		windowWidth = width;
 		windowHeight = height;
 	}

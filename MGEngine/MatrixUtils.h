@@ -17,5 +17,5 @@ public:
 
 class MatrixUtils {
 public:
-	static DecomposedMatrix decomposeMatrix(glm::mat4 matrix);
+	static DecomposedMatrix DecomposeMatrix(glm::mat4 matrix);
 };

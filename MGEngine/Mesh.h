@@ -39,7 +39,7 @@ private:
 	GL_VBO VBO = -1;
 	GL_EBO EBO = -1;
 
-	void initRenderer() {
+	void init_renderer() {
 		VAO = -1;
 		VBO = -1;
 		EBO = -1;
@@ -48,10 +48,10 @@ private:
 		glGenBuffers(1, &VBO.get());
 		glGenBuffers(1, &EBO.get());
 
-		updateRenderer();
+		update_renderer();
 	}
 
-	void updateRenderer() {
+	void update_renderer() {
 		glBindVertexArray(VAO.get());
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO.get());
@@ -74,17 +74,17 @@ private:
 	}
 #endif
 
-	void Start() override {
-		__meshes.push_back(std::static_pointer_cast<Mesh>(getSelfPtr().lock()));
+	void start() override {
+		__meshes.push_back(std::static_pointer_cast<Mesh>(get_self_ptr().lock()));
 	}
 
 	void initialize() {
-		initRenderer();
+		init_renderer();
 	}
 
 	// TODO: Add dirty / clean based on transform changes
-	glm::mat4 getModelMatrix() {
-		return transform.getWorldSpaceMatrix();
+	glm::mat4 get_model_matrix() {
+		return transform.get_world_space_matrix();
 	}
 public:
 #if USE_GL

@@ -9,7 +9,7 @@ namespace Microsoft {
 			template<typename T> static inline std::wstring ToString(const Vector3<T>& t)
 			{
 				// Write some code here to create a descriptive std::wstring
-				auto str = t.toString();
+				auto str = t.to_string();
 				return std::wstring(str.begin(), str.end());
 			}
 
@@ -28,7 +28,7 @@ namespace MGEngine
 			Vector3<T> v2((T)4.3, (T)6.2, (T)1.1);
 
 			Vector3<T> v3 = v1 + v2;
-			Assert::IsTrue(v3.IsEqualExact(Vector3<T>((T)5.4, (T)8.4, (T)4.4)));
+			Assert::IsTrue(v3.is_equal_exact(Vector3<T>((T)5.4, (T)8.4, (T)4.4)));
 		}
 
 		template<typename T>
@@ -39,14 +39,14 @@ namespace MGEngine
 			float dot = v1.dot(v2);
 			Assert::AreEqual(expected, dot);
 		}
-		
+
 		template<typename T>
 		void testCross(T x1, T y1, T z1, T x2, T y2, T z3, T retX, T retY, T retZ) {
-			Vector3<T> v1(x1, y1, z1); 
-			Vector3<T> v2(x2, y2, z3); 
+			Vector3<T> v1(x1, y1, z1);
+			Vector3<T> v2(x2, y2, z3);
 
 			Vector3<T> cross = v1.cross(v2);
-			Assert::IsTrue(Vector3<T>(retX, retY, retZ).IsEqualApproximate(cross));
+			Assert::IsTrue(Vector3<T>(retX, retY, retZ).is_equal_approximate(cross));
 		}
 
 		TEST_METHOD(Add)
@@ -60,7 +60,7 @@ namespace MGEngine
 		TEST_METHOD(Dot)
 		{
 			testDot<int>(1, 2, 3, 4, 6, 1, 19.f);
-			testDot<float>(1.1, 2.1, 3.7, 4.2, 6.9, 9.0, 52.41f); 
+			testDot<float>(1.1, 2.1, 3.7, 4.2, 6.9, 9.0, 52.41f);
 		}
 
 		TEST_METHOD(Cross) {
@@ -73,7 +73,7 @@ namespace MGEngine
 
 			for (float f = 0; f < 1.0f; f += 0.000001f) {
 				auto v2 = v1 + Vector3<float>(f, f, f);
-				if (!v2.IsEqualApproximate(v1)) {
+				if (!v2.is_equal_approximate(v1)) {
 					std::stringstream ss;
 					ss << "Not equal after " << f << "f" << " (" << f * 100.f / v1.x << "%)";
 					Logger::WriteMessage(ss.str().c_str());

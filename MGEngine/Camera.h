@@ -10,18 +10,19 @@ class Camera : public GameObject {
 
 	float aspectRatio = -1;
 public:
-	static void setMainCamera(std::shared_ptr<Camera> camera);
-	static std::shared_ptr<Camera> getMainCamera();
-	static std::shared_ptr<Camera> createDefault();
+	static void set_main_camera(std::shared_ptr<Camera> camera);
+	static std::shared_ptr<Camera> get_main_camera();
+	static std::shared_ptr<Camera> create_default();
 
 	/// <summary>
 	/// Calculates the view projection matrix for this camera
 	/// </summary>
 	/// <param name="aspect_ratio">Aspect ratio of current window / surface. Ignored if set to < 0</param>
 	/// <returns>View projection matrix</returns>
-	glm::mat4 getVPMatrix(float aspect_ratio = -1);
+	glm::mat4 get_VP_matrix(float aspect_ratio = -1);
 
-	void setClearColor(Color color);
-	Color getClearColor();
+	void set_clear_color(Color color);
+	Color get_clear_color();
+
 };
 

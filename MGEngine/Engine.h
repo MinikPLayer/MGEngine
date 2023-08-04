@@ -8,7 +8,7 @@
 #endif
 
 class Engine {
-	void checkConfiguration();
+	void check_configuration();
 
 #if USE_GL
 	GLRenderer render;

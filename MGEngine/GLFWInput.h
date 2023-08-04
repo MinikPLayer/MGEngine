@@ -5,6 +5,7 @@
 #include <string>
 #include "Log.h"
 #include <optional>
+#include "Config.h"
 
 enum class Keyboard {
 	ARROW_LEFT = GLFW_KEY_LEFT,
@@ -141,46 +142,46 @@ class InputMapping {
 	Keyboard positiveKey = Keyboard::UNKNOWN;
 	Keyboard negativeKey = Keyboard::UNKNOWN;
 public:
-	InputDevices getDevice() {
+	InputDevices get_device() {
 		return device;
 	}
 
-	std::string getName() {
+	std::string get_name() {
 		return name;
 	}
 
 	void update(GLFWwindow* window) {
 		float ret = 0;
 		switch (device) {
-			case InputDevices::Keyboard:
-				if (positiveKey != Keyboard::UNKNOWN) {
-					ret = glfwGetKey(window, (int)positiveKey) == GLFW_PRESS ? 1.0f : 0.0f;
-				}
-				else if (negativeKey != Keyboard::UNKNOWN) {
-					ret -= glfwGetKey(window, (int)negativeKey) == GLFW_PRESS ? -1.0f : 0.0f;
-				}
-				break;
+		case InputDevices::Keyboard:
+			if (positiveKey != Keyboard::UNKNOWN) {
+				ret = glfwGetKey(window, (int)positiveKey) == GLFW_PRESS ? 1.0f : 0.0f;
+			}
+			else if (negativeKey != Keyboard::UNKNOWN) {
+				ret -= glfwGetKey(window, (int)negativeKey) == GLFW_PRESS ? -1.0f : 0.0f;
+			}
+			break;
 
-			case InputDevices::Mouse:
-			case InputDevices::Joystick:
-				ELOG_FATAL("Not implemented");
-				break;
+		case InputDevices::Mouse:
+		case InputDevices::Joystick:
+			ELOG_FATAL("Not implemented");
+			break;
 		}
 
 		lastValue = this->value;
 		this->value = ret;
 	}
 
-	bool isPressed() {
+	bool is_pressed() {
 		return value >= 0.5f;
 	}
 
-	float getValue() {
+	float get_value() {
 		return value;
 	}
 
-	bool isJustPressed() {
-		return isPressed() && (lastValue < 0.5f);
+	bool is_just_pressed() {
+		return is_pressed() && (lastValue < 0.5f);
 	}
 
 	InputMapping(std::string name, Keyboard positiveKey, Keyboard negativeKey = Keyboard::UNKNOWN) {
@@ -199,15 +200,21 @@ class GLFWInput {
 public:
 	void update(GLFWwindow* window);
 
-	int registerMapping(InputMapping mapping) {
+	int register_mapping(InputMapping mapping) {
+#if SC_WARNING_ON
+		if (nameToIdMappings.contains(mapping.get_name())) {
+			ELOG_WARNING("Mapping already exists: \"", mapping.get_name(), "\"");
+		}
+#endif	
+
 		int id = curMappingId++;
-		idMappings.insert({id, mapping});
-		nameToIdMappings.insert({mapping.getName(), id});
+		idMappings.insert({ id, mapping });
+		nameToIdMappings.insert({ mapping.get_name(), id });
 
 		return id;
 	}
 
-	std::optional<InputMapping> get(int id) {
+	std::optional<InputMapping&> get(int id) {
 		try {
 			auto mapping = idMappings.at(id);
 			return mapping;
@@ -218,7 +225,7 @@ public:
 		};
 	}
 
-	std::optional<int> getId(std::string name) {
+	std::optional<int> get_id(std::string name) {
 		int id = 0;
 		try {
 			id = nameToIdMappings.at(name);
@@ -229,20 +236,20 @@ public:
 		};
 	}
 
-	std::optional<InputMapping> get(std::string name) {
-		auto id = getId(name);
+	std::optional<InputMapping&> get(std::string name) {
+		auto id = get_id(name);
 		if (!id.has_value())
 			return std::nullopt;
 
 		return get(id.value());
 	}
 
-	bool removeMapping(int id) {
+	bool remove_mapping(int id) {
 		auto mapping = get(id);
 		if (!mapping.has_value())
 			return false;
 
 		idMappings.erase(id);
-		nameToIdMappings.erase(mapping.value().getName());
+		nameToIdMappings.erase(mapping.value().get_name());
 	}
 };
