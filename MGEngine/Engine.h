@@ -14,7 +14,7 @@ class Engine {
 	GLRenderer render;
 #endif
 
-	GLFWInput input;
+	Input input;
 public:
 	Engine();
 	void run();

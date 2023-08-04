@@ -3,6 +3,7 @@
 #include "FloatUtils.h"
 #include <string>
 #include <glm/glm.hpp>
+#include <sstream>
 
 // TODO: Merge Vector3 and Vector2 into one class with template
 template<typename T>

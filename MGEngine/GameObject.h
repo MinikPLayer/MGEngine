@@ -48,7 +48,7 @@ public:
 		// object->transform.setGameObject(object);
 		object->hash = typeid(T).hash_code();
 		if (parent != nullptr) {
-			parent->AddComponent(object);
+			parent->add_component(object);
 		}
 		else {
 			__objects.push_back(object);

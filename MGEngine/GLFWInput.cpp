@@ -1,8 +1,5 @@
 #include "GLFWInput.h"
 
-void GLFWInput::update(GLFWwindow* window) {
-	for (auto pair : this->idMappings) {
-		auto mapping = pair.second;
-		mapping.update(window);
-	}
-}
+int Input::curMappingId = 0;
+std::map<int, InputMapping> Input::idMappings;
+std::map<std::string, int> Input::nameToIdMappings;

@@ -24,7 +24,7 @@ GLRenderer::~GLRenderer() {
 }
 
 void GLRenderer::clear() {
-	auto clearColor = Camera::get_main_camera()->get_clear_color();
+	auto clearColor = Camera::GetMainCamera()->get_clear_color();
 
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -32,14 +32,14 @@ void GLRenderer::clear() {
 
 bool GLRenderer::events() {
 	glfwPollEvents();
-	inputSystem.update(window);
+	Input::update(window);
 	return !glfwWindowShouldClose(window);
 }
 
 void GLRenderer::draw(std::vector<std::weak_ptr<Mesh>> meshes) {
 	basicShaderProgram.use();
 	basicShaderProgram.set_uniform_mat4f(basicShaderProgram.modelUniformLocation, glm::mat4(1.0f)); // Model identity
-	basicShaderProgram.set_uniform_mat4f(basicShaderProgram.vpUniformLocation, Camera::get_main_camera()->get_VP_matrix(windowWidth / (float)windowHeight)); // VP identity
+	basicShaderProgram.set_uniform_mat4f(basicShaderProgram.vpUniformLocation, Camera::GetMainCamera()->get_VP_matrix(windowWidth / (float)windowHeight)); // VP identity
 
 	for (auto mesh : meshes) {
 		mesh.lock()->draw(basicShaderProgram);
@@ -80,6 +80,9 @@ void GLRenderer::init() {
 	glViewport(0, 0, 800, 600);
 	glfwSetWindowUserPointer(window, this);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+	// TODO: Add option to disable vsync
+	glfwSwapInterval(1);
 
 	init_shaders();
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);

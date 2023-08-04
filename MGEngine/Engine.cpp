@@ -16,11 +16,11 @@ void Engine::check_configuration() {
 #endif
 }
 
-Engine::Engine() : render(input) {
+Engine::Engine() {
 	render.init();
-	auto mainCamera = Camera::create_default();
+	auto mainCamera = Camera::CreateDefault();
 	GameObject::Instantiate(mainCamera);
-	Camera::set_main_camera(mainCamera);
+	Camera::SetMainCamera(mainCamera);
 }
 
 void Engine::run() {

@@ -9,10 +9,15 @@ class Camera : public GameObject {
 	static std::shared_ptr<Camera> mainCamera;
 
 	float aspectRatio = -1;
+
+	int forwardMapping = -1;
+	int sidewaysMapping = -1;
+
+	float moveSpeed = 10.f;
 public:
-	static void set_main_camera(std::shared_ptr<Camera> camera);
-	static std::shared_ptr<Camera> get_main_camera();
-	static std::shared_ptr<Camera> create_default();
+	static void SetMainCamera(std::shared_ptr<Camera> camera);
+	static std::shared_ptr<Camera> GetMainCamera();
+	static std::shared_ptr<Camera> CreateDefault();
 
 	/// <summary>
 	/// Calculates the view projection matrix for this camera
@@ -24,5 +29,7 @@ public:
 	void set_clear_color(Color color);
 	Color get_clear_color();
 
+	void start() override;
+	void update() override;
 };
 

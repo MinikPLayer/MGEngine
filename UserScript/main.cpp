@@ -9,7 +9,7 @@
 class TestGameObject : public GameObject {
 	std::shared_ptr<Mesh> mesh;
 public:
-	void Start() override {
+	void start() override {
 		LOG_INFO("TestGameObject::Start()");
 
 		std::vector<Vertex> vertices = {
@@ -22,13 +22,13 @@ public:
 			0, 1, 3, 1, 2, 3
 		};
 		mesh = std::shared_ptr<Mesh>(new Mesh(vertices, indices));
-		AddComponent(mesh);
-		this->transform.setLocalScale(Vector3<float>(2.0f, 1.0f, 1.0f));
-		mesh->transform.setScale(Vector3<float>(2.0f, 1.0f, 1.0f));
-		mesh->transform.setPosition(Vector3<float>(0.0f, 0.0f, 2.0f));
+		add_component(mesh);
+		this->transform.set_local_scale(Vector3<float>(2.0f, 1.0f, 1.0f));
+		mesh->transform.set_scale(Vector3<float>(2.0f, 1.0f, 1.0f));
+		mesh->transform.set_position(Vector3<float>(0.0f, 0.0f, 2.0f));
 	}
 
-	void Update() override {
+	void update() override {
 		// auto position = mesh->transform.getLocalPosition();
 		// position.x = cos(Time::elapsedTime());
 		// position.y = sin(Time::elapsedTime());
@@ -36,8 +36,8 @@ public:
 
 		// mesh->transform.setLocalRotation(Quaternion::from_euler(Vector3<float>(0, Time::elapsedTime(), 0)));
 
-		auto camera = Camera::getMainCamera();
-		camera->transform.setLocalRotation(Quaternion::from_euler(Vector3<float>(0, sin(Time::elapsedTime()) / 2.f, 0)));
+		auto camera = Camera::GetMainCamera();
+		mesh->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(0, sin(Time::ElapsedTime()) / 2.f, 0)));
 
 	}
 };
