@@ -9,15 +9,14 @@
 glm::mat4 Transform::calculateLocalModelMatrix() {
 	glm::mat4 trans(1.0f);
 	trans = glm::translate(trans, this->localPosition.toGlm());
-	// TODO: Add rotation here
+	trans = trans * this->localRotation.rotation_matrix();
 	trans = glm::scale(trans, this->localScale.toGlm());
 
 	return trans;
 }
 
 void Transform::updateMatrix() {
-	auto parent = gameObject.getParent();
-	auto parentMatrix = (parent.lock() == nullptr) ? glm::mat4(1.0f) : parent.lock()->getTransform().getWorldSpaceMatrix();
+	auto parentMatrix = (gameObject.has_parent()) ? gameObject.getParent().lock()->getTransform().getWorldSpaceMatrix() : glm::mat4(1.0f);
 	auto localMatrix = calculateLocalModelMatrix();
 	worldSpaceModelMatrix = parentMatrix * localMatrix;
 
@@ -28,7 +27,7 @@ void Transform::updateMatrix() {
 
 	this->globalPosition = Vector3<float>(dec.translation);
 	this->globalScale = Vector3<float>(dec.scale);
-	// TODO: Add rotation here
+	this->globalRotation = Quaternion(dec.rotation);
 
 	for (auto child : gameObject.getChildren()) {
 		child->getTransform().updateMatrix();
@@ -47,9 +46,8 @@ glm::mat4 Transform::getWorldSpaceMatrix() {
 }
 
 void Transform::setPosition(Vector3<float> position) {
-	auto parent = gameObject.getParent();
-	if (parent.lock() != nullptr) {
-		auto parentMatrix = parent.lock()->getTransform().getWorldSpaceMatrix();
+	if (gameObject.has_parent()) {
+		auto parentMatrix = gameObject.getParent().lock()->getTransform().getWorldSpaceMatrix();
 		auto parentInverse = glm::inverse(parentMatrix);
 		auto localPosition = glm::vec4(position.toGlm(), 1.0f);
 		auto relativePosition = parentInverse * localPosition;
@@ -79,15 +77,19 @@ void Transform::setLocalScale(Vector3<float> scale) {
 
 	updateMatrix();
 }
+void Transform::setLocalRotation(Quaternion quat) {
+	this->localRotation = quat;
+
+	updateMatrix();
+}
 
 Vector3<float> Transform::getForwardVector() {
-	// TODO: Implement after implementing rotation
-	return Vector3<float>(0, 0, 1);
+	// TODO: Implement caching (maybe)
+	return globalRotation.forward();
 }
 
 Vector3<float> Transform::getUpVector() {
-	// TODO: Implement after implementing rotation
-	return Vector3<float>(0, 1, 0);
+	return globalRotation.up();
 }
 
 Vector3<float> Transform::getPosition() {

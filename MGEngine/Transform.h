@@ -3,17 +3,19 @@
 #include <memory>
 #include <glm/glm.hpp>
 
+#include "Quaternion.h"
+
 class GameObject;
 class Transform {
 	glm::mat4 worldSpaceModelMatrix = glm::mat4(1.0f);
 	GameObject& gameObject;
 
 	Vector3<float> localPosition = Vector3<float>(0.0f, 0.0f, 0.0f);
-	// TODO: rotation
+	Quaternion localRotation = Quaternion::identity();
 	Vector3<float> localScale = Vector3<float>(1.0f, 1.0f, 1.0f);
 
 	Vector3<float> globalPosition;
-	// TODO: rotation
+	Quaternion globalRotation;
 	Vector3<float> globalScale;
 
 	glm::mat4 calculateLocalModelMatrix();
@@ -21,6 +23,10 @@ class Transform {
 	void updateMatrix();
 	
 public:
+	// Disable copy constructor and assignment operator
+	Transform(const Transform&) = delete;
+	Transform& operator=(const Transform&) = delete;
+
 	Transform(GameObject& gameObject);
 	Transform(GameObject& gameObject, Vector3<float> position, Vector3<float> scale);
 
@@ -31,6 +37,7 @@ public:
 
 	void setLocalPosition(Vector3<float> position);
 	void setLocalScale(Vector3<float> scale);
+	void setLocalRotation(Quaternion quat);
 
 	Vector3<float> getForwardVector();
 	Vector3<float> getUpVector();

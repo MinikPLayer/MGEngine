@@ -3,10 +3,12 @@
 #include <vector>
 #include <memory>
 #include "Log.h"
+#include "Config.h"
 
 class GameObject {
 	std::vector<std::shared_ptr<GameObject>> children;
 	std::weak_ptr<GameObject> parent;
+	bool _has_parent = false;
 
 	std::weak_ptr<GameObject> self;
 	size_t hash = -1;
@@ -116,6 +118,13 @@ public:
 		return self;
 	}
 
+	void remove_parent();
+	void set_parent(std::shared_ptr<GameObject> parent);
+
+	bool has_parent() {
+		return _has_parent;
+	}
+
 	std::weak_ptr<GameObject> getParent() {
 		return parent;
 	}
@@ -132,12 +141,12 @@ public:
 	virtual void Start() {}
 	virtual void Update() {}
 
-	void AddComponent(std::shared_ptr<GameObject> child);
+	void AddComponent(std::weak_ptr<GameObject> child);
 	template<typename T>
 	std::shared_ptr<GameObject> AddComponent(T* child) {
 		return Instantiate<T>(child, self.lock());
 	}
-	void RemoveComponent(std::shared_ptr<GameObject> child);
+	void RemoveComponent(std::weak_ptr<GameObject> child);
 
 	// Disable copy constructor and assignment operator
 	GameObject(const GameObject&) = delete;

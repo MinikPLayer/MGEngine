@@ -18,7 +18,7 @@ void Engine::checkConfiguration() {
 
 Engine::Engine() : render(input) {
 	render.init();
-	auto mainCamera = std::make_shared<Camera>(Camera::createDefault());
+	auto mainCamera = Camera::createDefault();
 	GameObject::Instantiate(mainCamera);
 	Camera::setMainCamera(mainCamera);
 }

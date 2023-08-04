@@ -19,23 +19,23 @@ std::shared_ptr<Camera> Camera::getMainCamera() {
 	return mainCamera;
 }
 
-Camera Camera::createDefault() {
-	Camera cam;
-	cam.clearColor = Color(0.53f, 0.81f, 0.92f);
-	cam.transform.setPosition(Vector3<float>(0, 0, -5));
-	return cam;
+std::shared_ptr<Camera> Camera::createDefault() {
+	Camera* cam = new Camera();
+	cam->clearColor = Color(0.53f, 0.81f, 0.92f);
+	cam->transform.setPosition(Vector3<float>(0, 0, -5));
+	return std::shared_ptr<Camera>(cam);
 }
 
 // TODO: Implement dirty / clean system, so we don't have to recalculate the VP matrix every frame
-glm::mat4 Camera::getVPMatrix(float aspectRatio) {
+glm::mat4 Camera::getVPMatrix(float aspect_ratio) {
 #if SC_ERROR_ON
-	if (aspectRatio < 0 && this->aspectRatio < 0) {
+	if (aspect_ratio < 0 && this->aspectRatio < 0) {
 		ELOG_ERROR("Camera aspect ratio not set, and no aspect ratio provided as an argument");
 		this->aspectRatio = 1;
 	}
 #endif
-	if (aspectRatio > 0)
-		this->aspectRatio = aspectRatio;
+	if (aspect_ratio > 0)
+		this->aspectRatio = aspect_ratio;
 
 	auto viewMatrix = glm::lookAt(
 		this->transform.getPosition().toGlm(),
@@ -43,7 +43,7 @@ glm::mat4 Camera::getVPMatrix(float aspectRatio) {
 		this->transform.getUpVector().toGlm()
 	);
 
-	auto projectionMatrix = glm::perspective(glm::radians(45.0f), this->aspectRatio, 0.1f, 100.0f);
+	auto projectionMatrix = glm::perspective(glm::radians(60.0f), this->aspectRatio, 0.1f, 100.0f);
 	return projectionMatrix * viewMatrix;
 }
 
