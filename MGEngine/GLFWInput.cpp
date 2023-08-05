@@ -1,11 +1,15 @@
 #include "GLFWInput.h"
 
 void mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-	Input::__set_scroll(xoffset, yoffset);
+	Input::__SetScroll(xoffset, yoffset);
 }
 
 void Input::init(GLFWwindow* window) {
 	glfwSetScrollCallback(window, mouse_scroll_callback);
+
+	double xpos, ypos;
+	glfwGetCursorPos(window, &xpos, &ypos);
+	lastMousePos = Vector2<float>((float)xpos, (float)ypos);
 
 	isInitialized = true;
 }
@@ -18,3 +22,4 @@ float Input::scrollDeltaX = 0;
 float Input::scrollDeltaY = 0;
 
 bool Input::isInitialized = false;
+CursorModes Input::cursorMode = CursorModes::Normal;

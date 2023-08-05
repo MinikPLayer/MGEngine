@@ -66,14 +66,6 @@ public:
 	Mesh() { initialize(); }
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) : vertices(vertices), indices(indices) { initialize(); }
 
-	~Mesh() {
-		// Remove from meshes list
-		for (auto it = __meshes.begin(); it != __meshes.end(); it++) {
-			if (it->lock().get() == this) {
-				__meshes.erase(it);
-				break;
-			}
-		}
-	}
+	~Mesh();
 };
 

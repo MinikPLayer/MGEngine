@@ -7,6 +7,7 @@
 #include "Log.h"
 #include <optional>
 #include "Vector2.h"
+#include <algorithm>
 
 enum class Keyboard {
 	ARROW_LEFT = GLFW_KEY_LEFT,
@@ -141,6 +142,34 @@ enum class InputDevices {
 	Mouse
 };
 
+enum class CursorModes {
+	Normal = GLFW_CURSOR_NORMAL,
+	Hidden = GLFW_CURSOR_HIDDEN,
+	Disabled = GLFW_CURSOR_DISABLED
+};
+
+struct InputMappingSettings {
+	float multiplier = 1.0f;
+	float deadzone = 0.0f;
+	bool inverted = false;
+
+	float getValue(float x) {
+		int sign = inverted ? -FloatUtils::Sign(x) : FloatUtils::Sign(x);
+		float abs = std::abs(x);
+		float val = (abs - deadzone) / (1.0f - deadzone);
+		if (val < 0)
+			val = 0;
+
+		return sign * val * multiplier;
+	}
+
+	InputMappingSettings(float multiplier = 1, float deadzone = 0, bool inverted = 0) {
+		this->multiplier = multiplier;
+		this->deadzone = deadzone;
+		this->inverted = inverted;
+	}
+};
+
 class InputMapping {
 	float value = 0;
 	float lastValue = 0;
@@ -152,6 +181,8 @@ class InputMapping {
 	Keyboard negativeKey = Keyboard::UNKNOWN;
 
 	MouseAxis mouseAxis = MouseAxis::UNKNOWN;
+
+	InputMappingSettings settings;
 public:
 	InputDevices get_device() {
 		return device;
@@ -197,6 +228,7 @@ public:
 			break;
 		}
 
+		ret = settings.getValue(ret);
 		lastValue = this->value;
 		this->value = ret;
 	}
@@ -213,17 +245,19 @@ public:
 		return is_pressed() && (lastValue < 0.5f);
 	}
 
-	InputMapping(std::string name, Keyboard positiveKey, Keyboard negativeKey = Keyboard::UNKNOWN) {
+	InputMapping(std::string name, Keyboard positiveKey, Keyboard negativeKey = Keyboard::UNKNOWN, InputMappingSettings settings = InputMappingSettings()) {
 		this->name = name;
 		this->positiveKey = positiveKey;
 		this->negativeKey = negativeKey;
 		this->device = InputDevices::Keyboard;
+		this->settings = settings;
 	}
 
-	InputMapping(std::string name, MouseAxis axis) {
+	InputMapping(std::string name, MouseAxis axis, InputMappingSettings settings = InputMappingSettings()) {
 		this->name = name;
 		this->mouseAxis = axis;
 		this->device = InputDevices::Mouse;
+		this->settings = settings;
 	}
 };
 
@@ -238,15 +272,16 @@ class Input {
 	static float scrollDeltaY;
 
 	static bool isInitialized;
+	static CursorModes cursorMode;
 
 	static void init(GLFWwindow* window);
 public:
-	static void __set_scroll(double x, double y) {
+	static void __SetScroll(double x, double y) {
 		scrollDeltaX += (float)x;
 		scrollDeltaY += (float)y;
 	}
 
-	static void update(GLFWwindow* window) {
+	static void __Update(GLFWwindow* window) {
 		if (!isInitialized) {
 			init(window);
 		}
@@ -265,6 +300,16 @@ public:
 		for (auto it = idMappings.begin(); it != idMappings.end(); it++) {
 			it->second.update(window, mousePosDiff, sdx, sdy);
 		}
+
+		glfwSetInputMode(window, GLFW_CURSOR, (int)cursorMode);
+		if (cursorMode == CursorModes::Disabled && glfwRawMouseMotionSupported())
+			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+		else
+			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_FALSE);
+	}
+
+	static void SetCursorMode(CursorModes mode) {
+		cursorMode = mode;
 	}
 
 	// TODO: Add option to register multiple mappings with the same name (for different devices)

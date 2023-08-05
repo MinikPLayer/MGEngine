@@ -37,7 +37,7 @@ void GLRenderer::clear() {
 
 bool GLRenderer::events() {
 	glfwPollEvents();
-	Input::update(window);
+	Input::__Update(window);
 	return !glfwWindowShouldClose(window);
 }
 

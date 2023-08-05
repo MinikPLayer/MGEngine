@@ -8,15 +8,19 @@
 #endif
 
 class Engine {
-	void check_configuration();
+	static void Check_configuration();
 
 #if USE_GL
-	GLRenderer render;
+	static GLRenderer render;
 #endif
 
-	Input input;
+	static Input input;
+
+	static bool stopped;
 public:
-	Engine();
-	void run();
+	static void Stop();
+
+	static void Init();
+	static void Run();
 };
 
