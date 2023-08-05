@@ -39,44 +39,12 @@ private:
 	GL_VBO VBO = -1;
 	GL_EBO EBO = -1;
 
-	void init_renderer() {
-		VAO = -1;
-		VBO = -1;
-		EBO = -1;
+	void init_renderer();
 
-		glGenVertexArrays(1, &VAO.get());
-		glGenBuffers(1, &VBO.get());
-		glGenBuffers(1, &EBO.get());
-
-		update_renderer();
-	}
-
-	void update_renderer() {
-		glBindVertexArray(VAO.get());
-
-		glBindBuffer(GL_ARRAY_BUFFER, VBO.get());
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO.get());
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-
-		glBindVertexArray(0);
-		needsRendererUpdate = false;
-	}
+	void update_renderer();
 #endif
 
-	void start() override {
-		__meshes.push_back(std::static_pointer_cast<Mesh>(get_self_ptr().lock()));
-	}
+	void start() override;
 
 	void initialize() {
 		init_renderer();

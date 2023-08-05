@@ -18,6 +18,11 @@ void GLRenderer::init_shaders() {
 	}
 }
 
+void GLRenderer::set_window_size(unsigned int width, unsigned int height) {
+	windowWidth = width;
+	windowHeight = height;
+}
+
 GLRenderer::~GLRenderer() {
 	glfwTerminate();
 	window = nullptr;

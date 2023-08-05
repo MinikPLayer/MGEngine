@@ -15,10 +15,7 @@ class GLRenderer {
 	unsigned int windowWidth = 800;
 	unsigned int windowHeight = 600;
 public:
-	void set_window_size(unsigned int width, unsigned int height) {
-		windowWidth = width;
-		windowHeight = height;
-	}
+	void set_window_size(unsigned int width, unsigned int height);
 
 	GLRenderer(const GLRenderer&) = delete;
 	GLRenderer& operator=(const GLRenderer&) = delete;

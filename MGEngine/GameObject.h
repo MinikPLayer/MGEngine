@@ -18,24 +18,7 @@ class GameObject {
 	bool isStarted = false;
 	bool isDestroyed = false;
 
-	void __run_events() {
-#if !NDEBUG
-		if (isDestroyed) {
-			ELOG_ERROR("Destroyed object is still running events");
-		}
-#endif
-
-		if (!isStarted) {
-			start();
-			isStarted = true;
-		}
-
-		update();
-
-		for (auto c : children) {
-			c->__run_events();
-		}
-	}
+	void __run_events();
 public:
 
 	Transform transform;
@@ -65,58 +48,18 @@ public:
 		return Instantiate<T>(objPtr, parent);
 	}
 
-	static void Destroy(std::shared_ptr<GameObject> object, bool removeFromObjects = true) {
-#if !NDEBUG
-		if (object->isDestroyed) {
-			ELOG_ERROR("Object destoyed twice");
-		}
-#endif
+	static void Destroy(std::shared_ptr<GameObject> object, bool removeFromObjects = true);
 
-		if (!object->parent.expired()) {
-			object->parent.lock()->remove_component(object);
-		}
+	static void __RunStart();
 
-		object->on_destroy();
-		object->isDestroyed = true;
-		for (auto child : object->children) {
-			Destroy(child, false);
-		}
-
-		if (removeFromObjects) {
-			__objects.erase(std::remove(__objects.begin(), __objects.end(), object), __objects.end());
-		}
-	}
-
-	static void __RunStart() {
-		for (auto obj : __objects) {
-			if (!obj->isStarted) {
-				obj->start();
-				obj->isStarted = true;
-			}
-
-		}
-	}
-
-	static void __RunEvents() {
-		for (auto obj : __objects) {
-			obj->__run_events();
-		}
-	}
+	static void __RunEvents();
 
 	template<typename T>
 	bool is_type() {
 		return hash == typeid(T).hash_code();
 	}
 
-	std::weak_ptr<GameObject> get_self_ptr() {
-#if SC_FATAL_ON
-		if (self.lock() == nullptr) {
-			ELOG_FATAL("Self pointer invalid. This could happen if getSelfPtr is called from the constructor. If that's the case, try calling it from the Start() method");
-		}
-#endif
-
-		return self;
-	}
+	std::weak_ptr<GameObject> get_self_ptr();
 
 	void remove_parent();
 	void set_parent(std::shared_ptr<GameObject> parent);

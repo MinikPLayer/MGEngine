@@ -168,6 +168,7 @@
     <ClCompile Include="MatrixUtils.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="GLShader.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="TimeUtils.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
