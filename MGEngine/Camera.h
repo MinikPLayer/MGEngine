@@ -13,6 +13,9 @@ class Camera : public GameObject {
 	int forwardMapping = -1;
 	int sidewaysMapping = -1;
 
+	int rotateXMapping = -1;
+	int rotateYMapping = -1;
+
 	float moveSpeed = 10.f;
 public:
 	static void SetMainCamera(std::shared_ptr<Camera> camera);

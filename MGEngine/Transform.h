@@ -37,9 +37,11 @@ public:
 
 	Vector3<float> get_position();
 	Vector3<float> get_scale();
+	Quaternion get_rotation();
 
 	Vector3<float> get_local_position();
 	Vector3<float> get_local_scale();
+	Quaternion get_local_rotation();
 
 	GameObject& get_gameobject();
 

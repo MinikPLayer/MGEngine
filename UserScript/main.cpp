@@ -36,8 +36,7 @@ public:
 
 		// mesh->transform.setLocalRotation(Quaternion::from_euler(Vector3<float>(0, Time::elapsedTime(), 0)));
 
-		auto camera = Camera::GetMainCamera();
-		mesh->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(0, sin(Time::ElapsedTime()) / 2.f, 0)));
+		// mesh->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(0, sin(Time::ElapsedTime()) / 2.f, 0)));
 
 	}
 };

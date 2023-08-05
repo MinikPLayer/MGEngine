@@ -100,12 +100,20 @@ Vector3<float> Transform::get_scale() {
 	return this->globalScale;
 }
 
+Quaternion Transform::get_rotation() {
+	return this->globalRotation;
+}
+
 Vector3<float> Transform::get_local_position() {
 	return this->localPosition;
 }
 
 Vector3<float> Transform::get_local_scale() {
 	return this->localScale;
+}
+
+Quaternion Transform::get_local_rotation() {
+	return this->localRotation;
 }
 
 GameObject& Transform::get_gameobject() {

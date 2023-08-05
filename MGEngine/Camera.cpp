@@ -45,7 +45,7 @@ glm::mat4 Camera::get_VP_matrix(float aspect_ratio) {
 	auto viewMatrix = glm::lookAt(
 		this->transform.get_position().to_glm(),
 		this->transform.get_position().to_glm() + this->transform.get_forward_vector().to_glm(),
-		-this->transform.get_up_vector().to_glm()
+		this->transform.get_up_vector().to_glm()
 	);
 
 	auto projectionMatrix = glm::perspective(glm::radians(60.0f), this->aspectRatio, 0.1f, 100.0f);
@@ -63,16 +63,31 @@ Color Camera::get_clear_color() {
 void Camera::start() {
 	forwardMapping = Input::register_mapping(InputMapping("CameraForward", Keyboard::KEY_W, Keyboard::KEY_S));
 	sidewaysMapping = Input::register_mapping(InputMapping("CameraSideways", Keyboard::KEY_D, Keyboard::KEY_A));
+
+	// rotateXMapping = Input::register_mapping(InputMapping("CameraRotateX", MouseAxis::X));
+	// rotateYMapping = Input::register_mapping(InputMapping("CameraRotateY", MouseAxis::Y));
+	rotateXMapping = Input::register_mapping(InputMapping("CameraRotateX", Keyboard::ARROW_RIGHT, Keyboard::ARROW_LEFT));
+	rotateYMapping = Input::register_mapping(InputMapping("CameraRotateY", Keyboard::ARROW_UP, Keyboard::ARROW_DOWN));
 }
 
 void Camera::update() {
-	auto right = Input::get(sidewaysMapping).value().get_value() * moveSpeed * Time::DeltaTime();
+	auto rotation = this->transform.get_local_rotation();
+	auto rotateX = Input::get(rotateXMapping).value().get_value() * 0.01f;
+	auto rotateY = Input::get(rotateYMapping).value().get_value() * 0.01f;
+
+	rotation = rotation.rotated_around(Vector3<float>(0, 1, 0), rotateX);
+	rotation = rotation.rotated_around(rotation.right(), rotateY);
+	this->transform.set_local_rotation(rotation);
+
+	auto right = -Input::get(sidewaysMapping).value().get_value() * moveSpeed * Time::DeltaTime();
 	auto forward = Input::get(forwardMapping).value().get_value() * moveSpeed * Time::DeltaTime();
 
-	auto movement = Vector3<float>(right, 0, forward);
+	auto movement = rotation.forward() * forward + rotation.right() * right;
 	this->transform.set_position(this->transform.get_position() + movement);
 
-	LOG_INFO("Position: ", this->transform.get_position().to_string());
+	auto localRot = this->transform.get_local_rotation();
+	auto euler = localRot.to_euler();
+	LOG_INFO("Camera rotation: ", euler.to_string());
 }
 
 std::shared_ptr<Camera> Camera::mainCamera = nullptr;

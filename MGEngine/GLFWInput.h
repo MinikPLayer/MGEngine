@@ -6,6 +6,7 @@
 #include <string>
 #include "Log.h"
 #include <optional>
+#include "Vector2.h"
 
 enum class Keyboard {
 	ARROW_LEFT = GLFW_KEY_LEFT,
@@ -126,6 +127,14 @@ enum class Keyboard {
 	KEY_SUPER_RIGHT = GLFW_KEY_RIGHT_SUPER,
 };
 
+enum class MouseAxis {
+	UNKNOWN,
+	X,
+	Y,
+	ScrollX,
+	ScrollY
+};
+
 enum class InputDevices {
 	Keyboard,
 	Joystick, // Not implemented
@@ -141,6 +150,8 @@ class InputMapping {
 
 	Keyboard positiveKey = Keyboard::UNKNOWN;
 	Keyboard negativeKey = Keyboard::UNKNOWN;
+
+	MouseAxis mouseAxis = MouseAxis::UNKNOWN;
 public:
 	InputDevices get_device() {
 		return device;
@@ -150,7 +161,7 @@ public:
 		return name;
 	}
 
-	void update(GLFWwindow* window) {
+	void update(GLFWwindow* window, Vector2<float> mouseMovement, float scrollDeltaX, float scrollDeltaY) {
 		float ret = 0;
 		switch (device) {
 		case InputDevices::Keyboard:
@@ -164,6 +175,23 @@ public:
 			break;
 
 		case InputDevices::Mouse:
+			if (mouseAxis != MouseAxis::UNKNOWN) {
+				switch (mouseAxis) {
+				case MouseAxis::X:
+					ret = mouseMovement.x;
+					break;
+				case MouseAxis::Y:
+					ret = mouseMovement.y;
+					break;
+				case MouseAxis::ScrollX:
+					ret = scrollDeltaX;
+					break;
+				case MouseAxis::ScrollY:
+					ret = scrollDeltaY;
+					break;
+				}
+			}
+			break;
 		case InputDevices::Joystick:
 			ELOG_FATAL("Not implemented");
 			break;
@@ -191,6 +219,12 @@ public:
 		this->negativeKey = negativeKey;
 		this->device = InputDevices::Keyboard;
 	}
+
+	InputMapping(std::string name, MouseAxis axis) {
+		this->name = name;
+		this->mouseAxis = axis;
+		this->device = InputDevices::Mouse;
+	}
 };
 
 class Input {
@@ -199,13 +233,41 @@ class Input {
 
 	static std::map<std::string, int> nameToIdMappings;
 
+	static Vector2<float> lastMousePos;
+	static float scrollDeltaX;
+	static float scrollDeltaY;
+
+	static bool isInitialized;
+
+	static void init(GLFWwindow* window);
 public:
+	static void __set_scroll(double x, double y) {
+		scrollDeltaX += (float)x;
+		scrollDeltaY += (float)y;
+	}
+
 	static void update(GLFWwindow* window) {
+		if (!isInitialized) {
+			init(window);
+		}
+
+		auto sdx = scrollDeltaX;
+		auto sdy = scrollDeltaY;
+		scrollDeltaX = 0;
+		scrollDeltaY = 0;
+
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+
+		auto newPos = Vector2<float>((float)xpos, (float)ypos);
+		auto mousePosDiff = newPos - lastMousePos;
+		lastMousePos = newPos;
 		for (auto it = idMappings.begin(); it != idMappings.end(); it++) {
-			it->second.update(window);
+			it->second.update(window, mousePosDiff, sdx, sdy);
 		}
 	}
 
+	// TODO: Add option to register multiple mappings with the same name (for different devices)
 	static int register_mapping(InputMapping mapping) {
 #if SC_WARNING_ON
 		if (nameToIdMappings.contains(mapping.get_name())) {

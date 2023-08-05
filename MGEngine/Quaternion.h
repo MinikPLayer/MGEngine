@@ -33,6 +33,13 @@ public:
 	}
 
 	[[nodiscard]]
+	Quaternion rotated_around(Vector3<float> axis, float angle) {
+		auto quat = Quaternion::from_euler(axis * angle);
+
+		return *this * quat;
+	}
+
+	[[nodiscard]]
 	Quaternion normalized() const {
 		auto ret = Quaternion(*this);
 		ret.normalize();
@@ -54,10 +61,10 @@ public:
 	}
 
 	static Quaternion identity() {
-		return Quaternion(0, 0, 0, 0);
+		return Quaternion();
 	}
 
-	Quaternion() : glm::quat() {}
+	Quaternion() : glm::quat(1, 0, 0, 0) {}
 	Quaternion(glm::quat q) : glm::quat(q) {}
 	Quaternion(float v1, float v2, float v3, float v4) : glm::quat(v1, v2, v3, v4) {}
 };
