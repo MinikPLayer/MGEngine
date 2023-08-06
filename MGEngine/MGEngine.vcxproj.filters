@@ -19,9 +19,6 @@
     <Filter Include="Header Files\OpenGL">
       <UniqueIdentifier>{8476597a-5012-487f-9064-eebce622e17c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\FBX">
-      <UniqueIdentifier>{1cd94eaa-26ae-4688-a0f3-42a4551e6b41}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -61,9 +58,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXImporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Compression.cpp">
@@ -148,9 +142,6 @@
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXImporter.h">
-      <Filter>Header Files\FBX</Filter>
     </ClInclude>
     <ClInclude Include="Compression.h">
       <Filter>Header Files\Util</Filter>
