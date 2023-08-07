@@ -92,6 +92,8 @@ void GLRenderer::init() {
 	init_shaders();
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
+	glEnable(GL_DEPTH_TEST);
+
 #if USE_GL_DEBUG
 	GLDebugLayers::Register();
 #endif

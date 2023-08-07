@@ -17,6 +17,7 @@ class Shader {
 public:
 	unsigned int modelUniformLocation = 0;
 	unsigned int vpUniformLocation = 1;
+	unsigned int modelInversedUniformLocation = 2;
 
 	bool load(std::string vertexPath, std::string fragmentPath);
 	void use();

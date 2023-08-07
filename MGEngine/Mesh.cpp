@@ -42,7 +42,11 @@ void Mesh::draw(Shader& currentShader) {
 		update_renderer();
 
 	// Setup model matrices
-	currentShader.set_uniform_mat4f(currentShader.modelUniformLocation, get_model_matrix());
+	auto modelMatrix = get_model_matrix();
+	currentShader.set_uniform_mat4f(currentShader.modelUniformLocation, modelMatrix);
+	// TODO: Definitely add caching
+	currentShader.set_uniform_mat4f(currentShader.modelInversedUniformLocation, glm::inverse(modelMatrix));
+
 	glBindVertexArray(VAO.get());
 	glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
 }

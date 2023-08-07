@@ -8,7 +8,10 @@ class Model : public GameObject {
 public:
 	Model(std::string path);
 
+	void start() override;
 private:
+
+	std::string path;
 	// model data
 	std::vector<Mesh> meshes;
 

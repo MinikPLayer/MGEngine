@@ -2,6 +2,10 @@
 #include <assimp/postprocess.h>
 
 Model::Model(std::string path) {
+	this->path = path;
+}
+
+void Model::start() {
 	if (!loadModel(path))
 		throw std::runtime_error("Unable to load model: " + path);
 }

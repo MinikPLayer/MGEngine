@@ -10,6 +10,7 @@ class GameObject {
 	std::weak_ptr<GameObject> parent;
 	bool _has_parent = false;
 
+	// TODO: This should be initialized before add component
 	std::weak_ptr<GameObject> self;
 	size_t hash = -1;
 
@@ -88,6 +89,11 @@ public:
 
 	template<typename T>
 	std::shared_ptr<T> add_component(std::shared_ptr<T> child) {
+#if SC_WARNING_ON
+		if (self.lock() == nullptr) {
+			ELOG_WARNING("Trying to add component to uninitialized object");
+		}
+#endif	
 		return Instantiate<T>(child, self.lock());
 	}
 
