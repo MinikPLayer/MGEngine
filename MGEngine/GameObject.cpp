@@ -76,9 +76,9 @@ void GameObject::remove_parent() {
 	parent.reset();
 }
 void GameObject::set_parent(std::shared_ptr<GameObject> _parent) {
-	_parent->add_component(this->self);
+	_parent->__add_component(this->self);
 }
-void GameObject::add_component(std::weak_ptr<GameObject> child) {
+void GameObject::__add_component(std::weak_ptr<GameObject> child) {
 	auto c = child.lock();
 	children.push_back(c);
 

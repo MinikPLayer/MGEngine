@@ -19,6 +19,8 @@ class GameObject {
 	bool isDestroyed = false;
 
 	void __run_events();
+
+	void __add_component(std::weak_ptr<GameObject> object);
 public:
 
 	Transform transform;
@@ -31,7 +33,7 @@ public:
 		// object->transform.setGameObject(object);
 		object->hash = typeid(T).hash_code();
 		if (parent != nullptr) {
-			parent->add_component(object);
+			parent->__add_component(object);
 		}
 		else {
 			__objects.push_back(object);
@@ -84,7 +86,11 @@ public:
 	virtual void start() {}
 	virtual void update() {}
 
-	void add_component(std::weak_ptr<GameObject> child);
+	template<typename T>
+	std::shared_ptr<T> add_component(std::shared_ptr<T> child) {
+		return Instantiate<T>(child, self.lock());
+	}
+
 	template<typename T>
 	std::shared_ptr<GameObject> add_component(T* child) {
 		return Instantiate<T>(child, self.lock());

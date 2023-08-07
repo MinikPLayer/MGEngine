@@ -3,30 +3,30 @@
 #include <Engine.h>
 #include <TimeUtils.h>
 #include <corecrt_math_defines.h>
-#include <FBXImporter.h>
+#include <Model.h>
 
-void print(FBXNode node, std::string prefix = "") {
-	std::string line = "";
-	line = prefix + node.name;
-	if (node.properties.size() > 0) {
-		for (auto p : node.properties) {
-			line += p.to_string() + " ";
-		}
-	}
-	LOG_INFO(prefix, line);
-
-	for (auto n : node.children) {
-		print(n, '\t' + prefix);
-	}
-}
-
-void test_load() {
-	auto path = "assets/user/cube.fbx";
-	auto fbx = FBXImporter::Load(path);
-	LOG_INFO("FBXImporter::Load(", path, ")");
-
-	print(fbx.root);
-}
+//void print(FBXNode node, std::string prefix = "") {
+//	std::string line = "";
+//	line = prefix + node.name;
+//	if (node.properties.size() > 0) {
+//		for (auto p : node.properties) {
+//			line += p.to_string() + " ";
+//		}
+//	}
+//	LOG_INFO(prefix, line);
+//
+//	for (auto n : node.children) {
+//		print(n, '\t' + prefix);
+//	}
+//}
+//
+//void test_load() {
+//	auto path = "assets/user/cube.fbx";
+//	auto fbx = FBXImporter::Load(path);
+//	LOG_INFO("FBXImporter::Load(", path, ")");
+//
+//	print(fbx.root);
+//}
 
 void TestObject::start() {
 	LOG_INFO("TestGameObject::Start()");
@@ -49,7 +49,9 @@ void TestObject::start() {
 
 	Input::SetCursorMode(CursorModes::Disabled);
 
-	test_load();
+	// test_load();
+	auto model = new Model("assets/user/cube.fbx");
+	add_component(model);
 }
 
 void TestObject::update() {
