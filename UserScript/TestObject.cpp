@@ -53,6 +53,7 @@ void TestObject::start() {
 	auto model = new Model("assets/user/cube.fbx");
 	mesh->add_component(model);
 	model->transform.set_local_position(Vector3<float>(5.0f, 0.0f, 0.0f));
+	model->transform.set_scale(Vector3<float>(1.0f, 1.0f, 1.0f));
 }
 
 void TestObject::update() {

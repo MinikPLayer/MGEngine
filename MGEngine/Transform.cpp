@@ -61,7 +61,16 @@ void Transform::set_position(Vector3<float> position) {
 }
 
 void Transform::set_scale(Vector3<float> scale) {
-	this->localScale = scale;
+	if (gameObject.has_parent()) {
+		auto parentMatrix = gameObject.get_parent().lock()->get_transform().get_world_space_matrix();
+		auto parentInverse = glm::inverse(parentMatrix);
+		auto localScale = glm::vec4(scale.to_glm(), 1.0f);
+		auto relativeScale = parentInverse * localScale;
+		this->localScale = Vector3<float>(relativeScale);
+	}
+	else {
+		this->localPosition = scale;
+	}
 
 	update_matrix();
 }
