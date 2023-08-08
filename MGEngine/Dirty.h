@@ -17,7 +17,7 @@ public:
 		return value;
 	}
 
-	void setDirty(bool dirty) {
+	void set_dirty(bool dirty) {
 		isDirty = dirty;
 	}
 

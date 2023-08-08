@@ -18,36 +18,38 @@ class Transform {
 	Quaternion globalRotation;
 	Vector3<float> globalScale;
 
-	glm::mat4 calculateLocalModelMatrix();
+	glm::mat4 calculate_local_model_matrix();
 
-	void updateMatrix();
-	
+	void update_matrix();
+
 public:
+	glm::mat4 get_world_space_matrix();
+
+	void set_position(Vector3<float> position);
+	void set_scale(Vector3<float> scale);
+
+	void set_local_position(Vector3<float> position);
+	void set_local_scale(Vector3<float> scale);
+	void set_local_rotation(Quaternion quat);
+
+	Vector3<float> get_forward_vector();
+	Vector3<float> get_up_vector();
+
+	Vector3<float> get_position();
+	Vector3<float> get_scale();
+	Quaternion get_rotation();
+
+	Vector3<float> get_local_position();
+	Vector3<float> get_local_scale();
+	Quaternion get_local_rotation();
+
+	GameObject& get_gameobject();
+
 	// Disable copy constructor and assignment operator
 	Transform(const Transform&) = delete;
 	Transform& operator=(const Transform&) = delete;
 
 	Transform(GameObject& gameObject);
 	Transform(GameObject& gameObject, Vector3<float> position, Vector3<float> scale);
-
-	glm::mat4 getWorldSpaceMatrix();
-
-	void setPosition(Vector3<float> position);
-	void setScale(Vector3<float> scale);
-
-	void setLocalPosition(Vector3<float> position);
-	void setLocalScale(Vector3<float> scale);
-	void setLocalRotation(Quaternion quat);
-
-	Vector3<float> getForwardVector();
-	Vector3<float> getUpVector();
-
-	Vector3<float> getPosition();
-	Vector3<float> getScale();
-
-	Vector3<float> getLocalPosition();
-	Vector3<float> getLocalScale();
-
-	GameObject& getGameObject();
 };
 

@@ -15,11 +15,11 @@ public:
 		this->y = y;
 	}
 
-	bool IsEqualExact(Vector2<T> const& v) const {
+	bool is_equal_exact(Vector2<T> const& v) const {
 		return x == v.x && y == v.y;
 	}
 
-	bool IsEqualApproximate(Vector2<T> const& v, float epsilon = 0.00001f) const {
+	bool is_equal_approximate(Vector2<T> const& v, float epsilon = 0.00001f) const {
 		return FloatUtils::IsEqualApproximate(x, v.x, epsilon) &&
 			FloatUtils::IsEqualApproximate(y, v.y, epsilon);
 	}
@@ -41,19 +41,19 @@ public:
 		return v.x * x + v.y * y;
 	}
 
-	T sqrMagnitude() {
+	T sqr_magnitude() {
 		return x * x + y * y;
 	}
 
 	double magnitude() {
-		return sqrt(sqrMagnitude());
+		return sqrt(sqr_magnitude());
 	}
 
 	Vector2<T> normalized() {
 		return *this / magnitude();
 	}
 
-	std::string toString() const {
+	std::string to_string() const {
 		std::stringstream ss;
 		ss << "(" << x << ", " << y << ")";
 		return ss.str();

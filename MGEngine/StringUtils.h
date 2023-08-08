@@ -4,7 +4,7 @@
 
 class StringUtils {
 public:
-	static std::vector<std::string> split(std::string str, char delim) {
+	static std::vector<std::string> Split(std::string str, char delim) {
 		std::vector<std::string> result;
 		std::string temp = "";
 		for (int i = 0; i < str.length(); i++) {

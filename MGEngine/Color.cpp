@@ -1,6 +1,6 @@
 #include "Color.h"
 
-Vector3<float> Color::toVector3() {
+Vector3<float> Color::to_vec3() {
 	return Vector3<float>(r * a, g * a, b * a);
 }
 

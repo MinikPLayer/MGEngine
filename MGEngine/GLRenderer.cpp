@@ -8,14 +8,19 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 
 	auto glRenderer = static_cast<GLRenderer*>(glfwGetWindowUserPointer(window));
-	glRenderer->setWindowSize(width, height);
+	glRenderer->set_window_size(width, height);
 }
 
-void GLRenderer::initShaders() {
+void GLRenderer::init_shaders() {
 	if (!basicShaderProgram.load("assets/engine/mainShader.vert", "assets/engine/mainShader.frag")) {
-		ELOG_FATAL("Cannot compile the basic shader program."); 
+		ELOG_FATAL("Cannot compile the basic shader program.");
 		exit(1);
 	}
+}
+
+void GLRenderer::set_window_size(unsigned int width, unsigned int height) {
+	windowWidth = width;
+	windowHeight = height;
 }
 
 GLRenderer::~GLRenderer() {
@@ -24,7 +29,7 @@ GLRenderer::~GLRenderer() {
 }
 
 void GLRenderer::clear() {
-	auto clearColor = Camera::getMainCamera()->getClearColor();
+	auto clearColor = Camera::GetMainCamera()->get_clear_color();
 
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -32,14 +37,14 @@ void GLRenderer::clear() {
 
 bool GLRenderer::events() {
 	glfwPollEvents();
-	inputSystem.update(window);
+	Input::__Update(window);
 	return !glfwWindowShouldClose(window);
 }
 
 void GLRenderer::draw(std::vector<std::weak_ptr<Mesh>> meshes) {
 	basicShaderProgram.use();
-	basicShaderProgram.setUniformMat4f(basicShaderProgram.modelUniformLocation, glm::mat4(1.0f)); // Model identity
-	basicShaderProgram.setUniformMat4f(basicShaderProgram.vpUniformLocation, Camera::getMainCamera()->getVPMatrix(windowWidth / (float)windowHeight)); // VP identity
+	basicShaderProgram.set_uniform_mat4f(basicShaderProgram.modelUniformLocation, glm::mat4(1.0f)); // Model identity
+	basicShaderProgram.set_uniform_mat4f(basicShaderProgram.vpUniformLocation, Camera::GetMainCamera()->get_VP_matrix(windowWidth / (float)windowHeight)); // VP identity
 
 	for (auto mesh : meshes) {
 		mesh.lock()->draw(basicShaderProgram);
@@ -81,8 +86,13 @@ void GLRenderer::init() {
 	glfwSetWindowUserPointer(window, this);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	initShaders();
+	// TODO: Add option to disable vsync
+	glfwSwapInterval(1);
+
+	init_shaders();
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+	glEnable(GL_DEPTH_TEST);
 
 #if USE_GL_DEBUG
 	GLDebugLayers::Register();

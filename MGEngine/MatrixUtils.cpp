@@ -2,7 +2,7 @@
 #include "Vector3.h"
 
 // Based on https://math.stackexchange.com/questions/237369/given-this-transformation-matrix-how-do-i-decompose-it-into-translation-rotati?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-DecomposedMatrix MatrixUtils::decomposeMatrix(glm::mat4 matrix) {
+DecomposedMatrix MatrixUtils::DecomposeMatrix(glm::mat4 matrix) {
 	glm::vec3 pos(matrix[3]);
 	glm::vec3 scale(
 		Vector3<float>(matrix[0]).magnitude(),

@@ -8,24 +8,19 @@
 class GLRenderer {
 	GLFWwindow* window = nullptr;
 
-	GLFWInput& inputSystem;
-
 	// TODO: Move shader to the mesh
 	Shader basicShaderProgram;
-	void initShaders();
+	void init_shaders();
 
-	unsigned int windowWidth = 0;
-	unsigned int windowHeight = 0;
+	unsigned int windowWidth = 800;
+	unsigned int windowHeight = 600;
 public:
-	void setWindowSize(unsigned int width, unsigned int height) {
-		windowWidth = width;
-		windowHeight = height;
-	}
+	void set_window_size(unsigned int width, unsigned int height);
 
 	GLRenderer(const GLRenderer&) = delete;
 	GLRenderer& operator=(const GLRenderer&) = delete;
 
-	GLRenderer(GLFWInput& inputSystem) : inputSystem(inputSystem) {};
+	GLRenderer() {};
 	~GLRenderer();
 
 	void clear();

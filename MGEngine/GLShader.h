@@ -17,22 +17,18 @@ class Shader {
 public:
 	unsigned int modelUniformLocation = 0;
 	unsigned int vpUniformLocation = 1;
+	unsigned int modelInversedUniformLocation = 2;
 
 	bool load(std::string vertexPath, std::string fragmentPath);
 	void use();
 
-	unsigned int getUniformLocation(std::string name);
+	unsigned int get_uniform_location(std::string name);
 
-	void setUniform3f(unsigned int location, float v0, float v1, float v2);
-	void setUniform3f(unsigned int location, Vector3<float> v) {
-		setUniform3f(location, v.x, v.y, v.z);
-	}
-	void setUniform4f(unsigned int location, float v0, float v1, float v2, float v3) {
-		glUniform4f(location, v0, v1, v2, v3);
-	}
-	void setUniformMat4f(unsigned int location, glm::mat4 mat) {
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
-	}
+	void set_uniform_3f(unsigned int location, float v0, float v1, float v2);
+	void set_uniform_3f(unsigned int location, Vector3<float> v);
+
+	void set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3);
+	void set_uniform_mat4f(unsigned int location, glm::mat4 mat);
 
 	Shader(std::string vertexPath, std::string fragmentPath);
 	Shader() {}

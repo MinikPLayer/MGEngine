@@ -84,6 +84,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)\scripts\create_assets_link.bat "$(SolutionDir)\UserScript\assets" "$(SolutionDir)\x64\Debug\assets\user"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -103,6 +106,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)\scripts\create_assets_link.bat "$(SolutionDir)\UserScript\assets" "$(SolutionDir)\x64\Release\assets\user"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -118,6 +124,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)\scripts\create_assets_link.bat "$(SolutionDir)\UserScript\assets" "$(SolutionDir)\x64\Debug\assets\user"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -137,6 +146,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)\scripts\create_assets_link.bat "$(SolutionDir)\UserScript\assets" "$(SolutionDir)\x64\Release\assets\user"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="..\MGEngine\MGEngine.vcxproj">
@@ -145,6 +157,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TestObject.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\cube.fbx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
