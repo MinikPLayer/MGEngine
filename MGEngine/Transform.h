@@ -20,13 +20,14 @@ class Transform {
 
 	glm::mat4 calculate_local_model_matrix();
 
+public:
 	void update_matrix();
 
-public:
 	glm::mat4 get_world_space_matrix();
 
 	void set_position(Vector3<float> position);
-	void set_scale(Vector3<float> scale);
+	//void set_scale(Vector3<float> scale);
+	void set_rotation(Quaternion quat);
 
 	void set_local_position(Vector3<float> position);
 	void set_local_scale(Vector3<float> scale);
@@ -50,6 +51,5 @@ public:
 	Transform& operator=(const Transform&) = delete;
 
 	Transform(GameObject& gameObject);
-	Transform(GameObject& gameObject, Vector3<float> position, Vector3<float> scale);
 };
 

@@ -17,5 +17,9 @@ public:
 
 class MatrixUtils {
 public:
+	static glm::vec3 GetTranslation(glm::mat4 matrix);
+	static glm::vec3 GetScale(glm::mat4 matrix);
+	static glm::quat GetRotation(glm::mat4 matrix, glm::vec3 scale);
+	static glm::quat GetRotation(glm::mat4 matrix);
 	static DecomposedMatrix DecomposeMatrix(glm::mat4 matrix);
 };

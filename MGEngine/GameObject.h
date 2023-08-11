@@ -98,7 +98,7 @@ public:
 	}
 
 	template<typename T>
-	std::shared_ptr<GameObject> add_component(T* child) {
+	std::shared_ptr<T> add_component(T* child) {
 		return Instantiate<T>(child, self.lock());
 	}
 	void remove_component(std::weak_ptr<GameObject> child);

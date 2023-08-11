@@ -36,11 +36,6 @@ void Transform::update_matrix() {
 
 Transform::Transform(GameObject& gameObject) : gameObject(gameObject) {}
 
-Transform::Transform(GameObject& gameObject, Vector3<float> position, Vector3<float> scale) : gameObject(gameObject) {
-	set_position(position);
-	set_scale(scale);
-}
-
 glm::mat4 Transform::get_world_space_matrix() {
 	return worldSpaceModelMatrix;
 }
@@ -60,16 +55,34 @@ void Transform::set_position(Vector3<float> position) {
 	update_matrix();
 }
 
-void Transform::set_scale(Vector3<float> scale) {
+// TODO: Fix incorrect behaviour
+//void Transform::set_scale(Vector3<float> scale) {
+//	if (gameObject.has_parent()) {
+//		auto parentMatrix = gameObject.get_parent().lock()->get_transform().get_world_space_matrix();
+//		auto parentInverse = glm::inverse(parentMatrix);
+//		auto localScale = glm::scale(glm::mat4(1.0f), scale.to_glm());
+//		auto relativeScale = parentInverse * localScale;
+//		auto decomp = MatrixUtils::DecomposeMatrix(relativeScale);
+//		this->localScale = Vector3<float>(decomp.scale);
+//	}
+//	else {
+//		this->localPosition = scale;
+//	}
+//
+//	update_matrix();
+//}
+
+void Transform::set_rotation(Quaternion quat) {
 	if (gameObject.has_parent()) {
 		auto parentMatrix = gameObject.get_parent().lock()->get_transform().get_world_space_matrix();
 		auto parentInverse = glm::inverse(parentMatrix);
-		auto localScale = glm::vec4(scale.to_glm(), 1.0f);
-		auto relativeScale = parentInverse * localScale;
-		this->localScale = Vector3<float>(relativeScale);
+		auto localRotation = quat.rotation_matrix();
+		auto relativeRotation = parentInverse * localRotation;
+		auto decomp = MatrixUtils::GetRotation(relativeRotation);
+		this->localRotation = Quaternion(decomp);
 	}
 	else {
-		this->localPosition = scale;
+		this->localRotation = quat;
 	}
 
 	update_matrix();

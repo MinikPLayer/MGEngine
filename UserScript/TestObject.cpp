@@ -3,7 +3,6 @@
 #include <Engine.h>
 #include <TimeUtils.h>
 #include <corecrt_math_defines.h>
-#include <Model.h>
 
 //void print(FBXNode node, std::string prefix = "") {
 //	std::string line = "";
@@ -42,7 +41,7 @@ void TestObject::start() {
 	};
 	mesh = std::shared_ptr<Mesh>(new Mesh(vertices, indices));
 	add_component(mesh);
-	mesh->transform.set_scale(Vector3<float>(2.0f, 1.0f, 1.0f));
+	mesh->transform.set_local_scale(Vector3<float>(5.0f, 1.0f, 1.0f));
 	mesh->transform.set_position(Vector3<float>(0.0f, 0.0f, 2.0f));
 
 	exitMapping = Input::register_mapping(InputMapping("Exit", Keyboard::ESCAPE));
@@ -50,14 +49,18 @@ void TestObject::start() {
 	Input::SetCursorMode(CursorModes::Disabled);
 
 	// test_load();
-	auto model = new Model("assets/user/cube.fbx");
-	mesh->add_component(model);
+	auto m = new Model("assets/user/cube.fbx");
+	model = mesh->add_component(m);
 	model->transform.set_local_position(Vector3<float>(5.0f, 0.0f, 0.0f));
-	model->transform.set_scale(Vector3<float>(1.0f, 1.0f, 1.0f));
+
+	mesh->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(0, 1, 0)));
 }
 
 void TestObject::update() {
 	mesh->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(0, sin(Time::ElapsedTime()) * (float)M_PI_2, 0)));
+
+	// model->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(0, Time::ElapsedTime(), 0)));
+	// model->transform.set_rotation(Quaternion::from_euler(Vector3<float>(0, 0, 0)));
 	if (Input::get(exitMapping).value().is_pressed()) {
 		Engine::Stop();
 	}

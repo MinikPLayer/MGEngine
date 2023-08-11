@@ -90,6 +90,8 @@ void GameObject::__add_component(std::weak_ptr<GameObject> child) {
 
 	c->parent = self;
 	c->_has_parent = true;
+
+	c->transform.update_matrix();
 }
 
 void GameObject::remove_component(std::weak_ptr<GameObject> child) {
