@@ -8,7 +8,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 
 	auto glRenderer = static_cast<GLRenderer*>(glfwGetWindowUserPointer(window));
-	glRenderer->set_window_size(width, height);
+	glRenderer->set_window_size(Vector2<int>(width, height));
 }
 
 void GLRenderer::init_shaders() {
@@ -18,9 +18,15 @@ void GLRenderer::init_shaders() {
 	}
 }
 
-void GLRenderer::set_window_size(unsigned int width, unsigned int height) {
-	windowWidth = width;
-	windowHeight = height;
+Vector2<int> GLRenderer::get_window_size() {
+	return Vector2<int>(windowWidth, windowHeight);
+}
+
+void GLRenderer::set_window_size(Vector2<int> size) {
+	windowWidth = size.x;
+	windowHeight = size.y;
+
+	glfwSetWindowSize(window, windowWidth, windowHeight);
 }
 
 GLRenderer::~GLRenderer() {
@@ -28,14 +34,14 @@ GLRenderer::~GLRenderer() {
 	window = nullptr;
 }
 
-void GLRenderer::clear() {
+void GLRenderer::clear_screen() {
 	auto clearColor = Camera::GetMainCamera()->get_clear_color();
 
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-bool GLRenderer::events() {
+bool GLRenderer::poll_events() {
 	glfwPollEvents();
 	Input::__Update(window);
 	return !glfwWindowShouldClose(window);
@@ -52,12 +58,22 @@ void GLRenderer::draw(std::vector<std::weak_ptr<Mesh>> meshes) {
 	glfwSwapBuffers(window);
 }
 
-void GLRenderer::close() {
+void GLRenderer::shutdown() {
 	glfwSetWindowShouldClose(window, true);
 }
 
-void GLRenderer::init() {
+void GLRenderer::init(Vector2<int> size) {
 	ELOG_INFO("Initializing OpenGL renderer");
+	if (size.x == 0 || size.y == 0) {
+		ELOG_INFO("No size provided, using default: ", 800, "x", 600);
+		size.x = 800;
+		size.y = 600;
+	}
+	else {
+		ELOG_INFO("Using window size: ", size.x, "x", size.y);
+		windowWidth = size.x;
+		windowHeight = size.y;
+	}
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -68,7 +84,7 @@ void GLRenderer::init() {
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif
 
-	window = glfwCreateWindow(800, 600, "MGEngine", nullptr, nullptr);
+	window = glfwCreateWindow(windowWidth, windowHeight, "MGEngine", nullptr, nullptr);
 	if (window == nullptr) {
 		ELOG_FATAL("Failed to create GLFW window");
 		glfwTerminate();
@@ -82,7 +98,7 @@ void GLRenderer::init() {
 		exit(ERROR_CODE_GLAD_INIT_FAIL);
 	}
 
-	glViewport(0, 0, 800, 600);
+	glViewport(0, 0, windowWidth, windowHeight);
 	glfwSetWindowUserPointer(window, this);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 

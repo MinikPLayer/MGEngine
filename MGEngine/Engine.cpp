@@ -10,35 +10,42 @@
 #error "No renderer selected"
 #endif
 
-void Engine::Check_configuration() {
+void Engine::check_configuration() {
 #if USE_GL
 	ELOG_INFO("Using OpenGL renderer");
 #endif
 }
 
-void Engine::Stop() {
+std::weak_ptr<IRenderer> Engine::get_renderer() {
+	return render;
+}
+
+void Engine::stop() {
 	stopped = true;
 }
 
-void Engine::Init() {
-	render.init();
+void Engine::init() {
+	render->init();
 	auto mainCamera = Camera::CreateDefault();
 	GameObject::Instantiate(mainCamera);
 	Camera::SetMainCamera(mainCamera);
 }
 
-void Engine::Run() {
-	Check_configuration();
+void Engine::run() {
+	check_configuration();
 
 	GameObject::__RunStart();
-	while (render.events() && !stopped) {
+	while (render->poll_events() && !stopped) {
 		Time::__Update();
 		GameObject::__RunEvents();
-		render.clear();
-		render.draw(Mesh::__meshes);
+		render->clear_screen();
+		render->draw(Mesh::__meshes);
 	}
 }
 
-GLRenderer Engine::render;
+#if USE_GL
+std::shared_ptr<IRenderer> Engine::render = std::shared_ptr<IRenderer>(new GLRenderer());
+#endif // USE_GL
+
 Input Engine::input;
 bool Engine::stopped;

@@ -8,19 +8,19 @@
 #endif
 
 class Engine {
-	static void Check_configuration();
+	static void check_configuration();
 
-#if USE_GL
-	static GLRenderer render;
-#endif
+	static std::shared_ptr<IRenderer> render;
 
 	static Input input;
 
 	static bool stopped;
 public:
-	static void Stop();
+	static std::weak_ptr<IRenderer> get_renderer();
 
-	static void Init();
-	static void Run();
+	static void stop();
+
+	static void init();
+	static void run();
 };
 

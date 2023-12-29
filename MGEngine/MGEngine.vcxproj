@@ -193,6 +193,7 @@
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="GL_DebugLayers.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MatrixUtils.h" />
     <ClInclude Include="Mesh.h" />

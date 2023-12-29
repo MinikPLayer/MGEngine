@@ -6,9 +6,13 @@
 
 #include "Camera.h"
 #include "TestObject.h"
+#include "IRenderer.h"
 
 int main() {
-	Engine::Init();
+	Engine::init();
 	GameObject::Instantiate(new TestObject());
-	Engine::Run();
+
+	auto render = Engine::get_renderer();
+	render.lock()->set_window_size(Vector2<int>(1920, 1080));
+	Engine::run();
 }

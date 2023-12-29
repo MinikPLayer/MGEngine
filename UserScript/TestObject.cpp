@@ -62,6 +62,6 @@ void TestObject::update() {
 	// model->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(0, Time::ElapsedTime(), 0)));
 	// model->transform.set_rotation(Quaternion::from_euler(Vector3<float>(0, 0, 0)));
 	if (Input::get(exitMapping).value().is_pressed()) {
-		Engine::Stop();
+		Engine::stop();
 	}
 }
