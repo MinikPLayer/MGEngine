@@ -16,10 +16,16 @@
     <Filter Include="Header Files\Util">
       <UniqueIdentifier>{0deec88b-8f8e-40b1-8038-25c08d50cefa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\OpenGL">
+    <Filter Include="Header Files\Renderer">
+      <UniqueIdentifier>{39a1a863-f854-4731-a575-4a45ac0e043d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Renderer\OpenGL">
       <UniqueIdentifier>{8476597a-5012-487f-9064-eebce622e17c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\OpenGL">
+    <Filter Include="Source Files\Renderer">
+      <UniqueIdentifier>{4f4abc54-bca8-49fc-ab68-071ea78b7983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderer\OpenGL">
       <UniqueIdentifier>{3dea38f7-a13e-4c87-92e3-49b33fa4fe8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -61,10 +67,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLRenderer.cpp">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\Renderer\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="GLShader.cpp">
-      <Filter>Source Files\OpenGL</Filter>
+      <Filter>Source Files\Renderer\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="GLFramebuffer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,7 +81,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLRenderer.h">
-      <Filter>Header Files\OpenGL</Filter>
+      <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
@@ -96,13 +105,13 @@
       <Filter>Header Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="GLFWInput.h">
-      <Filter>Header Files\OpenGL</Filter>
+      <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="RAII.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="GL_RAII.h">
-      <Filter>Header Files\OpenGL</Filter>
+      <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>Header Files</Filter>
@@ -126,10 +135,10 @@
       <Filter>Header Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="GLShader.h">
-      <Filter>Header Files\OpenGL</Filter>
+      <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="GL_DebugLayers.h">
-      <Filter>Header Files\OpenGL</Filter>
+      <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="TimeUtils.h">
       <Filter>Header Files</Filter>
@@ -150,7 +159,13 @@
       <Filter>Header Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="IRenderer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IFramebuffer.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFramebuffer.h">
+      <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

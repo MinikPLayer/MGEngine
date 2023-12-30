@@ -16,8 +16,15 @@ class GLRenderer : public IRenderer {
 
 	unsigned int windowWidth = 800;
 	unsigned int windowHeight = 600;
+
+protected:
+
+	std::shared_ptr<IFramebuffer> _create_main_framebuffer_() override;
+	void _init_internal_(Vector2<int> size = Vector2<int>(0, 0)) override;
+	void _set_window_size_internal_(Vector2<int> size) override;
 public:
-	void set_window_size(Vector2<int> size) override;
+	std::shared_ptr<IFramebuffer> create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window) override;
+
 	Vector2<int> get_window_size() override;
 
 	GLRenderer(const GLRenderer&) = delete;
@@ -32,7 +39,5 @@ public:
 	bool poll_events() override;
 	void draw(std::vector<std::weak_ptr<Mesh>> meshes) override;
 	void shutdown() override;
-
-	void init(Vector2<int> size = Vector2<int>(0, 0)) override;
 };
 

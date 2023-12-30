@@ -168,6 +168,7 @@
     <ClCompile Include="Compression.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GLFramebuffer.cpp" />
     <ClCompile Include="GLFWInput.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="MatrixUtils.cpp" />
@@ -189,9 +190,11 @@
     <ClInclude Include="File.h" />
     <ClInclude Include="FloatUtils.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GLFramebuffer.h" />
     <ClInclude Include="GLFWInput.h" />
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="GL_DebugLayers.h" />
+    <ClInclude Include="IFramebuffer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Log.h" />

@@ -25,13 +25,12 @@ void TestObject::start() {
 
 	Input::SetCursorMode(CursorModes::Disabled);
 
-	// test_load();
 	auto m = new Model("assets/user/cube.fbx");
 	model = mesh->add_component(m);
 	model->transform.set_local_position(Vector3<float>(5.0f, 0.0f, 0.0f));
 	model->transform.set_local_scale(Vector3<float>(1.0f, 1.0f, 0.5f));
 
-	mesh->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(1.2, 0.5, 0.25)));
+	mesh->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(1.2f, 0.5f, 0.25f)));
 	LOG_DEBUG("Model transform: ", model->transform.to_string());
 }
 

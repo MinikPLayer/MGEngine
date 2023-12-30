@@ -3,6 +3,7 @@
 #include "ErrorCodes.h"
 #include "Camera.h"
 #include "GL_DebugLayers.h"
+#include "GLFramebuffer.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
@@ -22,11 +23,18 @@ Vector2<int> GLRenderer::get_window_size() {
 	return Vector2<int>(windowWidth, windowHeight);
 }
 
-void GLRenderer::set_window_size(Vector2<int> size) {
+void GLRenderer::_set_window_size_internal_(Vector2<int> size) {
 	windowWidth = size.x;
 	windowHeight = size.y;
 
 	glfwSetWindowSize(window, windowWidth, windowHeight);
+}
+
+std::shared_ptr<IFramebuffer> GLRenderer::create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window) {
+	GLFramebuffer* new_fb = new GLFramebuffer();
+	new_fb->init(attachments, resize_with_window);
+	
+	return std::shared_ptr<IFramebuffer>(new_fb);
 }
 
 GLRenderer::~GLRenderer() {
@@ -62,18 +70,17 @@ void GLRenderer::shutdown() {
 	glfwSetWindowShouldClose(window, true);
 }
 
-void GLRenderer::init(Vector2<int> size) {
+std::shared_ptr<IFramebuffer> GLRenderer::_create_main_framebuffer_() {
+	GLFramebuffer* new_fb = new GLFramebuffer();
+	new_fb->init_as_main();
+	return std::shared_ptr<IFramebuffer>(new_fb);
+}
+
+void GLRenderer::_init_internal_(Vector2<int> size) {
 	ELOG_INFO("Initializing OpenGL renderer");
-	if (size.x == 0 || size.y == 0) {
-		ELOG_INFO("No size provided, using default: ", 800, "x", 600);
-		size.x = 800;
-		size.y = 600;
-	}
-	else {
-		ELOG_INFO("Using window size: ", size.x, "x", size.y);
-		windowWidth = size.x;
-		windowHeight = size.y;
-	}
+	ELOG_INFO("Using window size: ", size.x, "x", size.y);
+	windowWidth = size.x;
+	windowHeight = size.y;
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
