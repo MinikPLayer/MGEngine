@@ -5,19 +5,21 @@
 #include <assimp/scene.h>
 
 class Model : public GameObject {
-public:
-	Model(std::string path);
-
-	void start() override;
 private:
+	std::shared_ptr<IShader> custom_shader = nullptr;
 
 	std::string path;
 	// model data
 	std::vector<Mesh> meshes;
 
-	bool loadModel(std::string path);
-	bool processNode(aiNode* node, const aiScene* scene);
-	std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene);
+	bool loadModel(std::string path, std::shared_ptr<IShader> custom_shader);
+	bool processNode(aiNode* node, const aiScene* scene, std::shared_ptr<IShader> custom_shader);
+	std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<IShader> custom_shader);
 	//std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
+
+public:
+	Model(std::string path, std::shared_ptr<IShader> custom_shader = nullptr);
+
+	void start() override;
 };
 

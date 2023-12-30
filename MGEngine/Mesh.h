@@ -26,13 +26,16 @@ struct Vertex {
 
 class Mesh : public GameObject {
 public:
-	static std::vector<std::weak_ptr<Mesh>> __meshes;
+	static std::vector<std::shared_ptr<Mesh>> __meshes;
 
 private:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 
 	bool needsRendererUpdate = true;
+
+	// TODO: Change to material
+	std::shared_ptr<IShader> customShader = nullptr;
 
 #if USE_GL
 	GL_VAO VAO = -1;
@@ -45,6 +48,7 @@ private:
 #endif
 
 	void start() override;
+	void on_destroy() override;
 
 	void initialize() {
 		init_renderer();
@@ -55,8 +59,22 @@ private:
 		return transform.get_world_space_matrix();
 	}
 public:
+
+	void set_custom_shader(std::shared_ptr<IShader> shader) {
+		this->customShader = shader;
+	}
+
+	std::shared_ptr<IShader> get_custom_shader() {
+		return this->customShader;
+	}
+
+	bool is_custom_shader() {
+		return this->customShader != nullptr;
+	}
+
+	// TODO: Move USE_GL to IMeshRenderer
 #if USE_GL
-	void draw(Shader& currentShader);
+	void draw(std::shared_ptr<GLShader> currentShader);
 #endif
 
 	// Disable copy constructor 
@@ -65,7 +83,5 @@ public:
 
 	Mesh() { initialize(); }
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) : vertices(vertices), indices(indices) { initialize(); }
-
-	~Mesh();
 };
 

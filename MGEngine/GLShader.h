@@ -1,7 +1,7 @@
 #pragma once
 #include "Config.h"
+#include "IShader.h"
 
-#if USE_GL
 #include "GL_RAII.h"
 #include <string>
 #include "Vector3.h"
@@ -9,28 +9,23 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-class Shader {
-	GL_Shader shader;
+class GLShader : public IShader {
+	std::optional<GL_Shader> shaderObject;
 
-	bool good = false;
-	static GL_Shader load_GL(std::string vertexPath, std::string fragmentPath);
+	// static GL_Shader load_GL(std::string vertexPath, std::string fragmentPath);
+	bool _init_(std::string vertexSource, std::string fragmentSource) override;
 public:
 	unsigned int modelUniformLocation = 0;
 	unsigned int vpUniformLocation = 1;
 	unsigned int modelInversedUniformLocation = 2;
 
-	bool load(std::string vertexPath, std::string fragmentPath);
-	void use();
+	void use() override;
 
-	unsigned int get_uniform_location(std::string name);
+	unsigned int get_uniform_location(std::string name) override;
 
-	void set_uniform_3f(unsigned int location, float v0, float v1, float v2);
-	void set_uniform_3f(unsigned int location, Vector3<float> v);
+	void set_uniform_3f(unsigned int location, float v0, float v1, float v2) override;
+	void set_uniform_3f(unsigned int location, Vector3<float> v) override;
 
-	void set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3);
-	void set_uniform_mat4f(unsigned int location, glm::mat4 mat);
-
-	Shader(std::string vertexPath, std::string fragmentPath);
-	Shader() {}
+	void set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3) override;
+	void set_uniform_mat4f(unsigned int location, glm::mat4 mat) override;
 };
-#endif

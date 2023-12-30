@@ -22,9 +22,20 @@ void GLFramebuffer::resize(Vector2<int> size) {
 	throw std::logic_error("Not implemented");
 }
 
-void GLFramebuffer::_init_(AttachmentTypes attachments) {
+void GLFramebuffer::_init_(AttachmentTypes attachments, Vector2<int> size) {
 	glGenFramebuffers(1, &fbo.get());
 	bind();
+
+	// Create color attachment
+	if ((attachments & AttachmentTypes::COLOR) == AttachmentTypes::COLOR) {
+		color_attachment = GLTexture();
+		color_attachment->init(size.x, size.y);
+
+		// Bind color attachment to FB
+		color_attachment->bind();
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_attachment->get_raw_texture(), 0);
+	}
+
 }
 
 void GLFramebuffer::_init_as_main_() {

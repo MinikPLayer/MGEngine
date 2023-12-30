@@ -13,12 +13,16 @@ protected:
 	std::vector<std::shared_ptr<IFramebuffer>> FBs;
 public:
 	virtual Vector2<int> get_window_size() = 0;
-	virtual std::shared_ptr<IFramebuffer> create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window) = 0;
+	virtual std::shared_ptr<IFramebuffer> create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window, Vector2<int> current_size) = 0;
 	virtual void clear_screen() = 0;
 
 	virtual bool poll_events() = 0;
-	virtual void draw(std::vector<std::weak_ptr<Mesh>>) = 0;
+	virtual void draw(std::vector<std::shared_ptr<Mesh>>) = 0;
 	virtual void shutdown() = 0;
+
+	void bind_main_framebuffer() {
+		FBs[0]->bind();
+	}
 
 	void set_window_size(Vector2<int> size) {
 		_set_window_size_internal_(size);

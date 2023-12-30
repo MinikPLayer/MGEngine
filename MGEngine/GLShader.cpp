@@ -1,6 +1,5 @@
 #include "Config.h"
 
-#if USE_GL
 #include "GLShader.h"
 #include "File.h"
 
@@ -28,23 +27,21 @@ bool checkShaderLinkSuccess(GLuint shader) {
 	return true;
 }
 
-GL_Shader Shader::load_GL(std::string vertexPath, std::string fragmentPath) {
-	auto vSource = File::LoadAllText(vertexPath);
+bool GLShader::_init_(std::string vSource, std::string fSource) {
 	auto vShader = glCreateShader(GL_VERTEX_SHADER);
 	auto vSourcePtr = vSource.c_str();
 	glShaderSource(vShader, 1, &vSourcePtr, NULL);
 	glCompileShader(vShader);
 	if (!checkShaderCompilationSuccess(vShader, "VERTEX"))
-		return {};
+		return false;
 
-	auto fSource = File::LoadAllText(fragmentPath);
 	auto fShader = glCreateShader(GL_FRAGMENT_SHADER);
 	auto fSourcePtr = fSource.c_str();
 	glShaderSource(fShader, 1, &fSourcePtr, NULL);
 	glCompileShader(fShader);
 	if (!checkShaderCompilationSuccess(fShader, "FRAGMENT")) {
 		glDeleteShader(vShader);
-		return {};
+		return false;
 	}
 	auto shader = glCreateProgram();
 	glAttachShader(shader, vShader);
@@ -54,52 +51,37 @@ GL_Shader Shader::load_GL(std::string vertexPath, std::string fragmentPath) {
 	glDeleteShader(vShader);
 	glDeleteShader(fShader);
 	if (!checkShaderLinkSuccess(shader))
-		return {};
+		return false;
 
-	return GL_Shader(shader);
+	shaderObject = GL_Shader(shader);
+	return true;
 }
 
-void Shader::set_uniform_3f(unsigned int location, float v0, float v1, float v2) {
+void GLShader::set_uniform_3f(unsigned int location, float v0, float v1, float v2) {
 	glUniform3f(location, v0, v1, v2);
 }
 
-void Shader::set_uniform_3f(unsigned int location, Vector3<float> v) {
+void GLShader::set_uniform_3f(unsigned int location, Vector3<float> v) {
 	set_uniform_3f(location, v.x, v.y, v.z);
 }
 
-void Shader::set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3) {
+void GLShader::set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3) {
 	glUniform4f(location, v0, v1, v2, v3);
 }
 
-void Shader::set_uniform_mat4f(unsigned int location, glm::mat4 mat) {
+void GLShader::set_uniform_mat4f(unsigned int location, glm::mat4 mat) {
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
-Shader::Shader(std::string vertexPath, std::string fragmentPath) {
-	load(vertexPath, fragmentPath);
-}
 
-bool Shader::load(std::string vertexPath, std::string fragmentPath) {
-#if SC_WARNING_ON
-	if (good) {
-		ELOG_WARNING("Trying to load a shader twice");
-	}
-#endif
-
-	this->shader = load_GL(vertexPath, fragmentPath);
-	good = this->shader.has_value();
-	return good;
-}
-
-void Shader::use() {
+void GLShader::use() {
 #if SC_ERROR_ON
 	if (!good) {
 		ELOG_ERROR("Trying to use a shader, that is not correctly loaded / compiled");
 	}
 #endif
-	glUseProgram(shader.get());
+	glUseProgram(shaderObject.value().get());
 }
-unsigned int Shader::get_uniform_location(std::string name) {
-	return glGetUniformLocation(this->shader.get(), name.c_str());
+unsigned int GLShader::get_uniform_location(std::string name) {
+	return glGetUniformLocation(this->shaderObject.value().get(), name.c_str());
 }
-#endif

@@ -25,7 +25,14 @@ void TestObject::start() {
 
 	Input::SetCursorMode(CursorModes::Disabled);
 
-	auto m = new Model("assets/user/cube.fbx");
+	auto testShader = new GLShader();
+	if (!testShader->load("assets/engine/mainShader.vert", "assets/engine/testShader.frag")) {
+		LOG_FATAL("Cannot load test shader");
+		Engine::stop();
+		return;
+	}
+
+	auto m = new Model("assets/user/cube.fbx", std::shared_ptr<GLShader>(testShader));
 	model = mesh->add_component(m);
 	model->transform.set_local_position(Vector3<float>(5.0f, 0.0f, 0.0f));
 	model->transform.set_local_scale(Vector3<float>(1.0f, 1.0f, 0.5f));

@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "GL_DebugLayers.h"
 #include "GLFramebuffer.h"
+#include "Config.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
@@ -13,7 +14,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void GLRenderer::init_shaders() {
-	if (!basicShaderProgram.load("assets/engine/mainShader.vert", "assets/engine/mainShader.frag")) {
+	if (!basicShaderProgram->load("assets/engine/mainShader.vert", "assets/engine/mainShader.frag")) {
 		ELOG_FATAL("Cannot compile the basic shader program.");
 		exit(1);
 	}
@@ -30,9 +31,9 @@ void GLRenderer::_set_window_size_internal_(Vector2<int> size) {
 	glfwSetWindowSize(window, windowWidth, windowHeight);
 }
 
-std::shared_ptr<IFramebuffer> GLRenderer::create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window) {
+std::shared_ptr<IFramebuffer> GLRenderer::create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window, Vector2<int> current_size) {
 	GLFramebuffer* new_fb = new GLFramebuffer();
-	new_fb->init(attachments, resize_with_window);
+	new_fb->init(attachments, resize_with_window, current_size);
 	
 	return std::shared_ptr<IFramebuffer>(new_fb);
 }
@@ -55,14 +56,58 @@ bool GLRenderer::poll_events() {
 	return !glfwWindowShouldClose(window);
 }
 
-void GLRenderer::draw(std::vector<std::weak_ptr<Mesh>> meshes) {
-	basicShaderProgram.use();
-	basicShaderProgram.set_uniform_mat4f(basicShaderProgram.modelUniformLocation, glm::mat4(1.0f)); // Model identity
-	basicShaderProgram.set_uniform_mat4f(basicShaderProgram.vpUniformLocation, Camera::GetMainCamera()->get_VP_matrix(windowWidth / (float)windowHeight)); // VP identity
+void GLRenderer::draw(std::vector<std::shared_ptr<Mesh>> meshes) {
+	std::map<std::shared_ptr<GLShader>, std::vector<std::shared_ptr<Mesh>>> shaderMeshMap;
+	shaderMeshMap.insert(std::make_pair(basicShaderProgram, std::vector<std::shared_ptr<Mesh>>()));
 
 	for (auto mesh : meshes) {
-		mesh.lock()->draw(basicShaderProgram);
+		if (!mesh->is_custom_shader()) {
+			shaderMeshMap[basicShaderProgram].push_back(mesh);
+		}
+		else {
+#if SC_FATAL_ON
+			auto shaderPtr = mesh->get_custom_shader();
+			if (shaderPtr == nullptr) {
+				ELOG_FATAL("Mesh is flagged as using a custom shader, but returns an empty shader.");
+				exit(0x1C5D4E); // ! CustomShader Empty
+			}
+
+			auto shader = std::dynamic_pointer_cast<GLShader>(shaderPtr);
+			if (shader == nullptr) {
+				ELOG_FATAL("Mesh is using an incompatible shader type. Using GL Rendering but shader is not a GLShader.");
+				exit(0x1C5D41); // ! Custom Shader Incompatible
+			}
+#else
+			auto shader = std::static_pointer_cast<GLShader>(mesh->get_custom_shader());
+#endif
+			if (!shaderMeshMap.contains(shader)) {
+				shaderMeshMap.insert(std::make_pair(shader, std::vector<std::shared_ptr<Mesh>>()));
+			}
+
+			shaderMeshMap[shader].push_back(mesh);
+		}
 	}
+
+	//basicShaderProgram->use();
+	//basicShaderProgram->set_uniform_mat4f(basicShaderProgram->modelUniformLocation, glm::mat4(1.0f)); // Model identity
+	//basicShaderProgram->set_uniform_mat4f(basicShaderProgram->vpUniformLocation, Camera::GetMainCamera()->get_VP_matrix(windowWidth / (float)windowHeight)); // VP identity
+
+	//for (auto mesh : meshes) {
+	//	mesh->draw(basicShaderProgram);
+	//}
+
+	auto cameraVPMatrix = Camera::GetMainCamera()->get_VP_matrix(windowWidth / (float)windowHeight);
+	for (auto smap : shaderMeshMap) {
+		auto shader = smap.first;
+		shader->use();
+		shader->set_uniform_mat4f(basicShaderProgram->modelUniformLocation, glm::mat4(1.0f)); // Model identity
+		shader->set_uniform_mat4f(basicShaderProgram->vpUniformLocation, cameraVPMatrix); // VP identity
+
+		for (auto mesh : smap.second) {
+			mesh->draw(shader);
+		}
+	}
+
 	glfwSwapBuffers(window);
 }
 

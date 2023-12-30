@@ -171,6 +171,8 @@
     <ClCompile Include="GLFramebuffer.cpp" />
     <ClCompile Include="GLFWInput.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
+    <ClCompile Include="GLTexture.cpp" />
+    <ClCompile Include="IShader.cpp" />
     <ClCompile Include="MatrixUtils.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="GLShader.cpp" />
@@ -193,10 +195,13 @@
     <ClInclude Include="GLFramebuffer.h" />
     <ClInclude Include="GLFWInput.h" />
     <ClInclude Include="GLRenderer.h" />
+    <ClInclude Include="GLTexture.h" />
     <ClInclude Include="GL_DebugLayers.h" />
     <ClInclude Include="IFramebuffer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="IShader.h" />
+    <ClInclude Include="ITexture.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MatrixUtils.h" />
     <ClInclude Include="Mesh.h" />
@@ -214,6 +219,8 @@
   <ItemGroup>
     <None Include="assets\mainShader.frag" />
     <None Include="assets\mainShader.vert" />
+    <None Include="assets\testShader.frag" />
+    <None Include="assets\textureShader.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

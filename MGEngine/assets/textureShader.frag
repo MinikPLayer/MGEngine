@@ -6,7 +6,10 @@ layout (location = 2) in vec2 UV;
 
 layout (location = 0) out vec4 FragColor;
 
+layout (location = 0) uniform sampler2D txt;
+
 void main() {
 	// FragColor = vec4(Normal, 1.0);
-	FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	// FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	FragColor = texture(txt, UV);
 }

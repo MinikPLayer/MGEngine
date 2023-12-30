@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-std::vector<std::weak_ptr<Mesh>> Mesh::__meshes;
+std::vector<std::shared_ptr<Mesh>> Mesh::__meshes;
 
 #if USE_GL
 void Mesh::init_renderer() {
@@ -37,15 +37,15 @@ void Mesh::update_renderer() {
 	needsRendererUpdate = false;
 }
 
-void Mesh::draw(Shader& currentShader) {
+void Mesh::draw(std::shared_ptr<GLShader> currentShader) {
 	if (needsRendererUpdate)
 		update_renderer();
 
 	// Setup model matrices
 	auto modelMatrix = get_model_matrix();
-	currentShader.set_uniform_mat4f(currentShader.modelUniformLocation, modelMatrix);
+	currentShader->set_uniform_mat4f(currentShader->modelUniformLocation, modelMatrix);
 	// TODO: Definitely add caching
-	currentShader.set_uniform_mat4f(currentShader.modelInversedUniformLocation, glm::inverse(modelMatrix));
+	currentShader->set_uniform_mat4f(currentShader->modelInversedUniformLocation, glm::inverse(modelMatrix));
 
 	glBindVertexArray(VAO.get());
 	glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
@@ -56,10 +56,10 @@ void Mesh::start() {
 	__meshes.push_back(std::static_pointer_cast<Mesh>(get_self_ptr().lock()));
 }
 
-Mesh::~Mesh() {
+void Mesh::on_destroy() {
 	// Remove from meshes list
 	for (auto it = __meshes.begin(); it != __meshes.end(); it++) {
-		if (it->lock().get() == this) {
+		if ((*it).get() == this) {
 			__meshes.erase(it);
 			break;
 		}

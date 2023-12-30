@@ -1,16 +1,17 @@
 #include "Model.h"
 #include <assimp/postprocess.h>
 
-Model::Model(std::string path) {
+Model::Model(std::string path, std::shared_ptr<IShader> custom_shader) {
 	this->path = path;
+	this->custom_shader = custom_shader;
 }
 
 void Model::start() {
-	if (!loadModel(path))
+	if (!loadModel(path, this->custom_shader))
 		throw std::runtime_error("Unable to load model: " + path);
 }
 
-bool Model::loadModel(std::string path) {
+bool Model::loadModel(std::string path, std::shared_ptr<IShader> custom_shader) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
@@ -19,24 +20,24 @@ bool Model::loadModel(std::string path) {
 		return false;
 	}
 
-	return processNode(scene->mRootNode, scene);
+	return processNode(scene->mRootNode, scene, custom_shader);
 }
 
-bool Model::processNode(aiNode* node, const aiScene* scene) {
+bool Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr<IShader> custom_shader) {
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		add_component(processMesh(mesh, scene));
+		add_component(processMesh(mesh, scene, custom_shader));
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
-		if (!processNode(node->mChildren[i], scene))
+		if (!processNode(node->mChildren[i], scene, custom_shader))
 			return false;
 	}
 
 	return true;
 }
 
-std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene) {
+std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<IShader> custom_shader) {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	// TODO: textures
@@ -60,5 +61,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene) {
 
 	// TODO: textures
 
-	return std::make_shared<Mesh>(vertices, indices);
+	auto newMesh = std::make_shared<Mesh>(vertices, indices);
+	newMesh->set_custom_shader(custom_shader);
+	return newMesh;
 }

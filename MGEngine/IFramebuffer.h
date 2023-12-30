@@ -4,7 +4,7 @@
 
 class IFramebuffer {
 public:
-	enum class AttachmentTypes {
+	enum AttachmentTypes {
 		COLOR = 0b1,
 		DEPTH = 0b10,
 		STENCIL = 0b100,
@@ -19,7 +19,7 @@ protected:
 	bool resize_with_resolution = false;
 
 	virtual void _init_as_main_() = 0;
-	virtual void _init_(AttachmentTypes attachments) = 0;
+	virtual void _init_(AttachmentTypes attachments, Vector2<int> size) = 0;
 public:
 
 	virtual void resize(Vector2<int> size) = 0;
@@ -39,9 +39,9 @@ public:
 		resize_with_resolution = value;
 	}
 
-	void init(AttachmentTypes attachments, bool resize_with_resolution) {
+	void init(AttachmentTypes attachments, bool resize_with_resolution, Vector2<int> size) {
 		this->resize_with_resolution = resize_with_resolution;
-		_init_(attachments);
+		_init_(attachments, size);
 	}
 
 	void init_as_main() {

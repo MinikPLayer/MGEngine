@@ -11,7 +11,8 @@ class GLRenderer : public IRenderer {
 	GLFWwindow* window = nullptr;
 
 	// TODO: Move shader to the mesh
-	Shader basicShaderProgram;
+	// GLShader basicShaderProgram;
+	std::shared_ptr<GLShader> basicShaderProgram = std::shared_ptr<GLShader>(new GLShader());
 	void init_shaders();
 
 	unsigned int windowWidth = 800;
@@ -23,7 +24,7 @@ protected:
 	void _init_internal_(Vector2<int> size = Vector2<int>(0, 0)) override;
 	void _set_window_size_internal_(Vector2<int> size) override;
 public:
-	std::shared_ptr<IFramebuffer> create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window) override;
+	std::shared_ptr<IFramebuffer> create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window, Vector2<int> current_size) override;
 
 	Vector2<int> get_window_size() override;
 
@@ -37,7 +38,7 @@ public:
 
 	// Returns if the window should close
 	bool poll_events() override;
-	void draw(std::vector<std::weak_ptr<Mesh>> meshes) override;
+	void draw(std::vector<std::shared_ptr<Mesh>> meshes) override;
 	void shutdown() override;
 };
 

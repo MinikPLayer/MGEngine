@@ -75,6 +75,12 @@
     <ClCompile Include="GLFramebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLTexture.cpp">
+      <Filter>Source Files\Renderer\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="IShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -167,12 +173,27 @@
     <ClInclude Include="GLFramebuffer.h">
       <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="ITexture.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GLTexture.h">
+      <Filter>Header Files\Renderer\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="IShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\mainShader.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="assets\mainShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\textureShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\testShader.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
