@@ -51,7 +51,10 @@ namespace MGEngine
 			subobject->transform.set_local_position(Vector3<float>(5.0f, 0.0f, 0.0f));
 			subobject->transform.set_local_scale(Vector3<float>(1.0f, 1.0f, 0.5f));
 
-			// Expected submodel result:
+			Assert::IsTrue(subobject->has_parent());
+			Assert::IsTrue(subobject->get_parent().lock().get() == first.get());
+
+			// Expected subobject result:
 			// Position: (13.5076, 0, -19.0368), Rotation: (0, 1, 0), Scale: (5, 3, 1)
 			check_transform(
 				subobject->transform,
@@ -61,7 +64,7 @@ namespace MGEngine
 			);
 
 			first->transform.set_local_rotation(Quaternion::from_euler(Vector3<float>(1.2f, 0.5f, 0.25f)));
-			// Expected submodel result:
+			// Expected subobject result:
 			// Position: (21.2575, 5.42793, -9.98564), Rotation: (1.2, 0.5, 0.25), Scale: (5, 3, 1)
 			check_transform(
 				subobject->transform,
