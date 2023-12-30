@@ -36,6 +36,18 @@ void Transform::update_matrix() {
 
 Transform::Transform(GameObject& gameObject) : gameObject(gameObject) {}
 
+std::string Transform::to_string() {
+	std::stringstream ss;
+	ss << "Transform[Position: ";
+	ss << this->globalPosition.to_string();
+	ss << ", Rotation: ";
+	ss << this->globalRotation.to_euler().to_string();
+	ss << ", Scale: ";
+	ss << this->globalScale.to_string();
+	ss << "]";
+	return ss.str();
+}
+
 glm::mat4 Transform::get_world_space_matrix() {
 	return worldSpaceModelMatrix;
 }

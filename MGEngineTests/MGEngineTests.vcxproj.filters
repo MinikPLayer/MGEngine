@@ -21,10 +21,18 @@
     <ClCompile Include="VectorTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TransformTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\cube.fbx">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

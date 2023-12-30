@@ -51,5 +51,7 @@ public:
 	Transform& operator=(const Transform&) = delete;
 
 	Transform(GameObject& gameObject);
+
+	std::string to_string();
 };
 

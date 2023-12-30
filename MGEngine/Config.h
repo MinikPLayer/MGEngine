@@ -13,6 +13,8 @@
 #define USE_GL_DEBUG 1
 #endif
 
+#else
+#error No renderer type specified!
 #endif
 
 #if NDEBUG
