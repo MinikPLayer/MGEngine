@@ -27,8 +27,8 @@ struct Vertex {
 class Mesh : public GameObject {
 public:
 	static std::vector<std::shared_ptr<Mesh>> __meshes;
-
 private:
+
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 

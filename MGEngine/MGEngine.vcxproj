@@ -217,6 +217,8 @@
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\fullscreenQuad.frag" />
+    <None Include="assets\fullscreenQuad.vert" />
     <None Include="assets\mainShader.frag" />
     <None Include="assets\mainShader.vert" />
     <None Include="assets\testShader.frag" />

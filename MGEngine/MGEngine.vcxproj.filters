@@ -196,5 +196,11 @@
     <None Include="assets\testShader.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\fullscreenQuad.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\fullscreenQuad.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

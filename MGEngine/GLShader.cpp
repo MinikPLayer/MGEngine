@@ -57,6 +57,10 @@ bool GLShader::_init_(std::string vSource, std::string fSource) {
 	return true;
 }
 
+void GLShader::set_uniform_1i(unsigned int location, int v) {
+	glUniform1i(location, v);
+}
+
 void GLShader::set_uniform_3f(unsigned int location, float v0, float v1, float v2) {
 	glUniform3f(location, v0, v1, v2);
 }
@@ -82,6 +86,7 @@ void GLShader::use() {
 #endif
 	glUseProgram(shaderObject.value().get());
 }
+
 unsigned int GLShader::get_uniform_location(std::string name) {
 	return glGetUniformLocation(this->shaderObject.value().get(), name.c_str());
 }

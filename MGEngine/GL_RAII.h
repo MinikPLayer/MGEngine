@@ -8,3 +8,4 @@ DEF_MOO_TYPE(GL_EBO, GLuint, glDeleteBuffers(1, &x));
 DEF_MOO_TYPE(GL_Shader, GLuint, glDeleteProgram(x));
 DEF_MOO_TYPE(GL_FBO, GLuint, glDeleteFramebuffers(1, &x));
 DEF_MOO_TYPE(GL_Texture, GLuint, glDeleteTextures(1, &x));
+DEF_MOO_TYPE(GL_RBO, GLuint, glDeleteRenderbuffers(1, &x));

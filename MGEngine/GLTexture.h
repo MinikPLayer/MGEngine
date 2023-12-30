@@ -5,7 +5,7 @@
 
 class GLTexture : public ITexture {
 protected:
-	GL_Texture texture;
+	GL_Texture texture = -1;
 
 	void _init_(unsigned int width, unsigned int height) override;
 
@@ -14,5 +14,5 @@ public:
 		return texture.get();
 	}
 
-	void bind() override;
+	void bind(unsigned int slot) override;
 };

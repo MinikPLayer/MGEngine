@@ -9,11 +9,18 @@ protected:
 
 	bool good = false;
 public:
+	/// <summary>
+	/// Shader will use model matrices for rendering. 
+	/// If disabled, objects will be drawn without any transformations.
+	/// </summary>
+	bool usingModelMatrices = true;
+
 	bool load(std::string vertexPath, std::string fragmentPath);
 
 	virtual void use() = 0;
 
 	virtual unsigned int get_uniform_location(std::string name) = 0;
+	virtual void set_uniform_1i(unsigned int location, int v) = 0;
 	virtual void set_uniform_3f(unsigned int location, float v0, float v1, float v2) = 0;
 	virtual void set_uniform_3f(unsigned int location, Vector3<float> v) = 0;
 	virtual void set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3) = 0;

@@ -23,6 +23,8 @@ public:
 
 	unsigned int get_uniform_location(std::string name) override;
 
+	void set_uniform_1i(unsigned int location, int v) override;
+
 	void set_uniform_3f(unsigned int location, float v0, float v1, float v2) override;
 	void set_uniform_3f(unsigned int location, Vector3<float> v) override;
 

@@ -11,5 +11,5 @@ public:
 	}
 
 	// TODO: Add different targets (1D, 2D, 3D, slots, etc)
-	virtual void bind() = 0;
+	virtual void bind(unsigned int slot) = 0;
 };
