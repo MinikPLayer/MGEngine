@@ -10,7 +10,6 @@ void TestObject::start() {
 	Input::SetCursorMode(CursorModes::Disabled);
 
 	auto cubes = std::make_shared<Model>("assets/user/heart.fbx");
-	// auto cubes = std::make_shared<Model>("assets/user/cube.fbx");
 	add_component(cubes);
 }
 

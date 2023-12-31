@@ -16,6 +16,6 @@ void main() {
 //	float y = Normal.y;
 //	float z = Normal.z;
 
-	// FragColor = vec4(x, y, z, 1.0);
-	FragColor = vec4(1.0, 0.0, 0.0, 1.0) * vec4(Normal, 1.0);
+//	FragColor = vec4(x, y, z, 1.0);
+	 FragColor = vec4(1.0, 0.0, 0.0, 1.0) * vec4(Normal, 1.0);
 }

@@ -82,8 +82,12 @@ void Camera::update() {
 	rotation = rotation.rotated_around(rotation.right(), -rotateY);
 	this->transform.set_local_rotation(rotation);
 
-	auto right = -Input::get(sidewaysMapping).value().get_value() * moveSpeed * Time::DeltaTime();
-	auto forward = Input::get(forwardMapping).value().get_value() * moveSpeed * Time::DeltaTime();
+	auto speed = moveSpeed;
+	if(Input::key_is_pressed(Keyboard::KEY_LEFT_SHIFT))
+		speed *= 5;
+
+	auto right = -Input::get(sidewaysMapping).value().get_value() * speed * Time::DeltaTime();
+	auto forward = Input::get(forwardMapping).value().get_value() * speed * Time::DeltaTime();
 
 	auto movement = rotation.forward() * forward + rotation.right() * right;
 	this->transform.set_position(this->transform.get_position() + movement);
