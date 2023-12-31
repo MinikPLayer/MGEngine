@@ -13,6 +13,6 @@ int main() {
 	GameObject::Instantiate(new TestObject());
 
 	auto render = Engine::get_renderer();
-	render.lock()->set_window_size(Vector2<int>(1920, 1080));
+	render.lock()->set_window_size(Vector2<int>(1280, 720));
 	Engine::run();
 }
