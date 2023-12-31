@@ -13,7 +13,7 @@ private:
 	std::vector<Mesh> meshes;
 
 	bool loadModel(std::string path, std::shared_ptr<IShader> custom_shader);
-	bool processNode(aiNode* node, const aiScene* scene, std::shared_ptr<IShader> custom_shader);
+	bool processNode(aiNode* node, const aiScene* scene, std::shared_ptr<GameObject> parent, std::shared_ptr<IShader> custom_shader);
 	std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<IShader> custom_shader);
 	//std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 

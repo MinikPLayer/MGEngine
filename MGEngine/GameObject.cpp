@@ -94,6 +94,27 @@ void GameObject::__add_component(std::weak_ptr<GameObject> child) {
 	c->transform.update_matrix();
 }
 
+void GameObject::__print_hierarchy__(int level) {
+	std::stringstream ss;
+	for (int i = 0; i < level; i++) {
+		ss << "\t";
+	}
+	ss << typeid(*this).name();
+	ELOG_INFO(ss.str());
+
+	for (auto child : children) {
+		child->__print_hierarchy__(level + 1);
+	}
+}
+
+void GameObject::PrintObjectsHierarchy() {
+	ELOG_INFO("\n\nObjects hierarchy:");
+	for (auto obj : __objects) {
+		obj->__print_hierarchy__(0);
+	}
+	ELOG_INFO("\n\n");
+}
+
 void GameObject::remove_component(std::weak_ptr<GameObject> child) {
 	child.lock().get()->parent = std::weak_ptr<GameObject>();
 	for (auto it = children.begin(); it != children.end(); ++it) {

@@ -15,9 +15,15 @@ glm::mat4 Transform::calculate_local_model_matrix() {
 	return trans;
 }
 
-void Transform::update_matrix() {
+void Transform::update_matrix(glm::mat4 localMatrix, bool updateLocalValues) {
+	if (updateLocalValues) {
+		auto decomp = MatrixUtils::DecomposeMatrix(localMatrix);
+		this->localPosition = Vector3<float>(decomp.translation);
+		this->localScale = Vector3<float>(decomp.scale);
+		this->localRotation = Quaternion(decomp.rotation);
+	}
+
 	auto parentMatrix = (gameObject.has_parent()) ? gameObject.get_parent().lock()->get_transform().get_world_space_matrix() : glm::mat4(1.0f);
-	auto localMatrix = calculate_local_model_matrix();
 	worldSpaceModelMatrix = parentMatrix * localMatrix;
 
 	// TODO: Find a faster way to do this? 
@@ -34,6 +40,10 @@ void Transform::update_matrix() {
 	}
 }
 
+void Transform::update_matrix() {
+	update_matrix(calculate_local_model_matrix(), false);
+}
+
 Transform::Transform(GameObject& gameObject) : gameObject(gameObject) {}
 
 std::string Transform::to_string() {
@@ -46,6 +56,18 @@ std::string Transform::to_string() {
 	ss << this->globalScale.to_string();
 	ss << "]";
 	return ss.str();
+}
+
+void Transform::set_world_space_matrix(glm::mat4 matrix) {
+	auto parentMatrix = (gameObject.has_parent()) ? gameObject.get_parent().lock()->get_transform().get_world_space_matrix() : glm::mat4(1.0f);
+	auto parentInverse = glm::inverse(parentMatrix);
+	auto localMatrix = parentInverse * matrix;
+	auto decomp = MatrixUtils::DecomposeMatrix(localMatrix);
+	this->localPosition = Vector3<float>(decomp.translation);
+	this->localScale = Vector3<float>(decomp.scale);
+	this->localRotation = Quaternion(decomp.rotation);
+
+	update_matrix(); 
 }
 
 glm::mat4 Transform::get_world_space_matrix() {

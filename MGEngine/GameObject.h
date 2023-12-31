@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "Config.h"
 
+//template<char ...TypeName>
 class GameObject {
 	std::vector<std::shared_ptr<GameObject>> children;
 	std::weak_ptr<GameObject> parent;
@@ -22,9 +23,13 @@ class GameObject {
 	void __run_events();
 
 	void __add_component(std::weak_ptr<GameObject> object);
+
+	void __print_hierarchy__(int level);
 public:
 
 	Transform transform;
+	
+	static void PrintObjectsHierarchy();
 
 	template<typename T>
 	static std::shared_ptr<T> Instantiate(std::shared_ptr<T> object, std::shared_ptr<GameObject> parent = nullptr) {
@@ -81,6 +86,10 @@ public:
 
 	std::vector<std::shared_ptr<GameObject>> get_children() {
 		return children;
+	}
+
+	const char* get_type_name() {
+		return typeid(*this).name();
 	}
 
 	virtual void on_destroy() {}

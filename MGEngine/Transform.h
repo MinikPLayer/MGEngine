@@ -22,7 +22,9 @@ class Transform {
 
 public:
 	void update_matrix();
+	void update_matrix(glm::mat4 localMatrix, bool updateLocalValues = true);
 
+	void set_world_space_matrix(glm::mat4 matrix);
 	glm::mat4 get_world_space_matrix();
 
 	void set_position(Vector3<float> position);

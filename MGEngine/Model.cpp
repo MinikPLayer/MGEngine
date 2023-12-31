@@ -9,6 +9,8 @@ Model::Model(std::string path, std::shared_ptr<IShader> custom_shader) {
 void Model::start() {
 	if (!loadModel(path, this->custom_shader))
 		throw std::runtime_error("Unable to load model: " + path);
+
+	this->get_transform().set_local_scale(Vector3<float>(0.01f, 0.01f, 0.01f));
 }
 
 bool Model::loadModel(std::string path, std::shared_ptr<IShader> custom_shader) {
@@ -20,17 +22,25 @@ bool Model::loadModel(std::string path, std::shared_ptr<IShader> custom_shader) 
 		return false;
 	}
 
-	return processNode(scene->mRootNode, scene, custom_shader);
+	return processNode(scene->mRootNode, scene, this->get_self_ptr().lock(), custom_shader);
 }
 
-bool Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr<IShader> custom_shader) {
+bool Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr<GameObject> parent, std::shared_ptr<IShader> custom_shader) {
+	auto newParent = parent;
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		add_component(processMesh(mesh, scene, custom_shader));
+		auto transformation = node->mTransformation;
+		auto meshObject = processMesh(mesh, scene, custom_shader);
+		parent->add_component(meshObject);
+		meshObject->get_transform().update_matrix(glm::transpose(glm::make_mat4(&transformation.a1)));
+
+		//aiVector3D position, scaling, rotation;
+		//node->mTransformation.Decompose(scaling, rotation, position);
+		newParent = meshObject;
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
-		if (!processNode(node->mChildren[i], scene, custom_shader))
+		if (!processNode(node->mChildren[i], scene, newParent, custom_shader))
 			return false;
 	}
 
