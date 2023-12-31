@@ -60,6 +60,14 @@ void GLRenderer::_set_window_size_internal_(Vector2<int> size) {
 	glfwSetWindowSize(window, windowWidth, windowHeight);
 }
 
+void GLRenderer::set_vertical_sync(bool enabled) {
+	glfwSwapInterval(enabled ? 1 : 0);
+}
+
+void GLRenderer::set_window_title(std::string title) {
+	glfwSetWindowTitle(window, title.c_str());
+}
+
 std::shared_ptr<IFramebuffer> GLRenderer::_create_framebuffer_(IFramebuffer::AttachmentTypes attachments, bool resize_with_window, Vector2<int> current_size) {
 	GLFramebuffer* new_fb = new GLFramebuffer();
 	new_fb->init(attachments, resize_with_window, current_size);

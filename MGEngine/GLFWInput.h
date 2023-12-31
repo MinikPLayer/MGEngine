@@ -312,6 +312,10 @@ public:
 		cursorMode = mode;
 	}
 
+	static bool key_is_pressed(Keyboard key) {
+		return glfwGetKey(glfwGetCurrentContext(), (int)key) == GLFW_PRESS;
+	}
+
 	// TODO: Add option to register multiple mappings with the same name (for different devices)
 	static int register_mapping(InputMapping mapping) {
 #if SC_WARNING_ON
