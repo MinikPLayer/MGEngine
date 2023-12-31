@@ -51,6 +51,10 @@ void TestObject::start() {
 	mesh->transform.set_position(Vector3<float>(0.0f, 0.0f, 2.0f));
 
 	exitMapping = Input::register_mapping(InputMapping("Exit", Keyboard::ESCAPE));
+	smallWindowMapping = Input::register_mapping(InputMapping("Small Window", Keyboard::KEY_1));
+	mediumWindowMapping = Input::register_mapping(InputMapping("Medium Window", Keyboard::KEY_2));
+	largeWindowMapping = Input::register_mapping(InputMapping("Large Window", Keyboard::KEY_3));
+	veryLargeWindowMapping = Input::register_mapping(InputMapping("Very Large Window", Keyboard::KEY_4));
 
 	Input::SetCursorMode(CursorModes::Disabled);
 
@@ -78,5 +82,21 @@ void TestObject::update() {
 
 	if (Input::get(exitMapping).value().is_pressed()) {
 		Engine::stop();
+	}
+
+	if (Input::get(smallWindowMapping).value().is_just_pressed()) {
+		Engine::get_renderer().lock()->set_window_size(Vector2<int>(800, 600));
+	}
+
+	if (Input::get(mediumWindowMapping).value().is_just_pressed()) {
+		Engine::get_renderer().lock()->set_window_size(Vector2<int>(1280, 820));
+	}
+
+	if (Input::get(largeWindowMapping).value().is_just_pressed()) {
+		Engine::get_renderer().lock()->set_window_size(Vector2<int>(1920, 1080));
+	}
+
+	if (Input::get(veryLargeWindowMapping).value().is_just_pressed()) {
+		Engine::get_renderer().lock()->set_window_size(Vector2<int>(3000, 1800));
 	}
 }

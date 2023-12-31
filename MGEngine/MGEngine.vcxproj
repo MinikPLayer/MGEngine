@@ -172,6 +172,7 @@
     <ClCompile Include="GLFWInput.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="GLTexture.cpp" />
+    <ClCompile Include="GL_RAII.cpp" />
     <ClCompile Include="IShader.cpp" />
     <ClCompile Include="MatrixUtils.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -207,9 +208,9 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Quaternion.h" />
-    <ClInclude Include="RAII.h" />
     <ClInclude Include="GL_RAII.h" />
     <ClInclude Include="GLShader.h" />
+    <ClInclude Include="RObj.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="TimeUtils.h" />
     <ClInclude Include="Transform.h" />

@@ -1,11 +1,19 @@
 #pragma once
-#include "RAII.h"
+#include "RObj.h"
 #include "Config.h"
 
-DEF_MOO_TYPE(GL_VAO, GLuint, glDeleteVertexArrays(1, &x));
-DEF_MOO_TYPE(GL_VBO, GLuint, glDeleteBuffers(1, &x));
-DEF_MOO_TYPE(GL_EBO, GLuint, glDeleteBuffers(1, &x));
-DEF_MOO_TYPE(GL_Shader, GLuint, glDeleteProgram(x));
-DEF_MOO_TYPE(GL_FBO, GLuint, glDeleteFramebuffers(1, &x));
-DEF_MOO_TYPE(GL_Texture, GLuint, glDeleteTextures(1, &x));
-DEF_MOO_TYPE(GL_RBO, GLuint, glDeleteRenderbuffers(1, &x));
+void delFbo(GLuint& x);
+void delTexture(GLuint& x);
+void delRbo(GLuint& x);
+void delShader(GLuint& x);
+void delVao(GLuint& x);
+void delVbo(GLuint& x);
+void delEbo(GLuint& x);
+
+using GL_FBO = RObj<GLuint, delFbo>;
+using GL_Texture = RObj<GLuint, delTexture>;
+using GL_RBO = RObj<GLuint, delRbo>;
+using GL_Shader = RObj<GLuint, delShader>;
+using GL_VAO = RObj<GLuint, delVao>;
+using GL_VBO = RObj<GLuint, delVbo>;
+using GL_EBO = RObj<GLuint, delEbo>;

@@ -81,6 +81,9 @@
     <ClCompile Include="IShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GL_RAII.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -112,9 +115,6 @@
     </ClInclude>
     <ClInclude Include="GLFWInput.h">
       <Filter>Header Files\Renderer\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="RAII.h">
-      <Filter>Header Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="GL_RAII.h">
       <Filter>Header Files\Renderer\OpenGL</Filter>
@@ -181,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="IShader.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RObj.h">
+      <Filter>Header Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

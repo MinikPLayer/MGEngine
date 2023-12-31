@@ -34,7 +34,7 @@ void GLFramebuffer::_init_(AttachmentTypes attachments, Vector2<int> size) {
 
 	// Create color attachment
 	if ((attachments & AttachmentTypes::COLOR) == AttachmentTypes::COLOR) {
-		color_attachment = GLTexture();
+		color_attachment.reset(new GLTexture());
 		color_attachment->init(size.x, size.y);
 
 		// Bind color attachment to FB
@@ -43,13 +43,12 @@ void GLFramebuffer::_init_(AttachmentTypes attachments, Vector2<int> size) {
 	}
 
 	if ((attachments & (AttachmentTypes::DEPTH_STENCIL)) == AttachmentTypes::DEPTH_STENCIL) {
-		depth_stencil_attachment = -1;
-		glGenRenderbuffers(1, &depth_stencil_attachment.value().get());
-		glBindRenderbuffer(GL_RENDERBUFFER, depth_stencil_attachment.value().get());
+		glGenRenderbuffers(1, &depth_stencil_attachment->get());
+		glBindRenderbuffer(GL_RENDERBUFFER, depth_stencil_attachment->get());
 
 		// TODO: Add option to select Depth as a texture instead of RenderBuffer to improve performance when sampling
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_stencil_attachment.value().get());
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depth_stencil_attachment->get());
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	}
 }
@@ -60,16 +59,16 @@ void GLFramebuffer::_init_as_main_() {
 
 void GLFramebuffer::_manual_dispose_() {
 	fbo = -1;
-	color_attachment.reset();
-	depth_stencil_attachment.reset();
+	color_attachment.reset(new GLTexture());
+	depth_stencil_attachment.reset(new GL_RBO(-1));
 }
 
 void GLFramebuffer::bind_color_attachment(unsigned int slot) {
-	if (!color_attachment.has_value()) {
+	if (color_attachment == nullptr) {
 		ELOG_FATAL("Trying to bind an empty FB color attachment.");
 		Engine::stop();
 		return;
 	}
 
-	color_attachment.value().bind(slot);
+	color_attachment->bind(slot);
 }

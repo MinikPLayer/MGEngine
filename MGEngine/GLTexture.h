@@ -15,4 +15,8 @@ public:
 	}
 
 	void bind(unsigned int slot) override;
+
+	void dispose() {
+		texture.dispose();
+	}
 };

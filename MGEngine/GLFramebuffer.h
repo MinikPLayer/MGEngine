@@ -7,8 +7,8 @@
 class GLFramebuffer : public IFramebuffer {
 	GL_FBO fbo = -1;
 
-	std::optional<GLTexture> color_attachment = std::nullopt;
-	std::optional<GL_RBO> depth_stencil_attachment = std::nullopt;
+	std::unique_ptr<GLTexture> color_attachment = nullptr;
+	std::unique_ptr<GL_RBO> depth_stencil_attachment = std::unique_ptr<GL_RBO>(new GL_RBO(-1));
 
 protected:
 	void _init_(AttachmentTypes attachments, Vector2<int> size) override;

@@ -44,6 +44,9 @@ public:
 	}
 
 	void set_window_size(Vector2<int> size) {
+		if (this->get_window_size().is_equal_exact(size))
+			return;
+
 		_set_window_size_internal_(size);
 
 		for (auto f : FBs) {
