@@ -34,10 +34,10 @@ void Engine::init() {
 void Engine::run() {
 	check_configuration();
 
-	GameObject::__RunStart();
+	GameObject::__RunStart__();
 	while (render->poll_events() && !stopped) {
 		Time::__Update();
-		GameObject::__RunEvents();
+		GameObject::__RunUpdate__();
 		render->clear_screen();
 		render->draw(Mesh::__meshes);
 	}

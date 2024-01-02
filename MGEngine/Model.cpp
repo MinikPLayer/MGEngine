@@ -4,11 +4,11 @@
 Model::Model(std::string path, std::shared_ptr<IShader> custom_shader) {
 	this->path = path;
 	this->custom_shader = custom_shader;
+
+	this->get_transform().set_local_scale(Vector3<float>(0.01f, 0.01f, 0.01f));
 }
 
 void Model::start() {
-	this->get_transform().set_local_scale(Vector3<float>(0.01f, 0.01f, 0.01f));
-
 	if (!loadModel(path, this->custom_shader))
 		throw std::runtime_error("Unable to load model: " + path);
 }

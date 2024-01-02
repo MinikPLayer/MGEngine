@@ -1,21 +1,16 @@
 #include "GameObject.h"
 
-void GameObject::__run_events() {
+void GameObject::__run_event__(std::function<void(GameObject*)> func) {
 #if !NDEBUG
 	if (isDestroyed) {
 		ELOG_ERROR("Destroyed object is still running events");
 	}
 #endif
 
-	if (!isStarted) {
-		start();
-		isStarted = true;
-	}
-
-	update();
+	func(this);
 
 	for (auto c : children) {
-		c->__run_events();
+		c->__run_event__(func);
 	}
 }
 
@@ -41,26 +36,57 @@ void GameObject::Destroy(std::shared_ptr<GameObject> object, bool removeFromObje
 	}
 }
 
-void GameObject::__RunStart() {
+void GameObject::__RunStart__() {
+	std::function<void(GameObject*)> startFunc = [](GameObject* obj) {
+		if (!obj->isStarted) {
+			obj->start();
+			obj->isStarted = true;
+		}
+	};
+
+	std::function<void(GameObject*)> lateStartFunc = [](GameObject* obj) {
+		if (!obj->isLateStarted) {
+			obj->lateStartEvent(obj);
+			obj->isLateStarted = true;
+		}
+	};
+
 	for (auto obj : __objects) {
+		obj->__run_event__(startFunc);
+	}
+
+	for (auto obj : __objects) {
+		obj->__run_event__(lateStartFunc);
+	}
+}
+
+void GameObject::__RunUpdate__() {
+	std::function<void(GameObject*)> updateFunc = [](GameObject* obj) {
 		if (!obj->isStarted) {
 			obj->start();
 			obj->isStarted = true;
 		}
 
-	}
-}
+		obj->update();
+	};
 
-void GameObject::__RunEvents() {
+	std::function<void(GameObject*)> lateUpdateFunc = [](GameObject* obj) {
+		obj->lateUpdateEvent(obj);
+	};
+
 	for (auto obj : __objects) {
-		obj->__run_events();
+		obj->__run_event__(updateFunc);
+	}
+
+	for (auto obj : __objects) {
+		obj->__run_event__(lateUpdateFunc);
 	}
 }
 
 std::weak_ptr<GameObject> GameObject::get_self_ptr() {
 #if SC_FATAL_ON
 	if (self.lock() == nullptr) {
-		ELOG_FATAL("Self pointer invalid. This could happen if getSelfPtr is called from the constructor. If that's the case, try calling it from the Start() method");
+		ELOG_FATAL("Self pointer invalid. This could happen if get_self_ptr is called from the constructor. If that's the case, try calling it from the start() method");
 	}
 #endif
 

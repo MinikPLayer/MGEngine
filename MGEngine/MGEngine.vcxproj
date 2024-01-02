@@ -190,6 +190,7 @@
     <ClInclude Include="Dirty.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="ErrorCodes.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="FloatUtils.h" />
     <ClInclude Include="GameObject.h" />

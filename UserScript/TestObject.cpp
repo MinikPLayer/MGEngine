@@ -11,6 +11,10 @@ void TestObject::start() {
 
 	auto cubes = std::make_shared<Model>("assets/user/heart.fbx");
 	add_component(cubes);
+
+	cubes->lateStartEvent += [](GameObject* obj) {
+		LOG_INFO("Late start event called for ", obj->get_type_name());
+	};
 }
 
 void TestObject::update() {

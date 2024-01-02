@@ -4,6 +4,8 @@
 #include <memory>
 #include "Log.h"
 #include "Config.h"
+#include "Event.h"
+#include <functional>
 
 //template<char ...TypeName>
 class GameObject {
@@ -18,9 +20,10 @@ class GameObject {
 	static std::vector<std::shared_ptr<GameObject>> __objects;
 
 	bool isStarted = false;
+	bool isLateStarted = false;
 	bool isDestroyed = false;
 
-	void __run_events();
+	void __run_event__(std::function<void(GameObject*)> func);
 
 	void __add_component(std::weak_ptr<GameObject> object);
 
@@ -58,9 +61,9 @@ public:
 
 	static void Destroy(std::shared_ptr<GameObject> object, bool removeFromObjects = true);
 
-	static void __RunStart();
+	static void __RunStart__();
 
-	static void __RunEvents();
+	static void __RunUpdate__();
 
 	template<typename T>
 	bool is_type() {
@@ -95,6 +98,9 @@ public:
 	virtual void on_destroy() {}
 	virtual void start() {}
 	virtual void update() {}
+
+	Event<GameObject*> lateStartEvent;
+	Event<GameObject*> lateUpdateEvent;
 
 	template<typename T>
 	std::shared_ptr<T> add_component(std::shared_ptr<T> child) {
