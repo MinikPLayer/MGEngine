@@ -9,7 +9,7 @@ void TestObject::start() {
 	Engine::get_renderer().lock()->set_window_title("Hello MGEngine!");
 	Input::SetCursorMode(CursorModes::Disabled);
 
-	auto cubes = std::make_shared<Model>("assets/user/heart.fbx");
+	auto cubes = std::make_shared<Model>("assets/user/blender_3.fbx");
 	add_component(cubes);
 
 	cubes->lateStartEvent += [](GameObject* obj) {

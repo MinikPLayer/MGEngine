@@ -55,8 +55,11 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene, std
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 		Vertex v;
 		v.position = Vector3<float>(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-		v.normal = Vector3<float>(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
-		v.uv = Vector2<float>(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+		if(mesh->HasNormals())
+			v.normal = Vector3<float>(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
+
+		if(mesh->HasTextureCoords(0))
+			v.uv = Vector2<float>(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 
 		vertices.push_back(v);
 	}

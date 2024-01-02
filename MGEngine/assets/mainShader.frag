@@ -7,5 +7,5 @@ layout (location = 2) in vec2 UV;
 layout (location = 0) out vec4 FragColor;
 
 void main() {
-	 FragColor = vec4(1.0, 0.0, 0.0, 1.0) * vec4(Normal.zyx, 1.0);
+	 FragColor = vec4(Normal, 1.0);
 }
