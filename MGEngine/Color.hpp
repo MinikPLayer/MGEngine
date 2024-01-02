@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector3.h"
+#include "Vector3.hpp"
 
 class Color {
 public:

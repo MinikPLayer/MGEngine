@@ -1,10 +1,10 @@
 #pragma once
-#include "Transform.h"
+#include "Transform.hpp"
 #include <vector>
 #include <memory>
-#include "Log.h"
-#include "Config.h"
-#include "Event.h"
+#include "Log.hpp"
+#include "Config.hpp"
+#include "Event.hpp"
 #include <functional>
 
 //template<char ...TypeName>

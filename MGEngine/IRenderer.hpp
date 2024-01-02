@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "Mesh.h"
-#include "IFramebuffer.h"
+#include "Mesh.hpp"
+#include "IFramebuffer.hpp"
 
 class IRenderer {
 protected:

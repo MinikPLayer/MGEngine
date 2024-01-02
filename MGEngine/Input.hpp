@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Config.h"
+#include "Config.hpp"
 #if USE_GL
-#include "GLFWInput.h"
+#include "GLFWInput.hpp"
 #else
 #error "No input system defined for this platform"
 #endif

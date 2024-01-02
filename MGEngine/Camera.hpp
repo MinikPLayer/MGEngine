@@ -1,7 +1,7 @@
 #pragma once
-#include "Color.h"
+#include "Color.hpp"
 #include <memory>
-#include "GameObject.h"
+#include "GameObject.hpp"
 #include <glm/glm.hpp>
 
 class Camera : public GameObject {

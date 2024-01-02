@@ -1,9 +1,9 @@
-#include "pch.h"
-#include "CppUnitTest.h"
-#include "../MGEngine/Transform.h"
+#include "pch.hpp"
+#include "CppUnitTest.hpp"
+#include "../MGEngine/Transform.hpp"
 #include <vector>
-#include "../MGEngine/Mesh.h"
-#include "../MGEngine/Model.h"
+#include "../MGEngine/Mesh.hpp"
+#include "../MGEngine/Model.hpp"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace Microsoft {

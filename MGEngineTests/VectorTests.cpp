@@ -1,6 +1,6 @@
-#include "pch.h"
-#include "CppUnitTest.h"
-#include "../MGEngine/Vector3.h"
+#include "pch.hpp"
+#include "CppUnitTest.hpp"
+#include "../MGEngine/Vector3.hpp"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace Microsoft {

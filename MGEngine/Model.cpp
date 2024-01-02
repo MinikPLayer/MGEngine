@@ -1,4 +1,4 @@
-#include "Model.h"
+#include "Model.hpp"
 #include <assimp/postprocess.h>
 
 Model::Model(std::string path, std::shared_ptr<IShader> custom_shader) {

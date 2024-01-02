@@ -1,4 +1,4 @@
-#include "GameObject.h"
+#include "GameObject.hpp"
 
 void GameObject::__run_event__(std::function<void(GameObject*)> func) {
 #if !NDEBUG

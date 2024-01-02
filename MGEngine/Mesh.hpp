@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
-#include "Vector3.h"
-#include "Vector2.h"
-#include "Config.h"
-#include "GameObject.h"
-#include "GLShader.h"
+#include "Vector3.hpp"
+#include "Vector2.hpp"
+#include "Config.hpp"
+#include "GameObject.hpp"
+#include "GLShader.hpp"
 
 struct Vertex {
 	Vector3<float> position;

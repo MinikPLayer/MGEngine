@@ -1,13 +1,13 @@
-#include "Camera.h"
-#include "Config.h"
-#include "Log.h"
+#include "Camera.hpp"
+#include "Config.hpp"
+#include "Log.hpp"
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 
 #if USE_GL
-#include "GLFWInput.h"
+#include "GLFWInput.hpp"
 #endif
-#include "TimeUtils.h"
+#include "TimeUtils.hpp"
 
 void Camera::SetMainCamera(std::shared_ptr<Camera> camera) {
 	mainCamera = camera;

@@ -1,9 +1,9 @@
 #pragma once
-#include "Vector3.h"
+#include "Vector3.hpp"
 #include <memory>
 #include <glm/glm.hpp>
 
-#include "Quaternion.h"
+#include "Quaternion.hpp"
 
 class GameObject;
 class Transform {

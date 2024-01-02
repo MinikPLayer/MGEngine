@@ -1,4 +1,4 @@
-#include "Color.h"
+#include "Color.hpp"
 
 Vector3<float> Color::to_vec3() {
 	return Vector3<float>(r * a, g * a, b * a);

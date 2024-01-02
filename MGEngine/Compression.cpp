@@ -1,6 +1,6 @@
-#include "Compression.h"
+#include "Compression.hpp"
 #include <zlib.h>
-#include "Log.h"
+#include "Log.hpp"
 
 std::optional<std::vector<uint8_t>> Compression::DecompressGZip(std::vector<uint8_t> compressedBytes)
 {

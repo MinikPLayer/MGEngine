@@ -1,9 +1,8 @@
-#include "TestObject.h"
-#include <Input.h>
-#include <Engine.h>
-#include <TimeUtils.h>
-#include <corecrt_math_defines.h>
-#include <GLTexture.h>
+#include "TestObject.hpp"
+#include <Input.hpp>
+#include <Engine.hpp>
+#include <TimeUtils.hpp>
+#include <GLTexture.hpp>
 
 void TestObject::start() {
 	LOG_INFO("TestGameObject::Start()");

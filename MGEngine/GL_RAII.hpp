@@ -1,6 +1,6 @@
 #pragma once
-#include "RObj.h"
-#include "Config.h"
+#include "RObj.hpp"
+#include "Config.hpp"
 
 void delFbo(GLuint& x);
 void delTexture(GLuint& x);

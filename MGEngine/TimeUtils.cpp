@@ -1,4 +1,4 @@
-#include "TimeUtils.h"
+#include "TimeUtils.hpp"
 
 std::optional<std::chrono::high_resolution_clock::time_point> Time::_lastTime = std::nullopt;
 std::chrono::high_resolution_clock::time_point Time::_startTime = std::chrono::high_resolution_clock::now();

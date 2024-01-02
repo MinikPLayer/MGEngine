@@ -1,4 +1,4 @@
-#include "GLFWInput.h"
+#include "GLFWInput.hpp"
 
 void mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 	Input::__SetScroll(xoffset, yoffset);

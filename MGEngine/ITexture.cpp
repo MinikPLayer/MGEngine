@@ -1,6 +1,6 @@
-#include "ITexture.h"
+#include "ITexture.hpp"
 #include <cstdint>
-#include "Log.h"
+#include "Log.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"

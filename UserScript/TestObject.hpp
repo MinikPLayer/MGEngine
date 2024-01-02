@@ -1,8 +1,8 @@
 #pragma once
-#include <GameObject.h>
-#include <Mesh.h>
-#include <Model.h>
-#include "ITexture.h"
+#include <GameObject.hpp>
+#include <Mesh.hpp>
+#include <Model.hpp>
+#include "ITexture.hpp"
 
 class TestObject : public GameObject {
 	std::shared_ptr<ITexture> testTexture;

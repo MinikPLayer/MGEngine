@@ -160,7 +160,7 @@
     <ClCompile Include="TestObject.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestObject.h" />
+    <ClInclude Include="TestObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\cube.fbx" />

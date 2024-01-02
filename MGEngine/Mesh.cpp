@@ -1,4 +1,4 @@
-#include "Mesh.h"
+#include "Mesh.hpp"
 
 std::vector<std::shared_ptr<Mesh>> Mesh::__meshes;
 

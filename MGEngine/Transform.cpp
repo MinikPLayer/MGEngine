@@ -1,10 +1,10 @@
-#include "Transform.h"
-#include "GameObject.h"
-#include "Config.h"
+#include "Transform.hpp"
+#include "GameObject.hpp"
+#include "Config.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
-#include "MatrixUtils.h"
+#include "MatrixUtils.hpp"
 
 glm::mat4 Transform::calculate_local_model_matrix() {
 	glm::mat4 trans(1.0f);

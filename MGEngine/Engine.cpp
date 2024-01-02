@@ -1,8 +1,8 @@
-#include "Engine.h"
+#include "Engine.hpp"
 #include <iostream>
-#include "GameObject.h"
-#include "Camera.h"
-#include "TimeUtils.h"
+#include "GameObject.hpp"
+#include "Camera.hpp"
+#include "TimeUtils.hpp"
 
 #if USE_GL 
 #pragma message("[INFO] Using OpenGL renderer")

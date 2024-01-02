@@ -1,7 +1,7 @@
 #pragma once
 
 #include <math.h>
-#include "FloatUtils.h"
+#include "FloatUtils.hpp"
 #include <string>
 #include <sstream>
 

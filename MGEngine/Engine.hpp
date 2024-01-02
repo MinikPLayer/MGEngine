@@ -1,10 +1,10 @@
 #pragma once
-#include "Config.h"
-#include "Log.h"
+#include "Config.hpp"
+#include "Log.hpp"
 
 #if USE_GL
-#include "GLRenderer.h"
-#include "GLFWInput.h"
+#include "GLRenderer.hpp"
+#include "GLFWInput.hpp"
 #endif
 
 class Engine {

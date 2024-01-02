@@ -1,6 +1,6 @@
 #pragma once
-#include "GameObject.h"
-#include "Mesh.h"
+#include "GameObject.hpp"
+#include "Mesh.hpp"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Config.h"
+#include "Config.hpp"
 #include <GLFW/glfw3.h>
 #include <map>
 #include <string>
-#include "Log.h"
+#include "Log.hpp"
 #include <optional>
-#include "Vector2.h"
+#include "Vector2.hpp"
 #include <algorithm>
 
 enum class Keyboard {

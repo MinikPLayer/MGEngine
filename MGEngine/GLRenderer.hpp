@@ -1,10 +1,10 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "GLFWInput.h"
-#include "Mesh.h"
-#include "GLShader.h"
-#include "IRenderer.h"
+#include "GLFWInput.hpp"
+#include "Mesh.hpp"
+#include "GLShader.hpp"
+#include "IRenderer.hpp"
 
 // TODO: Add more logs
 class GLRenderer : public IRenderer {

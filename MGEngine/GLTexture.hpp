@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ITexture.h"
-#include "GL_RAII.h"
+#include "ITexture.hpp"
+#include "GL_RAII.hpp"
 
 class GLTexture : public ITexture {
 protected:

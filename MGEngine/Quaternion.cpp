@@ -1,4 +1,4 @@
-#include "Quaternion.h"
+#include "Quaternion.hpp"
 
 Quaternion Quaternion::from_euler(Vector3<float> v) {
 	return { glm::quat(v.to_glm()) };

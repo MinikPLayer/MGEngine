@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <fstream>
-#include "Log.h"
+#include "Log.hpp"
 #include <filesystem>
 
 class File {

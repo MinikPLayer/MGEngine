@@ -1,12 +1,12 @@
-#include <Engine.h>
-#include <GameObject.h>
-#include <Log.h>
-#include <Mesh.h>
-#include <TimeUtils.h>
+#include <Engine.hpp>
+#include <GameObject.hpp>
+#include <Log.hpp>
+#include <Mesh.hpp>
+#include <TimeUtils.hpp>
 
-#include "Camera.h"
-#include "TestObject.h"
-#include "IRenderer.h"
+#include "Camera.hpp"
+#include "TestObject.hpp"
+#include "IRenderer.hpp"
 
 int main() {
 	Engine::init();

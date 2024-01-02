@@ -1,10 +1,10 @@
 #pragma once
-#include "Config.h"
-#include "IShader.h"
+#include "Config.hpp"
+#include "IShader.hpp"
 
-#include "GL_RAII.h"
+#include "GL_RAII.hpp"
 #include <string>
-#include "Vector3.h"
+#include "Vector3.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
