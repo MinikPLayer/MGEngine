@@ -14,6 +14,7 @@ void TestObject::start() {
 
 	cubes->lateStartEvent += [](GameObject* obj) {
 		LOG_INFO("Late start event called for ", obj->get_type_name());
+		obj->get_transform().set_local_scale(Vector3(1.0f, 1.0f, 1.0f) * 0.01f);
 	};
 }
 

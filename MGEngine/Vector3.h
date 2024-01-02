@@ -28,9 +28,9 @@ public:
 	}
 
 	bool is_equal_approximate(Vector3<T> const& v, float epsilon = 0.00001f) const {
-		return FloatUtils::IsEqualApproximate(x, v.x, epsilon) &&
-			FloatUtils::IsEqualApproximate(y, v.y, epsilon) &&
-			FloatUtils::IsEqualApproximate(z, v.z, epsilon);
+		return FloatUtils::IsEqualApproximate((float) x, (float)v.x, epsilon) &&
+			FloatUtils::IsEqualApproximate((float)y, (float)v.y, epsilon) &&
+			FloatUtils::IsEqualApproximate((float)z, (float)v.z, epsilon);
 	}
 
 	glm::vec3 to_glm() {
@@ -51,7 +51,7 @@ public:
 	}
 
 	float dot(Vector3<T> const& v) {
-		return v.x * x + v.y * y + v.z * z;
+		return (float)(v.x * x + v.y * y + v.z * z);
 	}
 
 	Vector3<T> cross(Vector3<T> const& v) {

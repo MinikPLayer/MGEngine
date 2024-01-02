@@ -10,15 +10,15 @@ std::optional<std::vector<uint8_t>> Compression::DecompressGZip(std::vector<uint
 		return ret;
 	}
 
-	unsigned full_length = compressedBytes.size();
-	unsigned half_length = compressedBytes.size() / 2;
+	size_t full_length = compressedBytes.size();
+	size_t half_length = compressedBytes.size() / 2;
 
-	unsigned uncompLength = full_length;
+	size_t uncompLength = full_length;
 	std::unique_ptr<char> uncomp(new char[uncompLength]);
 
 	z_stream strm;
 	strm.next_in = (Bytef*)compressedBytes.data();
-	strm.avail_in = compressedBytes.size();
+	strm.avail_in = (uInt)compressedBytes.size();
 	strm.total_out = 0;
 	strm.zalloc = Z_NULL;
 	strm.zfree = Z_NULL;
@@ -41,7 +41,7 @@ std::optional<std::vector<uint8_t>> Compression::DecompressGZip(std::vector<uint
 		}
 
 		strm.next_out = (Bytef*)(uncomp.get() + strm.total_out);
-		strm.avail_out = uncompLength - strm.total_out;
+		strm.avail_out = (uInt)(uncompLength - strm.total_out);
 
 		// Inflate another chunk.  
 		int err = inflate(&strm, Z_SYNC_FLUSH);

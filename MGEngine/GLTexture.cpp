@@ -15,7 +15,7 @@ void GLTexture::bind(unsigned int slot) {
 #if SC_ERROR_ON
 	GLint maxSlots = 0;
 	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxSlots);
-	if (slot > maxSlots) {
+	if ((GLint)slot > maxSlots) {
 		ELOG_ERROR("Texture slot is higher than available");
 		return;
 	}

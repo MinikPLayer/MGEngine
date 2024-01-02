@@ -60,12 +60,12 @@ namespace MGEngine
 		TEST_METHOD(Dot)
 		{
 			testDot<int>(1, 2, 3, 4, 6, 1, 19.f);
-			testDot<float>(1.1, 2.1, 3.7, 4.2, 6.9, 9.0, 52.41f);
+			testDot<float>(1.1f, 2.1f, 3.7f, 4.2f, 6.9f, 9.0f, 52.41f);
 		}
 
 		TEST_METHOD(Cross) {
 			testCross<int>(1, 2, 3, 4, 6, 1, -16, 11, -2);
-			testCross<float>(1.1, 2.1, 3.7, 4.2, 6.9, 9.0, -6.63, 5.64, -1.23);
+			testCross<float>(1.1f, 2.1f, 3.7f, 4.2f, 6.9f, 9.0f, -6.63f, 5.64f, -1.23f);
 		}
 
 		TEST_METHOD(EqualTest) {
