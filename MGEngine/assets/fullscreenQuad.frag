@@ -7,9 +7,10 @@ layout(location = 0) out vec4 FragColor;
 
 layout(location = 0) uniform sampler2D txt;
 
-const float offset = 1.0 / 1000.0;
+const float offset = 1.0 / 5000.0;
 void main()
 {
+
 	vec2 offsets[9] = vec2[](
 		vec2(-offset, offset), // top-left
 		vec2( 0.0f, offset), // top-center

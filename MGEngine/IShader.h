@@ -17,7 +17,7 @@ public:
 
 	bool load(std::string vertexPath, std::string fragmentPath);
 
-	virtual void use() = 0;
+	virtual void bind() = 0;
 
 	virtual unsigned int get_uniform_location(std::string name) = 0;
 	virtual void set_uniform_1i(unsigned int location, int v) = 0;

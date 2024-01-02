@@ -42,7 +42,7 @@ void GLRenderer::__init_postprocess_mesh__() {
 		return;
 	}
 	ppShader->usingModelMatrices = false;
-	ppShader->use();
+	ppShader->bind();
 	ppShader->set_uniform_1i(0, 0);
 
 	newMesh->set_custom_shader(ppShader);
@@ -98,7 +98,7 @@ void GLRenderer::__draw_postprocess__() {
 	clear();
 
 	glDisable(GL_DEPTH_TEST);
-	ppShader->use();
+	ppShader->bind();
 	bind_postprocess_color_texture();
 	ppMesh->draw(ppShader);
 	glEnable(GL_DEPTH_TEST);
@@ -145,7 +145,7 @@ void GLRenderer::draw(std::vector<std::shared_ptr<Mesh>> meshes) {
 	auto cameraVPMatrix = Camera::GetMainCamera()->get_VP_matrix(windowWidth / (float)windowHeight);
 	for (auto smap : shaderMeshMap) {
 		auto shader = smap.first;
-		shader->use();
+		shader->bind();
 		if (shader->usingModelMatrices) {
 			shader->set_uniform_mat4f(basicShaderProgram->modelUniformLocation, glm::mat4(1.0f)); // Model identity
 			shader->set_uniform_mat4f(basicShaderProgram->vpUniformLocation, cameraVPMatrix); // VP identity

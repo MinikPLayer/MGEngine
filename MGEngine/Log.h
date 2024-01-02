@@ -19,12 +19,13 @@
 #define LOG_FATAL(...)	  log("[FATAL ERROR]", ERROR_COLOR, __VA_ARGS__); __debugbreak()
 
 #define ELOG(...)         log("[ENGINE] [LOG]",  RESET_COLOR, __VA_ARGS__)
+#define ELOG_TRACE(...)   log("[ENGINE] [TRACE]",  RESET_COLOR, __VA_ARGS__)
 #define ELOG_TEST(...)    log("[ENGINE] [TEST]", WARNING_COLOR, __VA_ARGS__)
 #define ELOG_INFO(...)    log("[ENGINE] [INFO]", INFO_COLOR, __VA_ARGS__)
 #define ELOG_DEBUG(...)   log("[ENGINE] [DEBUG]", DEBUG_COLOR, __VA_ARGS__)
 #define ELOG_WARNING(...) log("[ENGINE] [WARNING]", WARNING_COLOR, __VA_ARGS__)
 #define ELOG_ERROR(...)   log("[ENGINE] [ERROR]", ERROR_COLOR, __VA_ARGS__); __debugbreak()
-#define ELOG_FATAL(...)   log("[ENGINE] [FATAL ERROR]", ERROR_COLOR, __VA_ARGS__); __debugbreak()
+#define ELOG_FATAL(...)   log("[ENGINE] [FATAL ERROR]", ERROR_COLOR, __VA_ARGS__); __debugbreak(); exit(0xF)
 
 template<typename ... Args>
 void log(const char* type, const char* color, Args ... args) {

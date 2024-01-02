@@ -57,11 +57,24 @@ bool GLShader::_init_(std::string vSource, std::string fSource) {
 	return true;
 }
 
+inline void GLShader::debugCheckShaderIsLoaded() {
+#if SC_ERROR_ON
+	GLint currentProgram;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
+
+	if (!this->shaderObject.has_value() || currentProgram != this->shaderObject.value().get()) {
+		ELOG_ERROR("Trying to modify a shader, that is not currently bound");
+	}
+#endif
+}
+
 void GLShader::set_uniform_1i(unsigned int location, int v) {
+	debugCheckShaderIsLoaded();
 	glUniform1i(location, v);
 }
 
 void GLShader::set_uniform_3f(unsigned int location, float v0, float v1, float v2) {
+	debugCheckShaderIsLoaded();
 	glUniform3f(location, v0, v1, v2);
 }
 
@@ -70,15 +83,17 @@ void GLShader::set_uniform_3f(unsigned int location, Vector3<float> v) {
 }
 
 void GLShader::set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3) {
+	debugCheckShaderIsLoaded();
 	glUniform4f(location, v0, v1, v2, v3);
 }
 
 void GLShader::set_uniform_mat4f(unsigned int location, glm::mat4 mat) {
+	debugCheckShaderIsLoaded();
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 
-void GLShader::use() {
+void GLShader::bind() {
 #if SC_ERROR_ON
 	if (!good) {
 		ELOG_ERROR("Trying to use a shader, that is not correctly loaded / compiled");

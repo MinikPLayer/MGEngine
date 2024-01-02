@@ -35,7 +35,7 @@ void GLFramebuffer::_init_(AttachmentTypes attachments, Vector2<int> size) {
 	// Create color attachment
 	if ((attachments & AttachmentTypes::COLOR) == AttachmentTypes::COLOR) {
 		color_attachment.reset(new GLTexture());
-		color_attachment->init(size.x, size.y);
+		color_attachment->init(size.x, size.y, 3);
 
 		// Bind color attachment to FB
 		color_attachment->bind(0);

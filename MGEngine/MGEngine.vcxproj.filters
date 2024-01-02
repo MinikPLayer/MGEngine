@@ -84,6 +84,9 @@
     <ClCompile Include="GL_RAII.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ITexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -206,6 +209,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="assets\fullscreenQuad.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\mainShader_texture.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -14,12 +14,14 @@ class GLShader : public IShader {
 
 	// static GL_Shader load_GL(std::string vertexPath, std::string fragmentPath);
 	bool _init_(std::string vertexSource, std::string fragmentSource) override;
+
+	inline void debugCheckShaderIsLoaded();
 public:
 	unsigned int modelUniformLocation = 0;
 	unsigned int vpUniformLocation = 1;
 	unsigned int modelInversedUniformLocation = 2;
 
-	void use() override;
+	void bind() override;
 
 	unsigned int get_uniform_location(std::string name) override;
 
