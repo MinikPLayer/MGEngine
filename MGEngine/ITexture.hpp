@@ -44,6 +44,6 @@ public:
 	void loadFromFile(const char* path);
 
 	// TODO: Add different targets (1D, 2D, 3D, slots, etc)
-	// TODO: Add bind TRACE log calls in entire engine
+	// TODO: Add bind TRACE log calls in the entire engine
 	virtual void bind(unsigned int slot) = 0;
 };

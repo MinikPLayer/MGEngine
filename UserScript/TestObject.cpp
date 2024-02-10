@@ -12,11 +12,12 @@ void TestObject::start() {
 	auto textureShader = std::make_shared<GLShader>();
 	textureShader->load("assets/engine/mainShader.vert", "assets/engine/mainShader_texture.frag");
 	textureShader->bind();
-	textureShader->set_uniform_1i(3, 1);
+	// textureShader->set_uniform_1i(3, 1);
 
 	testTexture = std::make_shared<GLTexture>();
 	testTexture->loadFromFile("assets/user/Backpack/1001_albedo.jpg");
-	testTexture->bind(1);
+	testTexture->bind(0);
+	textureShader->set_uniform_1i(3, 0);
 
 	auto cubes = std::make_shared<Model>("assets/user/Backpack/Survival_BackPack_2.fbx", textureShader);
 	add_component(cubes);	
@@ -32,6 +33,8 @@ void TestObject::start() {
 }
 
 void TestObject::update() {
+	testTexture->bind(0);
+
 	if (Input::key_is_pressed(Keyboard::KEY_H)) {
 		GameObject::PrintObjectsHierarchy();
 	}

@@ -33,7 +33,7 @@ public:
 	void set_vertical_sync(bool enabled) override;
 	void set_window_title(std::string title) override;
 
-	Vector2<int> get_window_size() override;
+	Vector2<int> get_resolution() override;
 
 	GLRenderer(const GLRenderer&) = delete;
 	GLRenderer& operator=(const GLRenderer&) = delete;

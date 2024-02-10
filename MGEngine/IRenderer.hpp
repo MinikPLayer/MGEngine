@@ -16,7 +16,7 @@ public:
 	virtual void set_vertical_sync(bool enabled) = 0;
 	virtual void set_window_title(std::string title) = 0;
 	
-	virtual Vector2<int> get_window_size() = 0;
+	virtual Vector2<int> get_resolution() = 0;
 
 	virtual void clear() = 0;
 
@@ -25,7 +25,7 @@ public:
 	virtual void shutdown() = 0;
 
 	std::shared_ptr<IFramebuffer> create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window) {
-		auto size = get_window_size();
+		auto size = get_resolution();
 		return _create_framebuffer_(attachments, resize_with_window, size);
 	}
 
@@ -46,8 +46,8 @@ public:
 		clear();
 	}
 
-	void set_window_size(Vector2<int> size) {
-		if (this->get_window_size().is_equal_exact(size))
+	void set_resolution(Vector2<int> size) {
+		if (this->get_resolution().is_equal_exact(size))
 			return;
 
 		_set_window_size_internal_(size);
@@ -78,7 +78,7 @@ public:
 
 		// Create framebuffer for drawing
 		// It is used as a temporary buffer to allow postprocessing
-		auto drawFb = _create_framebuffer_(IFramebuffer::AttachmentTypes::COLOR_DEPTH_STENCIL, true, get_window_size());
+		auto drawFb = _create_framebuffer_(IFramebuffer::AttachmentTypes::COLOR_DEPTH_STENCIL, true, get_resolution());
 		add_framebuffer(drawFb);
 	}
 };

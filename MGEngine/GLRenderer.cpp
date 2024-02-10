@@ -11,7 +11,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 
 	auto glRenderer = static_cast<GLRenderer*>(glfwGetWindowUserPointer(window));
-	glRenderer->set_window_size(Vector2<int>(width, height));
+	glRenderer->set_resolution(Vector2<int>(width, height));
 }
 
 void GLRenderer::__init_shaders__() {
@@ -49,7 +49,7 @@ void GLRenderer::__init_postprocess_mesh__() {
 	ppMesh = std::unique_ptr<Mesh>(newMesh);
 }
 
-Vector2<int> GLRenderer::get_window_size() {
+Vector2<int> GLRenderer::get_resolution() {
 	return Vector2<int>(windowWidth, windowHeight);
 }
 
