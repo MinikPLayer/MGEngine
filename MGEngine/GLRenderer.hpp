@@ -30,6 +30,8 @@ protected:
 	void _init_internal_(Vector2<int> size = Vector2<int>(0, 0)) override;
 	void _set_window_size_internal_(Vector2<int> size) override;
 public:
+	Vector2<int> get_main_screen_resolution() override;
+
 	void set_vertical_sync(bool enabled) override;
 	void set_window_title(std::string title) override;
 

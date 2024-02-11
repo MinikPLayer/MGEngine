@@ -11,8 +11,5 @@
 int main() {
 	Engine::init();
 	GameObject::Instantiate(new TestObject());
-
-	auto render = Engine::get_renderer();
-	render.lock()->set_resolution(Vector2<int>(1280, 720));
 	Engine::run();
 }

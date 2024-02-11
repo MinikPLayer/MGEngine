@@ -13,6 +13,8 @@ protected:
 
 	std::vector<std::shared_ptr<IFramebuffer>> FBs;
 public:
+	virtual Vector2<int> get_main_screen_resolution() = 0;
+
 	virtual void set_vertical_sync(bool enabled) = 0;
 	virtual void set_window_title(std::string title) = 0;
 	

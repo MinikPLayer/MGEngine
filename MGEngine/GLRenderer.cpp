@@ -60,7 +60,15 @@ void GLRenderer::_set_window_size_internal_(Vector2<int> size) {
 	glfwSetWindowSize(window, windowWidth, windowHeight);
 }
 
+Vector2<int> GLRenderer::get_main_screen_resolution() {
+	auto monitor = glfwGetPrimaryMonitor();
+	int width, height;
+	glfwGetMonitorWorkarea(monitor, nullptr, nullptr, &width, &height);
+	return Vector2<int>(width, height);
+}
+
 void GLRenderer::set_vertical_sync(bool enabled) {
+	ELOG_TRACE("Setting vertical sync to ", enabled ? "enabled" : "disabled");
 	glfwSwapInterval(enabled ? 1 : 0);
 }
 

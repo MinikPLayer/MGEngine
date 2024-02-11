@@ -31,10 +31,10 @@ public:
 		return Vector2<T>(x - v.x, y - v.y);
 	}
 	Vector2<T> operator*(float const& f) {
-		return Vector2<T>(x * f, y * f);
+		return Vector2<T>((T)(x * f), (T)(y * f));
 	}
 	Vector2<T> operator/(float const& f) {
-		return Vector2<T>(x / f, y / f);
+		return Vector2<T>((T)(x / f), (T)(y / f));
 	}
 
 	float dot(Vector2<T> const& v) {

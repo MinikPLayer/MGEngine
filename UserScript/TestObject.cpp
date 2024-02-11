@@ -5,6 +5,11 @@
 #include <GLTexture.hpp>
 
 void TestObject::start() {
+	auto renderer = Engine::get_renderer();
+	auto size = renderer.lock()->get_main_screen_resolution();
+	renderer.lock()->set_resolution(size / 2);
+	renderer.lock()->set_vertical_sync(true);
+
 	LOG_INFO("TestGameObject::Start()");
 	Engine::get_renderer().lock()->set_window_title("Hello MGEngine!");
 	Input::SetCursorMode(CursorModes::Disabled);
@@ -21,10 +26,6 @@ void TestObject::start() {
 
 	auto cubes = std::make_shared<Model>("assets/user/Backpack/Survival_BackPack_2.fbx", textureShader);
 	add_component(cubes);	
-
-	//cubes = std::make_shared<Model>("assets/user/cube.fbx");
-	//cubes->get_transform().set_position(Vector3(3.0f, 0.0f, 0.0f));
-	//add_component(cubes);
 
 	cubes->lateStartEvent += [](GameObject* obj) {
 		LOG_INFO("Late start event called for ", obj->get_type_name());
