@@ -24,7 +24,8 @@ void TestObject::start() {
 	testTexture->bind(0);
 	textureShader->set_uniform_1i(3, 0);
 
-	auto cubes = std::make_shared<Model>("assets/user/Backpack/Survival_BackPack_2.fbx", textureShader);
+	auto testMaterial = std::make_shared<Material>(textureShader);
+	auto cubes = std::make_shared<Model>("assets/user/Backpack/Survival_BackPack_2.fbx", testMaterial);
 	add_component(cubes);	
 
 	cubes->lateStartEvent += [](GameObject* obj) {

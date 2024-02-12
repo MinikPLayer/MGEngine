@@ -68,9 +68,19 @@ inline void GLShader::debugCheckShaderIsLoaded() {
 #endif
 }
 
+void GLShader::set_uniform_1f(unsigned int location, float v) {
+	debugCheckShaderIsLoaded();
+	glUniform1f(location, v);
+}
+
 void GLShader::set_uniform_1i(unsigned int location, int v) {
 	debugCheckShaderIsLoaded();
 	glUniform1i(location, v);
+}
+
+void GLShader::set_uniform_1ui(unsigned int location, unsigned int v) {
+	debugCheckShaderIsLoaded();
+	glUniform1ui(location, v);
 }
 
 void GLShader::set_uniform_3f(unsigned int location, float v0, float v1, float v2) {

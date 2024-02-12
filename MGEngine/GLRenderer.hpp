@@ -13,8 +13,11 @@ class GLRenderer : public IRenderer {
 	// PostProcess mesh
 	std::unique_ptr<Mesh> ppMesh = nullptr;
 	std::shared_ptr<GLShader> ppShader = nullptr;
+	std::shared_ptr<Material> ppMaterial = nullptr;
 
-	std::shared_ptr<GLShader> basicShaderProgram = std::shared_ptr<GLShader>(new GLShader());
+	//std::shared_ptr<GLShader> basicShaderProgram = std::shared_ptr<GLShader>(new GLShader());
+	std::shared_ptr<Material> basicMaterial = std::shared_ptr<Material>(new Material(std::shared_ptr<GLShader>(new GLShader())));
+
 	void __init_shaders__();
 	void __init_postprocess_mesh__();
 

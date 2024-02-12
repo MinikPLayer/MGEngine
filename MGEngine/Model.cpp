@@ -1,19 +1,19 @@
 #include "Model.hpp"
 #include <assimp/postprocess.h>
 
-Model::Model(std::string path, std::shared_ptr<IShader> custom_shader) {
+Model::Model(std::string path, std::shared_ptr<Material> customMaterial) {
 	this->path = path;
-	this->custom_shader = custom_shader;
+	this->customMaterial = customMaterial;
 
 	this->get_transform().set_local_scale(Vector3<float>(0.01f, 0.01f, 0.01f));
 }
 
 void Model::start() {
-	if (!loadModel(path, this->custom_shader))
+	if (!loadModel(path, this->customMaterial))
 		throw std::runtime_error("Unable to load model: " + path);
 }
 
-bool Model::loadModel(std::string path, std::shared_ptr<IShader> custom_shader) {
+bool Model::loadModel(std::string path, std::shared_ptr<Material> customMaterial) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
@@ -22,15 +22,15 @@ bool Model::loadModel(std::string path, std::shared_ptr<IShader> custom_shader) 
 		return false;
 	}
 
-	return processNode(scene->mRootNode, scene, this->get_self_ptr().lock(), custom_shader);
+	return processNode(scene->mRootNode, scene, this->get_self_ptr().lock(), customMaterial);
 }
 
-bool Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr<GameObject> parent, std::shared_ptr<IShader> custom_shader) {
+bool Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr<GameObject> parent, std::shared_ptr<Material> customMaterial) {
 	auto newParent = parent;
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		auto transformation = node->mTransformation;
-		auto meshObject = processMesh(mesh, scene, custom_shader);
+		auto meshObject = processMesh(mesh, scene, customMaterial);
 		parent->add_component(meshObject);
 		meshObject->get_transform().update_matrix(glm::transpose(glm::make_mat4(&transformation.a1)));
 
@@ -40,14 +40,14 @@ bool Model::processNode(aiNode* node, const aiScene* scene, std::shared_ptr<Game
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++) {
-		if (!processNode(node->mChildren[i], scene, newParent, custom_shader))
+		if (!processNode(node->mChildren[i], scene, newParent, customMaterial))
 			return false;
 	}
 
 	return true;
 }
 
-std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<IShader> custom_shader) {
+std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> customMaterial) {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	// TODO: textures
@@ -75,6 +75,6 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene, std
 	// TODO: textures
 
 	auto newMesh = std::make_shared<Mesh>(vertices, indices);
-	newMesh->set_custom_shader(custom_shader);
+	newMesh->set_material(customMaterial);
 	return newMesh;
 }

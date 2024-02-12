@@ -5,6 +5,7 @@
 #include "Config.hpp"
 #include "GameObject.hpp"
 #include "GLShader.hpp"
+#include "Material.hpp"
 
 struct Vertex {
 	Vector3<float> position;
@@ -35,7 +36,8 @@ private:
 	bool needsRendererUpdate = true;
 
 	// TODO: Change to material
-	std::shared_ptr<IShader> customShader = nullptr;
+	//std::shared_ptr<IShader> customShader = nullptr;
+	std::shared_ptr<Material> material = nullptr;
 
 #if USE_GL
 	GL_VAO VAO = -1;
@@ -60,16 +62,16 @@ private:
 	}
 public:
 
-	void set_custom_shader(std::shared_ptr<IShader> shader) {
-		this->customShader = shader;
+	void set_material(std::shared_ptr<Material> mat) {
+		this->material = mat;
 	}
 
-	std::shared_ptr<IShader> get_custom_shader() {
-		return this->customShader;
+	std::shared_ptr<Material> get_material() {
+		return this->material;
 	}
 
-	bool is_custom_shader() {
-		return this->customShader != nullptr;
+	bool is_custom_material() {
+		return this->material != nullptr;
 	}
 
 	// TODO: Move USE_GL to IMeshRenderer

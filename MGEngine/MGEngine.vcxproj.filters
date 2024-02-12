@@ -87,6 +87,12 @@
     <ClCompile Include="ITexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialProperty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.hpp">
@@ -192,6 +198,12 @@
       <Filter>Header Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="Material.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MacroUtils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialProperty.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,19 +6,19 @@
 
 class Model : public GameObject {
 private:
-	std::shared_ptr<IShader> custom_shader = nullptr;
+	std::shared_ptr<Material> customMaterial = nullptr;
 
 	std::string path;
 	// model data
 	std::vector<Mesh> meshes;
 
-	bool loadModel(std::string path, std::shared_ptr<IShader> custom_shader);
-	bool processNode(aiNode* node, const aiScene* scene, std::shared_ptr<GameObject> parent, std::shared_ptr<IShader> custom_shader);
-	std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<IShader> custom_shader);
+	bool loadModel(std::string path, std::shared_ptr<Material> customMaterial);
+	bool processNode(aiNode* node, const aiScene* scene, std::shared_ptr<GameObject> parent, std::shared_ptr<Material> customMaterial);
+	std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<Material> customMaterial);
 	//std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 
 public:
-	Model(std::string path, std::shared_ptr<IShader> custom_shader = nullptr);
+	Model(std::string path, std::shared_ptr<Material> customMaterial = nullptr);
 
 	void start() override;
 };

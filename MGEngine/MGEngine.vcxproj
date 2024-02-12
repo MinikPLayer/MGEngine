@@ -175,6 +175,8 @@
     <ClCompile Include="GL_RAII.cpp" />
     <ClCompile Include="IShader.cpp" />
     <ClCompile Include="ITexture.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialProperty.cpp" />
     <ClCompile Include="MatrixUtils.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="GLShader.cpp" />
@@ -206,7 +208,9 @@
     <ClInclude Include="IShader.hpp" />
     <ClInclude Include="ITexture.hpp" />
     <ClInclude Include="Log.hpp" />
+    <ClInclude Include="MacroUtils.hpp" />
     <ClInclude Include="Material.hpp" />
+    <ClInclude Include="MaterialProperty.hpp" />
     <ClInclude Include="MatrixUtils.hpp" />
     <ClInclude Include="Mesh.hpp" />
     <ClInclude Include="Model.hpp" />

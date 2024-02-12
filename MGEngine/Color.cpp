@@ -4,6 +4,10 @@ Vector3<float> Color::to_vec3() {
 	return Vector3<float>(r * a, g * a, b * a);
 }
 
+glm::vec3 Color::to_glm_vec3() {
+	return glm::vec3(r * a, g * a, b * a);
+}
+
 Color::Color(Vector3<float>& v) {
 	this->r = v.x;
 	this->g = v.y;

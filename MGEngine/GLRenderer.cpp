@@ -15,7 +15,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void GLRenderer::__init_shaders__() {
-	if (!basicShaderProgram->load("assets/engine/mainShader.vert", "assets/engine/mainShader.frag")) {
+	if (!basicMaterial->get_shader()->load("assets/engine/mainShader.vert", "assets/engine/mainShader.frag")) {
 		ELOG_FATAL("Cannot compile the basic shader program.");
 		exit(1);
 	}
@@ -45,7 +45,8 @@ void GLRenderer::__init_postprocess_mesh__() {
 	ppShader->bind();
 	ppShader->set_uniform_1i(0, 0);
 
-	newMesh->set_custom_shader(ppShader);
+	ppMaterial = std::shared_ptr<Material>(new Material(ppShader));
+	newMesh->set_material(ppMaterial);
 	ppMesh = std::unique_ptr<Mesh>(newMesh);
 }
 
@@ -113,34 +114,29 @@ void GLRenderer::__draw_postprocess__() {
 }
 
 void GLRenderer::draw(std::vector<std::shared_ptr<Mesh>> meshes) {
-	std::map<std::shared_ptr<GLShader>, std::vector<std::shared_ptr<Mesh>>> shaderMeshMap;
-	shaderMeshMap.insert(std::make_pair(basicShaderProgram, std::vector<std::shared_ptr<Mesh>>()));
+	std::map<std::shared_ptr<Material>, std::vector<std::shared_ptr<Mesh>>> materialMeshMap;
+	materialMeshMap.insert(std::make_pair(basicMaterial, std::vector<std::shared_ptr<Mesh>>()));
 
 	for (auto mesh : meshes) {
-		if (!mesh->is_custom_shader()) {
-			shaderMeshMap[basicShaderProgram].push_back(mesh);
+		if (!mesh->is_custom_material()) {
+			materialMeshMap[basicMaterial].push_back(mesh);
 		}
 		else {
 #if SC_FATAL_ON
-			auto shaderPtr = mesh->get_custom_shader();
-			if (shaderPtr == nullptr) {
+			auto materialPtr = mesh->get_material();
+			if (materialPtr == nullptr) {
 				ELOG_FATAL("Mesh is flagged as using a custom shader, but returns an empty shader.");
 				exit(0x1C5D4E); // ! CustomShader Empty
 			}
 
-			auto shader = std::dynamic_pointer_cast<GLShader>(shaderPtr);
-			if (shader == nullptr) {
-				ELOG_FATAL("Mesh is using an incompatible shader type. Using GL Rendering but shader is not a GLShader.");
-				exit(0x1C5D41); // ! Custom Shader Incompatible
-			}
 #else
-			auto shader = std::static_pointer_cast<GLShader>(mesh->get_custom_shader());
+			auto materialPtr = mesh->get_material();
 #endif
-			if (!shaderMeshMap.contains(shader)) {
-				shaderMeshMap.insert(std::make_pair(shader, std::vector<std::shared_ptr<Mesh>>()));
+			if (!materialMeshMap.contains(materialPtr)) {
+				materialMeshMap.insert(std::make_pair(materialPtr, std::vector<std::shared_ptr<Mesh>>()));
 			}
 
-			shaderMeshMap[shader].push_back(mesh);
+			materialMeshMap[materialPtr].push_back(mesh);
 		}
 	}
 
@@ -151,19 +147,29 @@ void GLRenderer::draw(std::vector<std::shared_ptr<Mesh>> meshes) {
 
 	glEnable(GL_DEPTH_TEST);
 	auto cameraVPMatrix = Camera::GetMainCamera()->get_VP_matrix(windowWidth / (float)windowHeight);
-	for (auto smap : shaderMeshMap) {
-		auto shader = smap.first;
+	for (auto smap : materialMeshMap) {
+		auto material = smap.first;
+		auto shader = material->get_shader();
+
+		auto glShader = std::dynamic_pointer_cast<GLShader>(shader);
+#if SC_FATAL_ON
+		if (glShader == nullptr) {
+			ELOG_FATAL("Material shader is not a GLShader.");
+			exit(0x1C5D4E); // ! MaterialShader NotGLShader
+		}
+#endif
+
 		shader->bind();
 		if (shader->usingModelMatrices) {
-			shader->set_uniform_mat4f(basicShaderProgram->modelUniformLocation, glm::mat4(1.0f)); // Model identity
-			shader->set_uniform_mat4f(basicShaderProgram->vpUniformLocation, cameraVPMatrix); // VP identity
+			shader->set_uniform_mat4f(glShader->modelUniformLocation, glm::mat4(1.0f)); // Model identity
+			shader->set_uniform_mat4f(glShader->vpUniformLocation, cameraVPMatrix); // VP identity
 		}
 		else {
 			glDisable(GL_DEPTH_TEST);
 		}
 
 		for (auto mesh : smap.second) {
-			mesh->draw(shader);
+			mesh->draw(glShader);
 		}
 
 		if (!shader->usingModelMatrices) {

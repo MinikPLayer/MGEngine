@@ -20,7 +20,10 @@ public:
 	virtual void bind() = 0;
 
 	virtual unsigned int get_uniform_location(std::string name) = 0;
+
+	virtual void set_uniform_1f(unsigned int location, float v) = 0;
 	virtual void set_uniform_1i(unsigned int location, int v) = 0;
+	virtual void set_uniform_1ui(unsigned int location, unsigned int v) = 0;
 	virtual void set_uniform_3f(unsigned int location, float v0, float v1, float v2) = 0;
 	virtual void set_uniform_3f(unsigned int location, Vector3<float> v) = 0;
 	virtual void set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3) = 0;
