@@ -167,6 +167,7 @@ void GLRenderer::draw(std::vector<std::shared_ptr<Mesh>> meshes) {
 		else {
 			glDisable(GL_DEPTH_TEST);
 		}
+		material->send_to_shader();
 
 		for (auto mesh : smap.second) {
 			mesh->draw(glShader);
