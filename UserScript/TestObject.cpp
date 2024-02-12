@@ -24,7 +24,7 @@ void TestObject::start() {
 	testTexture->bind(0);
 	textureShader->set_uniform_1i(3, 0);
 
-	auto testMaterial = std::make_shared<Material>(textureShader);
+	testMaterial = std::make_shared<Material>(textureShader);
 	auto cubes = std::make_shared<Model>("assets/user/Backpack/Survival_BackPack_2.fbx", testMaterial);
 	add_component(cubes);	
 
@@ -35,6 +35,9 @@ void TestObject::start() {
 }
 
 void TestObject::update() {
+	auto prop = testMaterial->get_property("brightness");
+	prop.lock()->set_float(sin(Time::ElapsedTime()) * 0.5f + 0.5f);
+
 	testTexture->bind(0);
 
 	if (Input::key_is_pressed(Keyboard::KEY_H)) {

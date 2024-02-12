@@ -32,6 +32,10 @@ class MaterialProperty {
 	std::function<void(MaterialProperty*, IShader*)> sendToShaderFunc = nullptr;
 
 public:
+	std::string get_name() {
+		return name;
+	}
+
 	int get_location() {
 		return location;
 	}

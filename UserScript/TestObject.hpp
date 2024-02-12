@@ -7,6 +7,8 @@
 class TestObject : public GameObject {
 	std::shared_ptr<ITexture> testTexture;
 
+	std::shared_ptr<Material> testMaterial;
+
 	int exitMapping = -1;
 	int smallWindowMapping = -1;
 	int mediumWindowMapping = -1;

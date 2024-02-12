@@ -8,6 +8,8 @@ layout (location = 0) out vec4 FragColor;
 
 layout (location = 3) uniform sampler2D albedoTexture;
 
+layout (location = 4) uniform float brightness = 0.25;
+
 void main() {
-	 FragColor = texture(albedoTexture, UV);
+	 FragColor = texture(albedoTexture, UV) * brightness;
 }
