@@ -1,11 +1,11 @@
 #include "GLRenderer.hpp"
-#include "Log.hpp"
-#include "ErrorCodes.hpp"
-#include "Camera.hpp"
+#include "..\..\Log.hpp"
+#include "..\..\ErrorCodes.hpp"
+#include "..\..\Camera.hpp"
 #include "GL_DebugLayers.hpp"
 #include "GLFramebuffer.hpp"
-#include "Config.hpp"
-#include "Engine.hpp"
+#include "..\..\Config.hpp"
+#include "..\..\Engine.hpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
@@ -15,7 +15,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void GLRenderer::__init_shaders__() {
-	if (!basicMaterial->get_shader()->load("assets/engine/mainShader.vert", "assets/engine/mainShader.frag")) {
+	if (!basicMaterial->get_shader()->load("engine://shaders/mainShader.vert", "engine://shaders/mainShader.frag")) {
 		ELOG_FATAL("Cannot compile the basic shader program.");
 		exit(1);
 	}
@@ -36,7 +36,7 @@ void GLRenderer::__init_postprocess_mesh__() {
 	auto newMesh = new Mesh(vertices, indices);
 
 	ppShader = std::shared_ptr<GLShader>(new GLShader());
-	if (!ppShader->load("assets/engine/fullscreenQuad.vert", "assets/engine/fullscreenQuad.frag")) {
+	if (!ppShader->load("engine://shaders/fullscreenQuad.vert", "engine://shaders/fullscreenQuad.frag")) {
 		ELOG_FATAL("Cannot load PostProcess shader.");
 		Engine::stop();
 		return;

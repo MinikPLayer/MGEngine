@@ -1,8 +1,9 @@
 #include "Model.hpp"
 #include <assimp/postprocess.h>
+#include "File.hpp"
 
 Model::Model(std::string path, std::shared_ptr<Material> customMaterial) {
-	this->path = path;
+	this->path = File::GetUriLocation(path);
 	this->customMaterial = customMaterial;
 
 	this->get_transform().set_local_scale(Vector3<float>(0.01f, 0.01f, 0.01f));

@@ -5,7 +5,7 @@
 
 #if USE_GL
 #include <glad/glad.h>
-#include "GL_RAII.hpp"
+#include "Renderer/GL/GL_RAII.hpp"
 
 #if NDEBUG
 #define USE_GL_DEBUG 0

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IFramebuffer.hpp"
+#include "..\IFramebuffer.hpp"
 #include "GL_RAII.hpp"
 #include "GLTexture.hpp"
 

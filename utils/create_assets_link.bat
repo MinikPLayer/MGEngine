@@ -4,7 +4,9 @@ if "%~1" == "" goto ARG_ERROR
 if "%~2" == "" goto ARG_ERROR
 
 set ASSETS_PATH=%~1
+set "ASSETS_PATH=%ASSETS_PATH:/=\%"
 set OUTPUT_PATH=%~2
+set "OUTPUT_PATH=%OUTPUT_PATH:/=\%"
 set BASE_OUTPUT_PATH=%OUTPUT_PATH%\..
 
 if not exist %ASSETS_PATH% (

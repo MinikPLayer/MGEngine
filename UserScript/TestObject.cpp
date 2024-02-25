@@ -2,7 +2,7 @@
 #include <Input.hpp>
 #include <Engine.hpp>
 #include <TimeUtils.hpp>
-#include <GLTexture.hpp>
+#include <Renderer/GL/GLTexture.hpp>
 
 void TestObject::start() {
 	auto renderer = Engine::get_renderer();
@@ -15,17 +15,17 @@ void TestObject::start() {
 	Input::SetCursorMode(CursorModes::Disabled);
 
 	auto textureShader = std::make_shared<GLShader>();
-	textureShader->load("assets/engine/mainShader.vert", "assets/engine/mainShader_texture.frag");
+	textureShader->load("engine://shaders/mainShader.vert", "engine://shaders/mainShader_texture.frag");
 	textureShader->bind();
 	// textureShader->set_uniform_1i(3, 1);
 
 	testTexture = std::make_shared<GLTexture>();
-	testTexture->loadFromFile("assets/user/Backpack/1001_albedo.jpg");
+	testTexture->loadFromFile("user://Backpack/1001_albedo.jpg");
 	testTexture->bind(0);
 	textureShader->set_uniform_1i(3, 0);
 
 	testMaterial = std::make_shared<Material>(textureShader);
-	auto cubes = std::make_shared<Model>("assets/user/Backpack/Survival_BackPack_2.fbx", testMaterial);
+	auto cubes = std::make_shared<Model>("user://Backpack/Survival_BackPack_2.fbx", testMaterial);
 	add_component(cubes);	
 
 	cubes->lateStartEvent += [](GameObject* obj) {

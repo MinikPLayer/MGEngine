@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ITexture.hpp"
+#include "..\ITexture.hpp"
 #include "GL_RAII.hpp"
 
 class GLTexture : public ITexture {

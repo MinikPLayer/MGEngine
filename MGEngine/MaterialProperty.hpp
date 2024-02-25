@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "IShader.hpp"
+#include "Renderer/IShader.hpp"
 #include "Log.hpp"
 #include <functional>
 #include "Config.hpp"

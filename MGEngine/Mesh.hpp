@@ -4,7 +4,7 @@
 #include "Vector2.hpp"
 #include "Config.hpp"
 #include "GameObject.hpp"
-#include "GLShader.hpp"
+#include "Renderer/GL/GLShader.hpp"
 #include "Material.hpp"
 
 struct Vertex {

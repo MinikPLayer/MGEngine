@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 #include <functional>
-#include "Log.hpp"
+#include "..\..\Log.hpp"
 #include <sstream>
 #include <GLFW/glfw3.h>
 

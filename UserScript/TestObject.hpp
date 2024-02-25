@@ -2,7 +2,7 @@
 #include <GameObject.hpp>
 #include <Mesh.hpp>
 #include <Model.hpp>
-#include "ITexture.hpp"
+#include <Renderer/ITexture.hpp>
 
 class TestObject : public GameObject {
 	std::shared_ptr<ITexture> testTexture;

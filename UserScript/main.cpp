@@ -6,7 +6,7 @@
 
 #include "Camera.hpp"
 #include "TestObject.hpp"
-#include "IRenderer.hpp"
+#include "Renderer/IRenderer.hpp"
 
 int main() {
 	Engine::init();

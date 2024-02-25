@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "Mesh.hpp"
+#include "..\Mesh.hpp"
 #include "IFramebuffer.hpp"
 
 class IRenderer {

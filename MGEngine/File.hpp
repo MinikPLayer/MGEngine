@@ -6,7 +6,55 @@
 
 class File {
 public:
+	const static std::string engineAssetsPath;
+	const static std::string userAssetsPath;
+
+	const static std::string engineUri;
+	const static std::string userUri;
+
+#if defined(_WIN32) || defined(__WIN64)
+#define PATH_SEPARATOR "\\"
+#else
+#define PATH_SEPARATOR "/"
+#endif	
+
+
+	static std::string CombinePaths(std::string p1, std::string p2) {
+		if (p1.size() != 0 && (p1.ends_with("\\") || p1.ends_with("/"))) {
+			p1 = p1.substr(0, p1.length() - 1);
+		}
+
+		if (p2.starts_with("/") || (p2.length() >= 2 && p2[1] == ':')) {
+			ELOG_WARNING("Second path is an absolute path. Using it as a whole path");
+			return p2;
+		}
+
+		std::stringstream ss;
+		ss << p1 << PATH_SEPARATOR << p2;
+		return ss.str();
+	}
+
+	static std::string GetUriLocation(std::string path) {
+		if (path.starts_with(engineUri)) {
+			path = path.substr(engineUri.length());
+			return CombinePaths(engineAssetsPath, path);
+		}
+		else if (path.starts_with(userUri)) {
+			path = path.substr(userUri.length());
+			return CombinePaths(userAssetsPath, path);
+		}
+		else {
+			if (path.find("://") == -1) {
+				return path;
+			}
+
+			ELOG_FATAL("Unknown uri: ", path);
+		}
+	}
+
 	static std::string LoadAllText(std::string path) {
+		path = GetUriLocation(path);
+
 		std::string text;
 		std::string line;
 		std::ifstream file(path);
@@ -24,6 +72,8 @@ public:
 	}
 
 	static std::vector<std::string> LoadAllLines(std::string path) {
+		path = GetUriLocation(path);
+
 		std::vector<std::string> ret;
 		std::string line;
 		std::ifstream file(path);

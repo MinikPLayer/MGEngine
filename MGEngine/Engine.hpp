@@ -3,7 +3,7 @@
 #include "Log.hpp"
 
 #if USE_GL
-#include "GLRenderer.hpp"
+#include "Renderer/GL/GLRenderer.hpp"
 #include "GLFWInput.hpp"
 #endif
 
