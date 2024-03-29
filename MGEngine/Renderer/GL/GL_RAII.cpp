@@ -1,4 +1,4 @@
-#include "GL_RAII.hpp"
+#include "Renderer/GL/GL_RAII.hpp"
 
 void delFbo(GLuint& x) {
 	glDeleteFramebuffers(1, &x);

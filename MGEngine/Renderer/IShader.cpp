@@ -1,5 +1,5 @@
 #include "IShader.hpp"
-#include "..\File.hpp"
+#include "File.hpp"
 
 bool IShader::load(std::string vertexPath, std::string fragmentPath) {
     auto vSource = File::LoadAllText(vertexPath); 

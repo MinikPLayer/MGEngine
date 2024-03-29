@@ -1,7 +1,7 @@
-#include "..\..\Config.hpp"
+#include "Config.hpp"
 
-#include "GLShader.hpp"
-#include "..\..\File.hpp"
+#include "Renderer/GL/GLShader.hpp"
+#include "File.hpp"
 
 bool checkShaderCompilationSuccess(GLuint shader, std::string typeName) {
 	int success;

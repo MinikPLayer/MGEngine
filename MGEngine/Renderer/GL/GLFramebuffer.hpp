@@ -1,8 +1,9 @@
 #pragma once
 
-#include "..\IFramebuffer.hpp"
-#include "GL_RAII.hpp"
-#include "GLTexture.hpp"
+#include "Renderer/IFramebuffer.hpp"
+#include "Renderer/GL/GL_RAII.hpp"
+#include "Renderer/GL/GLTexture.hpp"
+#include <memory>
 
 class GLFramebuffer : public IFramebuffer {
 	GL_FBO fbo = -1;

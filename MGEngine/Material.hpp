@@ -6,6 +6,7 @@
 #include "Color.hpp"
 #include <vector>
 #include "MaterialProperty.hpp"
+#include <memory>
 
 class Material {
 	std::vector<std::shared_ptr<MaterialProperty>> properties;

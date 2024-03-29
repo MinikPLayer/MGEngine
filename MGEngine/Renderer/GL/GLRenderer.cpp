@@ -1,11 +1,11 @@
-#include "GLRenderer.hpp"
-#include "..\..\Log.hpp"
-#include "..\..\ErrorCodes.hpp"
-#include "..\..\Camera.hpp"
-#include "GL_DebugLayers.hpp"
-#include "GLFramebuffer.hpp"
-#include "..\..\Config.hpp"
-#include "..\..\Engine.hpp"
+#include "Renderer/GL/GLRenderer.hpp"
+#include "Log.hpp"
+#include "ErrorCodes.hpp"
+#include "Camera.hpp"
+#include "Renderer/GL/GL_DebugLayers.hpp"
+#include "Renderer/GL/GLFramebuffer.hpp"
+#include "Config.hpp"
+#include "Engine.hpp"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);

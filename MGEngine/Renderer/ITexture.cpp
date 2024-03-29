@@ -1,7 +1,7 @@
-#include "ITexture.hpp"
+#include "Renderer/ITexture.hpp"
 #include <cstdint>
-#include "..\Log.hpp"
-#include "..\File.hpp"
+#include "Log.hpp"
+#include "File.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"

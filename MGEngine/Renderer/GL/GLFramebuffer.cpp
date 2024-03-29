@@ -1,7 +1,7 @@
-#include "GLFramebuffer.hpp"
-#include "..\..\Config.hpp"
-#include "..\..\Log.hpp"
-#include "..\..\Engine.hpp"
+#include "Renderer/GL/GLFramebuffer.hpp"
+#include "Config.hpp"
+#include "Log.hpp"
+#include "Engine.hpp"
 
 unsigned int GLFramebuffer::get_id() {
 	return fbo.get();

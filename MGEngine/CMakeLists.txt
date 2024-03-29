@@ -62,18 +62,21 @@ add_library (MGEngineLib
 	"Transform.cpp"
 	"Transform.hpp"
 	"Vector2.hpp"
-	"Vector3.hpp"  "File.cpp")
+	"Vector3.hpp" 
+	"File.cpp"
+	"glad/glad.c"
+	"glad/glad.h")
 
 set_property(TARGET MGEngineLib PROPERTY CXX_STANDARD 20)
 
 find_package(glm CONFIG REQUIRED)
 target_link_libraries(MGEngineLib PRIVATE glm::glm)
 
-find_package(Stb REQUIRED)
-target_include_directories(MGEngineLib PRIVATE ${Stb_INCLUDE_DIR})
+# find_package(Stb REQUIRED)
+# target_include_directories(MGEngineLib PRIVATE ${Stb_INCLUDE_DIR})
 
-find_package(glad CONFIG REQUIRED)
-target_link_libraries(MGEngineLib PRIVATE glad::glad)
+# find_package(glad CONFIG REQUIRED)
+# target_link_libraries(MGEngineLib PRIVATE glad::glad)
 
 find_package(glfw3 CONFIG REQUIRED)
 target_link_libraries(MGEngineLib PRIVATE glfw)
@@ -85,5 +88,7 @@ find_package(ZLIB REQUIRED)
 target_link_libraries(MGEngineLib PRIVATE ZLIB::ZLIB)
 
 add_definitions(-D GLM_ENABLE_EXPERIMENTAL)
+
+target_include_directories(MGEngineLib PUBLIC "./")
 
 # TODO: Add tests and install targets if needed.

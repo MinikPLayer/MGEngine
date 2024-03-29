@@ -1,10 +1,10 @@
 #pragma once
-#include "..\..\Config.hpp"
-#include "..\IShader.hpp"
+#include "Config.hpp"
+#include "Renderer/IShader.hpp"
 
-#include "GL_RAII.hpp"
+#include "Renderer/GL/GL_RAII.hpp"
 #include <string>
-#include "..\..\Vector3.hpp"
+#include "Vector3.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>

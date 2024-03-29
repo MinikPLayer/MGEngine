@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "..\Vector3.hpp"
+#include "Vector3.hpp"
 
 class IShader {
 protected:

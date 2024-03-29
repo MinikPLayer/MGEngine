@@ -1,6 +1,6 @@
-#include "GLTexture.hpp"
-#include "..\..\Config.hpp"
-#include "..\..\Log.hpp"
+#include "Renderer/GL/GLTexture.hpp"
+#include "Config.hpp"
+#include "Log.hpp"
 
 void GLTexture::_init_() {
 	glGenTextures(1, &texture.get());
