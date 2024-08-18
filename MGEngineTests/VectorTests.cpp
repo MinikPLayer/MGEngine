@@ -1,5 +1,5 @@
 #include "pch.hpp"
-#include "CppUnitTest.hpp"
+#include <CppUnitTest.h>
 #include "../MGEngine/Vector3.hpp"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
