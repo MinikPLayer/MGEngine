@@ -1,9 +1,13 @@
 #pragma once
-#include "Config.hpp"
+
 #include "Log.hpp"
 
-#if USE_GL
+#ifdef RENDER_BACKEND_OGL_SUPPORT
 #include "GLRenderer.hpp"
+#include "GLFWInput.hpp"
+#endif
+
+#ifdef INPUT_BACKEND_GLFW_SUPPORT
 #include "GLFWInput.hpp"
 #endif
 
@@ -12,7 +16,7 @@ class Engine {
 
 	static std::shared_ptr<IRenderer> render;
 
-	static Input input;
+	static GLFWInput input;
 
 	static bool stopped;
 public:

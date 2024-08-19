@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+
 #include <glad/glad.h>
 #include <functional>
 #include "Log.hpp"
@@ -70,3 +72,5 @@ public:
 		}
 	}
 };
+
+#endif // RENDER_BACKEND_OGL_SUPPORT

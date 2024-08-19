@@ -1,4 +1,4 @@
-#include "Config.hpp"
+#ifdef RENDER_BACKEND_OGL_SUPPORT
 
 #include "GLShader.hpp"
 #include "File.hpp"
@@ -115,3 +115,5 @@ void GLShader::bind() {
 unsigned int GLShader::get_uniform_location(std::string name) {
 	return glGetUniformLocation(this->shaderObject.value().get(), name.c_str());
 }
+
+#endif

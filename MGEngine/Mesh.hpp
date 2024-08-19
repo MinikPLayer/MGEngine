@@ -25,6 +25,7 @@ struct Vertex {
 	}
 };
 
+// TODO: Separate Mesh from IMesh / GLMesh
 class Mesh : public GameObject {
 public:
 	static std::vector<std::shared_ptr<Mesh>> __meshes;
@@ -39,7 +40,7 @@ private:
 	//std::shared_ptr<IShader> customShader = nullptr;
 	std::shared_ptr<Material> material = nullptr;
 
-#if USE_GL
+#if RENDER_BACKEND_OGL_SUPPORT
 	GL_VAO VAO = -1;
 	GL_VBO VBO = -1;
 	GL_EBO EBO = -1;
@@ -75,7 +76,7 @@ public:
 	}
 
 	// TODO: Move USE_GL to IMeshRenderer
-#if USE_GL
+#if RENDER_BACKEND_OGL_SUPPORT
 	void draw(std::shared_ptr<GLShader> currentShader);
 #endif
 

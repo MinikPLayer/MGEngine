@@ -4,7 +4,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 
-#if USE_GL
+#if RENDER_BACKEND_OGL_SUPPORT
 #include "GLFWInput.hpp"
 #endif
 #include "TimeUtils.hpp"
@@ -61,33 +61,33 @@ Color Camera::get_clear_color() {
 }
 
 void Camera::start() {
-	forwardMapping = Input::register_mapping(InputMapping("CameraForward", Keyboard::KEY_W, Keyboard::KEY_S));
-	sidewaysMapping = Input::register_mapping(InputMapping("CameraSideways", Keyboard::KEY_D, Keyboard::KEY_A));
+	forwardMapping = GLFWInput::register_mapping(InputMapping("CameraForward", Keyboard::KEY_W, Keyboard::KEY_S));
+	sidewaysMapping = GLFWInput::register_mapping(InputMapping("CameraSideways", Keyboard::KEY_D, Keyboard::KEY_A));
 
 	auto settings = InputMappingSettings();
 	settings.multiplier = 0.001f;
 	settings.deadzone = 0.0f;
-	rotateXMapping = Input::register_mapping(InputMapping("CameraRotateX", MouseAxis::X, settings));
-	rotateYMapping = Input::register_mapping(InputMapping("CameraRotateY", MouseAxis::Y, settings));
+	rotateXMapping = GLFWInput::register_mapping(InputMapping("CameraRotateX", MouseAxis::X, settings));
+	rotateYMapping = GLFWInput::register_mapping(InputMapping("CameraRotateY", MouseAxis::Y, settings));
 	// rotateXMapping = Input::register_mapping(InputMapping("CameraRotateX", Keyboard::ARROW_RIGHT, Keyboard::ARROW_LEFT));
 	// rotateYMapping = Input::register_mapping(InputMapping("CameraRotateY", Keyboard::ARROW_UP, Keyboard::ARROW_DOWN));
 }
 
 void Camera::update() {
 	auto rotation = this->transform.get_local_rotation();
-	auto rotateX = Input::get(rotateXMapping).value().get_value();
-	auto rotateY = Input::get(rotateYMapping).value().get_value();
+	auto rotateX = GLFWInput::get(rotateXMapping).value().get_value();
+	auto rotateY = GLFWInput::get(rotateYMapping).value().get_value();
 
 	rotation = rotation.rotated_around(Vector3<float>(0, 1, 0), rotateX);
 	rotation = rotation.rotated_around(rotation.right(), -rotateY);
 	this->transform.set_local_rotation(rotation);
 
 	auto speed = moveSpeed;
-	if(Input::key_is_pressed(Keyboard::KEY_LEFT_SHIFT))
+	if(GLFWInput::key_is_pressed(Keyboard::KEY_LEFT_SHIFT))
 		speed *= 5;
 
-	auto right = -Input::get(sidewaysMapping).value().get_value() * speed * Time::DeltaTime();
-	auto forward = Input::get(forwardMapping).value().get_value() * speed * Time::DeltaTime();
+	auto right = -GLFWInput::get(sidewaysMapping).value().get_value() * speed * Time::DeltaTime();
+	auto forward = GLFWInput::get(forwardMapping).value().get_value() * speed * Time::DeltaTime();
 
 	auto movement = rotation.forward() * forward + rotation.right() * right;
 	this->transform.set_position(this->transform.get_position() + movement);

@@ -3,6 +3,7 @@
 #include <Engine.hpp>
 #include <TimeUtils.hpp>
 #include <GLTexture.hpp>
+#include "Input.hpp"
 
 
 
@@ -19,26 +20,26 @@ void TestObject::start() {
 
 	LOG_INFO("TestGameObject::Start()");
 	Engine::get_renderer().lock()->set_window_title("Hello MGEngine!");
-	Input::SetCursorMode(CursorModes::Disabled);
+	GLFWInput::SetCursorMode(CursorModes::Disabled);
 
 	loadTestObject();
 }
 
 void TestObject::update() {
-	if (Input::key_is_pressed(Keyboard::KEY_H)) {
+	if (GLFWInput::key_is_pressed(Keyboard::KEY_H)) {
 		GameObject::PrintObjectsHierarchy();
 	}
 	
 
-	if (Input::key_is_pressed(Keyboard::KEY_V)) {
+	if (GLFWInput::key_is_pressed(Keyboard::KEY_V)) {
 		Engine::get_renderer().lock()->set_vertical_sync(true);
 	}
 
-	if (Input::key_is_pressed(Keyboard::KEY_B)) {
+	if (GLFWInput::key_is_pressed(Keyboard::KEY_B)) {
 		Engine::get_renderer().lock()->set_vertical_sync(false);
 	}
 
-	if (Input::key_is_pressed(Keyboard::ESCAPE)) {
+	if (GLFWInput::key_is_pressed(Keyboard::ESCAPE)) {
 		Engine::stop();
 	}
 }

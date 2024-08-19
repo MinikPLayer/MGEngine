@@ -1,4 +1,8 @@
 #pragma once
+
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+#include "GLInclude.hpp"
+
 #include "RObj.hpp"
 #include "Config.hpp"
 
@@ -17,3 +21,5 @@ using GL_ShaderProgram = RObj<GLuint, delShaderProgram>;
 using GL_VAO = RObj<GLuint, delVao>;
 using GL_VBO = RObj<GLuint, delVbo>;
 using GL_EBO = RObj<GLuint, delEbo>;
+
+#endif // RENDER_BACKEND_OGL_SUPPORT

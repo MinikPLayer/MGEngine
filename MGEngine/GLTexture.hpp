@@ -1,5 +1,8 @@
 #pragma once
 
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+#include "GLInclude.hpp"
+
 #include "ITexture.hpp"
 #include "GL_RAII.hpp"
 
@@ -23,3 +26,5 @@ public:
 		texture.dispose();
 	}
 };
+
+#endif

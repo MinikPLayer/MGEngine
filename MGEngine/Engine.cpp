@@ -4,17 +4,8 @@
 #include "Camera.hpp"
 #include "TimeUtils.hpp"
 
-#if USE_GL 
-#pragma message("[INFO] Using OpenGL renderer")
-#else
-#error "No renderer selected"
-#endif
 
-void Engine::check_configuration() {
-#if USE_GL
-	ELOG_INFO("Using OpenGL renderer");
-#endif
-}
+void Engine::check_configuration() {}
 
 std::weak_ptr<IRenderer> Engine::get_renderer() {
 	return render;
@@ -25,6 +16,13 @@ void Engine::stop() {
 }
 
 void Engine::init() {
+	// TODO: Load render backend from config or something
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+	render = std::shared_ptr<IRenderer>(new GLRenderer());
+#else
+#error "No renderer selected"
+#endif
+
 	render->init();
 	auto mainCamera = Camera::CreateDefault();
 	GameObject::Instantiate(mainCamera);
@@ -43,9 +41,6 @@ void Engine::run() {
 	}
 }
 
-#if USE_GL
-std::shared_ptr<IRenderer> Engine::render = std::shared_ptr<IRenderer>(new GLRenderer());
-#endif // USE_GL
-
-Input Engine::input;
+std::shared_ptr<IRenderer> Engine::render;
+GLFWInput Engine::input;
 bool Engine::stopped;

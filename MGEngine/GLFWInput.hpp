@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Config.hpp"
+#ifdef INPUT_BACKEND_GLFW_SUPPORT
+
+#include "GLInclude.hpp"
 #include <GLFW/glfw3.h>
 #include <map>
 #include <string>
@@ -261,7 +263,7 @@ public:
 	}
 };
 
-class Input {
+class GLFWInput {
 	static int curMappingId;
 	static std::map<int, InputMapping> idMappings;
 
@@ -380,3 +382,5 @@ public:
 		nameToIdMappings.erase(mapping.value().get_name());
 	}
 };
+
+#endif

@@ -1,3 +1,5 @@
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+
 #include "GLTexture.hpp"
 #include "Config.hpp"
 #include "Log.hpp"
@@ -54,3 +56,5 @@ void GLTexture::bind(unsigned int slot) {
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, texture.get());
 }
+
+#endif

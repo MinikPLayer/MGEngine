@@ -1,22 +1,5 @@
 #pragma once
 
-#define MG_RENDERER GL
-#define USE_GL (MG_RENDERER == GL)
-
-#if USE_GL
-#include <glad/glad.h>
-#include "GL_RAII.hpp"
-
-#if NDEBUG
-#define USE_GL_DEBUG 0
-#else
-#define USE_GL_DEBUG 1
-#endif
-
-#else
-#error No renderer type specified!
-#endif
-
 #if NDEBUG
 #define SECURITY_CHECKS 1
 #else

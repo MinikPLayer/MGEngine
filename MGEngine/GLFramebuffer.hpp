@@ -1,7 +1,9 @@
 #pragma once
 
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+#include "GLInclude.hpp"
+
 #include "IFramebuffer.hpp"
-#include "GL_RAII.hpp"
 #include "GLTexture.hpp"
 
 class GLFramebuffer : public IFramebuffer {
@@ -23,3 +25,5 @@ public:
 	void bind() override;
 	void resize(Vector2<int> size) override;
 };
+
+#endif // RENDER_BACKEND_OGL_SUPPORT

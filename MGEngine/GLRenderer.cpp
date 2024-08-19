@@ -1,3 +1,5 @@
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+
 #include "GLRenderer.hpp"
 #include "Log.hpp"
 #include "ErrorCodes.hpp"
@@ -70,6 +72,10 @@ std::shared_ptr<IShader> GLRenderer::_create_shader_(std::string vertex_shader, 
 	return shader;
 }
 
+RenderBackends GLRenderer::get_backend_type() {
+	return RenderBackends::OpenGL;
+}
+
 std::shared_ptr<IShader> GLRenderer::_create_default_shader_() {
 	return _create_shader_("assets/engine/mainShader.vert", "assets/engine/mainShader.frag");
 }
@@ -111,7 +117,7 @@ void GLRenderer::clear() {
 
 bool GLRenderer::poll_events() {
 	glfwPollEvents();
-	Input::__Update(window);
+	GLFWInput::__Update(window);
 	return !glfwWindowShouldClose(window);
 }
 
@@ -253,3 +259,5 @@ void GLRenderer::_init_internal_(Vector2<int> size) {
 #endif
 	ELOG_INFO("OpenGL renderer initialized");
 }
+
+#endif

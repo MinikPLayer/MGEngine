@@ -2,7 +2,9 @@
 
 std::vector<std::shared_ptr<Mesh>> Mesh::__meshes;
 
-#if USE_GL
+#if RENDER_BACKEND_OGL_SUPPORT
+#include "GLInclude.hpp"
+
 void Mesh::init_renderer() {
 	VAO = -1;
 	VBO = -1;

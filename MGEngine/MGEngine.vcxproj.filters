@@ -93,6 +93,9 @@
     <ClCompile Include="MaterialProperty.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.hpp">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="MaterialProperty.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLInclude.hpp">
+      <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

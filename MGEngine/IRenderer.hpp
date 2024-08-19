@@ -4,6 +4,10 @@
 #include "Mesh.hpp"
 #include "IFramebuffer.hpp"
 
+enum class RenderBackends {
+	OpenGL = 0
+};
+
 class IRenderer {
 protected:
 	virtual void _set_window_size_internal_(Vector2<int> size) = 0;
@@ -30,6 +34,8 @@ public:
 	virtual bool poll_events() = 0;
 	virtual void draw(std::vector<std::shared_ptr<Mesh>>) = 0;
 	virtual void shutdown() = 0;
+
+	virtual RenderBackends get_backend_type() = 0;
 
 	std::shared_ptr<IFramebuffer> create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window) {
 		auto size = get_resolution();

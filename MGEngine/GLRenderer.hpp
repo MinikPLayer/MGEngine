@@ -1,5 +1,14 @@
 #pragma once
-#include <glad/glad.h>
+
+#if RENDER_BACKEND_OGL_SUPPORT
+#include "GLInclude.hpp"
+
+#if NDEBUG
+#define USE_GL_DEBUG 0
+#else
+#define USE_GL_DEBUG 1
+#endif
+
 #include <GLFW/glfw3.h>
 #include "GLFWInput.hpp"
 #include "Mesh.hpp"
@@ -35,6 +44,8 @@ protected:
 	std::shared_ptr<IShader> _create_default_shader_() override;
 	std::shared_ptr<IShader> _create_shader_(std::string vertex_shader, std::string fragment_shader) override;
 public:
+	RenderBackends get_backend_type() override;
+
 	Vector2<int> get_main_screen_resolution() override;
 
 	void set_vertical_sync(bool enabled) override;
@@ -56,3 +67,4 @@ public:
 	void shutdown() override;
 };
 
+#endif

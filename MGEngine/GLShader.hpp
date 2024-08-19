@@ -1,5 +1,8 @@
 #pragma once
-#include "Config.hpp"
+
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+
+#include "GLInclude.hpp"
 #include "IShader.hpp"
 
 #include "GL_RAII.hpp"
@@ -35,3 +38,5 @@ public:
 	void set_uniform_4f(unsigned int location, float v0, float v1, float v2, float v3) override;
 	void set_uniform_mat4f(unsigned int location, glm::mat4 mat) override;
 };
+
+#endif
