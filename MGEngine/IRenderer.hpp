@@ -11,6 +11,11 @@ protected:
 	virtual std::shared_ptr<IFramebuffer> _create_main_framebuffer_() = 0;
 	virtual std::shared_ptr<IFramebuffer> _create_framebuffer_(IFramebuffer::AttachmentTypes attachments, bool resize_with_window, Vector2<int> current_size) = 0;
 
+	virtual std::shared_ptr<IShader> _create_default_shader_() = 0;
+	virtual std::shared_ptr<IShader> _create_shader_(std::string vertex, std::string fragment) = 0;
+	friend std::shared_ptr<IShader> IShader::create_default();
+	friend std::shared_ptr<IShader> IShader::create(std::string vertex, std::string fragment);
+
 	std::vector<std::shared_ptr<IFramebuffer>> FBs;
 public:
 	virtual Vector2<int> get_main_screen_resolution() = 0;

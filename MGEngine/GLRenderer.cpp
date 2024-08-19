@@ -45,7 +45,7 @@ void GLRenderer::__init_postprocess_mesh__() {
 	ppShader->bind();
 	ppShader->set_uniform_1i(0, 0);
 
-	ppMaterial = std::shared_ptr<Material>(new Material(ppShader));
+	ppMaterial = std::shared_ptr<Material>(Material::create(ppShader));
 	newMesh->set_material(ppMaterial);
 	ppMesh = std::unique_ptr<Mesh>(newMesh);
 }
@@ -59,6 +59,19 @@ void GLRenderer::_set_window_size_internal_(Vector2<int> size) {
 	windowHeight = size.y;
 
 	glfwSetWindowSize(window, windowWidth, windowHeight);
+}
+
+std::shared_ptr<IShader> GLRenderer::_create_shader_(std::string vertex_shader, std::string fragment_shader) {
+	auto shader = std::shared_ptr<IShader>(new GLShader());
+	if (!shader->load(vertex_shader, fragment_shader)) {
+		ELOG_FATAL("Cannot compile the shader program.");
+		exit(1);
+	}
+	return shader;
+}
+
+std::shared_ptr<IShader> GLRenderer::_create_default_shader_() {
+	return _create_shader_("assets/engine/mainShader.vert", "assets/engine/mainShader.frag");
 }
 
 Vector2<int> GLRenderer::get_main_screen_resolution() {

@@ -6,11 +6,15 @@
 
 class Model : public GameObject {
 private:
+	std::vector<std::shared_ptr<Material>> materials;
+
 	std::shared_ptr<Material> customMaterial = nullptr;
 
 	std::string path;
 	// model data
 	std::vector<Mesh> meshes;
+
+	bool loadMaterials(const aiScene* scene);
 
 	bool loadModel(std::string path, std::shared_ptr<Material> customMaterial);
 	bool processNode(aiNode* node, const aiScene* scene, std::shared_ptr<GameObject> parent, std::shared_ptr<Material> customMaterial);

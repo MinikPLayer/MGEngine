@@ -15,6 +15,8 @@ class TestObject : public GameObject {
 	int largeWindowMapping = -1;
 	int veryLargeWindowMapping = -1;
 
+	void loadTestObject();
+
 public:
 	void start() override;
 	void update() override;

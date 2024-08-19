@@ -16,7 +16,7 @@ class GLRenderer : public IRenderer {
 	std::shared_ptr<Material> ppMaterial = nullptr;
 
 	//std::shared_ptr<GLShader> basicShaderProgram = std::shared_ptr<GLShader>(new GLShader());
-	std::shared_ptr<Material> basicMaterial = std::shared_ptr<Material>(new Material(std::shared_ptr<GLShader>(new GLShader())));
+	std::shared_ptr<Material> basicMaterial = std::shared_ptr<Material>(Material::create(std::shared_ptr<GLShader>(new GLShader())));
 
 	void __init_shaders__();
 	void __init_postprocess_mesh__();
@@ -32,6 +32,8 @@ protected:
 	std::shared_ptr<IFramebuffer> _create_main_framebuffer_() override;
 	void _init_internal_(Vector2<int> size = Vector2<int>(0, 0)) override;
 	void _set_window_size_internal_(Vector2<int> size) override;
+	std::shared_ptr<IShader> _create_default_shader_() override;
+	std::shared_ptr<IShader> _create_shader_(std::string vertex_shader, std::string fragment_shader) override;
 public:
 	Vector2<int> get_main_screen_resolution() override;
 

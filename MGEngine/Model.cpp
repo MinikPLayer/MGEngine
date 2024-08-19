@@ -13,12 +13,38 @@ void Model::start() {
 		throw std::runtime_error("Unable to load model: " + path);
 }
 
+bool Model::loadMaterials(const aiScene* scene) {
+	ELOG_TRACE("Loading materials for model: ", path);
+
+	materials.reserve(scene->mNumMaterials);
+	for (size_t i = 0; i < scene->mNumMaterials; i++) {
+		// TODO: Add materials
+		auto newMat = Material::createDefault();
+		
+		auto mat = scene->mMaterials[i];
+		
+		aiColor3D diffuse;
+		if (AI_SUCCESS != mat->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse)) {
+			ELOG_WARNING("Failed to load diffuse color for material ", i);
+		}
+
+		ELOG_TRACE("Material ", i, " diffuse color: ", diffuse.r, " ", diffuse.g, " ", diffuse.b);
+	}
+
+	return true;
+}
+
 bool Model::loadModel(std::string path, std::shared_ptr<Material> customMaterial) {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 		ELOG_ERROR("Assimp error: ", importer.GetErrorString());
+		return false;
+	}
+
+	if (!loadMaterials(scene)) {
+		ELOG_ERROR("Failed to load materials");
 		return false;
 	}
 

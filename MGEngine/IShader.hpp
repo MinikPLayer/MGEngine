@@ -9,9 +9,13 @@ protected:
 
 	bool good = false;
 public:
+	static std::shared_ptr<IShader> create_default();
+	static std::shared_ptr<IShader> create(std::string vertexPath, std::string fragmentPath);
+
 	/// <summary>
 	/// Shader will use model matrices for rendering. 
 	/// If disabled, objects will be drawn without any transformations.
+	/// This is useful for rendering 2D objects.
 	/// </summary>
 	bool usingModelMatrices = true;
 
