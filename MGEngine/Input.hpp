@@ -27,8 +27,8 @@ public:
 
 	static int register_mapping(InputMapping mapping);
 	static void update_mapping(InputMapping mapping);
-	static std::optional<InputMapping> get_mapping(int id);
-	static std::optional<InputMapping> get_mapping(std::string name);
+	static std::optional<InputMapping> get_value(int id);
+	static std::optional<InputMapping> get_value(std::string name);
 	static std::optional<int> get_mapping_id(std::string name);
 	static bool remove_mapping(int id);
 };

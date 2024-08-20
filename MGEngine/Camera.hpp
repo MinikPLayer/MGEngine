@@ -13,6 +13,8 @@ class Camera : public GameObject {
 	int forwardMapping = -1;
 	int sidewaysMapping = -1;
 
+	int sprintMapping = -1;
+
 	int rotateXMapping = -1;
 	int rotateYMapping = -1;
 

@@ -63,6 +63,7 @@ Color Camera::get_clear_color() {
 void Camera::start() {
 	forwardMapping = Input::register_mapping(InputMapping("CameraForward", KeyboardKeys::KEY_W, KeyboardKeys::KEY_S));
 	sidewaysMapping = Input::register_mapping(InputMapping("CameraSideways", KeyboardKeys::KEY_D, KeyboardKeys::KEY_A));
+	sprintMapping = Input::register_mapping(InputMapping("CameraSprint", KeyboardKeys::KEY_LEFT_SHIFT));
 
 	auto settings = InputMappingSettings();
 	settings.multiplier = 0.001f;
@@ -75,19 +76,20 @@ void Camera::start() {
 
 void Camera::update() {
 	auto rotation = this->transform.get_local_rotation();
-	auto rotateX = Input::get_mapping(rotateXMapping).value().get_value();
-	auto rotateY = Input::get_mapping(rotateYMapping).value().get_value();
+	auto rotateX = Input::get_value(rotateXMapping).value().get_value();
+	auto rotateY = Input::get_value(rotateYMapping).value().get_value();
 
 	rotation = rotation.rotated_around(Vector3<float>(0, 1, 0), rotateX);
 	rotation = rotation.rotated_around(rotation.right(), -rotateY);
 	this->transform.set_local_rotation(rotation);
 
 	auto speed = moveSpeed;
-	if(Input::is_key_pressed(KeyboardKeys::KEY_LEFT_SHIFT))
+	if (Input::get_value(sprintMapping).value().is_pressed()) {
 		speed *= 5;
+	}
 
-	auto right = -Input::get_mapping(sidewaysMapping).value().get_value() * speed * Time::DeltaTime();
-	auto forward = Input::get_mapping(forwardMapping).value().get_value() * speed * Time::DeltaTime();
+	auto right = -Input::get_value(sidewaysMapping).value().get_value() * speed * Time::DeltaTime();
+	auto forward = Input::get_value(forwardMapping).value().get_value() * speed * Time::DeltaTime();
 
 	auto movement = rotation.forward() * forward + rotation.right() * right;
 	this->transform.set_position(this->transform.get_position() + movement);

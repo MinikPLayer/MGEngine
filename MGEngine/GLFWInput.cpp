@@ -4,7 +4,7 @@
 
 GLFWInputBackend::GLFWInputBackend(std::weak_ptr<GLFWwindow> window) {
 	auto callback = [](GLFWwindow* window, double a, double b) {
-		IInputBackend::_scroll_callback_(Vector2f(a, b));
+		IInputBackend::_scroll_callback_(Vector2f((float)a, (float)b));
 	};
 	glfwSetScrollCallback(window.lock().get(), callback);
 
@@ -40,7 +40,7 @@ void GLFWInputBackend::set_cursor_mode(CursorModes mode) {
 Vector2f GLFWInputBackend::get_cursor_position() {
 	double x, y;
 	glfwGetCursorPos(window.lock().get(), &x, &y);
-	return Vector2f(x, y);
+	return Vector2f((float)x, (float)y);
 }
 
 int GLFWInputBackend::get_glfw_key_map(KeyboardKeys key) {

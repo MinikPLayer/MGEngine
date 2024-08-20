@@ -54,7 +54,7 @@ void Input::update_mapping(InputMapping mapping) {
 	idMappings.at(id.value()) = mapping;
 }
 
-std::optional<InputMapping> Input::get_mapping(int id) {
+std::optional<InputMapping> Input::get_value(int id) {
 	try {
 		auto mapping = idMappings.at(id);
 		return mapping;
@@ -74,25 +74,27 @@ std::optional<int> Input::get_mapping_id(std::string name) {
 		ELOG_ERROR("Input name not found: \"", name, "\"");
 		return std::nullopt;
 	};
+
+	return std::nullopt;
 }
 
-std::optional<InputMapping> Input::get_mapping(std::string name) {
+std::optional<InputMapping> Input::get_value(std::string name) {
 	auto id = get_mapping_id(name);
 	if (!id.has_value())
 		return std::nullopt;
 
-	return get_mapping(id.value());
+	return get_value(id.value());
 }
 
 bool Input::remove_mapping(int id) {
-	auto mapping = get_mapping(id);
+	auto mapping = get_value(id);
 	if (!mapping.has_value())
 		return false;
 
 	idMappings.erase(id);
 	nameToIdMappings.erase(mapping.value().get_name());
+	return true;
 }
-
 
 Vector2f Input::lastMousePos = Vector2f::zero();
 int Input::curMappingId;
