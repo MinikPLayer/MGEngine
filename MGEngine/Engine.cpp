@@ -24,6 +24,14 @@ void Engine::init() {
 #endif
 
 	render->init();
+
+#ifdef RENDER_BACKEND_OGL_SUPPORT
+	auto glRenderer = (GLRenderer*)render.get();
+	auto backend = new GLFWInputBackend(glRenderer->get_gl_window());
+	Input::init(std::unique_ptr<IInputBackend>(backend));
+#endif // RENDER_BACKEND_OGL_SUPPORT
+
+
 	auto mainCamera = Camera::CreateDefault();
 	GameObject::Instantiate(mainCamera);
 	Camera::SetMainCamera(mainCamera);
@@ -42,5 +50,4 @@ void Engine::run() {
 }
 
 std::shared_ptr<IRenderer> Engine::render;
-GLFWInput Engine::input;
 bool Engine::stopped;

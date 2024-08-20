@@ -20,26 +20,26 @@ void TestObject::start() {
 
 	LOG_INFO("TestGameObject::Start()");
 	Engine::get_renderer().lock()->set_window_title("Hello MGEngine!");
-	GLFWInput::SetCursorMode(CursorModes::Disabled);
+	Input::set_cursor_mode(CursorModes::Disabled);
 
 	loadTestObject();
 }
 
 void TestObject::update() {
-	if (GLFWInput::key_is_pressed(Keyboard::KEY_H)) {
+	if (Input::is_key_pressed(KeyboardKeys::KEY_H)) {
 		GameObject::PrintObjectsHierarchy();
 	}
 	
 
-	if (GLFWInput::key_is_pressed(Keyboard::KEY_V)) {
+	if (Input::is_key_pressed(KeyboardKeys::KEY_V)) {
 		Engine::get_renderer().lock()->set_vertical_sync(true);
 	}
 
-	if (GLFWInput::key_is_pressed(Keyboard::KEY_B)) {
+	if (Input::is_key_pressed(KeyboardKeys::KEY_B)) {
 		Engine::get_renderer().lock()->set_vertical_sync(false);
 	}
 
-	if (GLFWInput::key_is_pressed(Keyboard::ESCAPE)) {
+	if (Input::is_key_pressed(KeyboardKeys::KEY_ESCAPE)) {
 		Engine::stop();
 	}
 }

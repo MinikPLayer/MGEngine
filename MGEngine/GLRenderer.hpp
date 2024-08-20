@@ -17,7 +17,7 @@
 
 // TODO: Add more logs
 class GLRenderer : public IRenderer {
-	GLFWwindow* window = nullptr;
+	std::shared_ptr<GLFWwindow> window = nullptr;
 
 	// PostProcess mesh
 	std::unique_ptr<Mesh> ppMesh = nullptr;
@@ -43,6 +43,10 @@ protected:
 	void _set_window_size_internal_(Vector2<int> size) override;
 	std::shared_ptr<IShader> _create_default_shader_() override;
 	std::shared_ptr<IShader> _create_shader_(std::string vertex_shader, std::string fragment_shader) override;
+
+	// Returns true if the window should close
+	bool _poll_events_() override;
+
 public:
 	RenderBackends get_backend_type() override;
 
@@ -53,6 +57,9 @@ public:
 
 	Vector2<int> get_resolution() override;
 
+	// TODO: Add generic in the interface
+	std::weak_ptr<GLFWwindow> get_gl_window();
+
 	GLRenderer(const GLRenderer&) = delete;
 	GLRenderer& operator=(const GLRenderer&) = delete;
 
@@ -61,8 +68,6 @@ public:
 
 	void clear() override;
 
-	// Returns true if the window should close
-	bool poll_events() override;
 	void draw(std::vector<std::shared_ptr<Mesh>> meshes) override;
 	void shutdown() override;
 };

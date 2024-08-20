@@ -174,8 +174,13 @@
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="GLTexture.cpp" />
     <ClCompile Include="GL_RAII.cpp" />
+    <ClCompile Include="IInputBackend.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputMapping.cpp" />
+    <ClCompile Include="IRenderer.cpp" />
     <ClCompile Include="IShader.cpp" />
     <ClCompile Include="ITexture.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialProperty.cpp" />
     <ClCompile Include="MatrixUtils.cpp" />
@@ -206,6 +211,9 @@
     <ClInclude Include="GL_DebugLayers.hpp" />
     <ClInclude Include="IFramebuffer.hpp" />
     <ClInclude Include="Input.hpp" />
+    <ClInclude Include="IInputBackend.hpp" />
+    <ClInclude Include="InputMapping.hpp" />
+    <ClInclude Include="InputStructs.hpp" />
     <ClInclude Include="IRenderer.hpp" />
     <ClInclude Include="IShader.hpp" />
     <ClInclude Include="ITexture.hpp" />

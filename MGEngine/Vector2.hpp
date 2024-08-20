@@ -10,6 +10,14 @@ class Vector2 {
 public:
 	T x, y;
 
+	static Vector2<T> zero() {
+		return Vector2<T>(0, 0);
+	}
+
+	static Vector2<T> one() {
+		return Vector2<T>(1, 1);
+	}
+
 	Vector2(T x = 0, T y = 0) {
 		this->x = x;
 		this->y = y;
@@ -59,3 +67,6 @@ public:
 		return ss.str();
 	}
 };
+
+using Vector2f = Vector2<float>;
+using Vector2i = Vector2<int>;

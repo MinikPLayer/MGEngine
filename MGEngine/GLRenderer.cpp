@@ -56,11 +56,15 @@ Vector2<int> GLRenderer::get_resolution() {
 	return Vector2<int>(windowWidth, windowHeight);
 }
 
+std::weak_ptr<GLFWwindow> GLRenderer::get_gl_window() {
+	return window;
+}
+
 void GLRenderer::_set_window_size_internal_(Vector2<int> size) {
 	windowWidth = size.x;
 	windowHeight = size.y;
 
-	glfwSetWindowSize(window, windowWidth, windowHeight);
+	glfwSetWindowSize(window.get(), windowWidth, windowHeight);
 }
 
 std::shared_ptr<IShader> GLRenderer::_create_shader_(std::string vertex_shader, std::string fragment_shader) {
@@ -93,7 +97,7 @@ void GLRenderer::set_vertical_sync(bool enabled) {
 }
 
 void GLRenderer::set_window_title(std::string title) {
-	glfwSetWindowTitle(window, title.c_str());
+	glfwSetWindowTitle(window.get(), title.c_str());
 }
 
 std::shared_ptr<IFramebuffer> GLRenderer::_create_framebuffer_(IFramebuffer::AttachmentTypes attachments, bool resize_with_window, Vector2<int> current_size) {
@@ -104,8 +108,8 @@ std::shared_ptr<IFramebuffer> GLRenderer::_create_framebuffer_(IFramebuffer::Att
 }
 
 GLRenderer::~GLRenderer() {
-	glfwTerminate();
 	window = nullptr;
+	glfwTerminate();
 }
 
 void GLRenderer::clear() {
@@ -115,10 +119,9 @@ void GLRenderer::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-bool GLRenderer::poll_events() {
+bool GLRenderer::_poll_events_() {
 	glfwPollEvents();
-	GLFWInput::__Update(window);
-	return !glfwWindowShouldClose(window);
+	return !glfwWindowShouldClose(window.get());
 }
 
 void GLRenderer::__draw_postprocess__() {
@@ -199,11 +202,11 @@ void GLRenderer::draw(std::vector<std::shared_ptr<Mesh>> meshes) {
 
 	__draw_postprocess__();
 
-	glfwSwapBuffers(window);
+	glfwSwapBuffers(window.get());
 }
 
 void GLRenderer::shutdown() {
-	glfwSetWindowShouldClose(window, true);
+	glfwSetWindowShouldClose(window.get(), true);
 }
 
 std::shared_ptr<IFramebuffer> GLRenderer::_create_main_framebuffer_() {
@@ -227,13 +230,16 @@ void GLRenderer::_init_internal_(Vector2<int> size) {
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif
 
-	window = glfwCreateWindow(windowWidth, windowHeight, "MGEngine", nullptr, nullptr);
+	window = std::shared_ptr<GLFWwindow>(glfwCreateWindow(windowWidth, windowHeight, "MGEngine", nullptr, nullptr), [](GLFWwindow* w) {
+		glfwDestroyWindow(w);
+	});
+
 	if (window == nullptr) {
 		ELOG_FATAL("Failed to create GLFW window");
 		glfwTerminate();
 		exit(ERROR_CODE_GLFW_INIT_FAIL);
 	}
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(window.get());
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		ELOG_FATAL("Failed to initialize GLAD");
@@ -242,8 +248,8 @@ void GLRenderer::_init_internal_(Vector2<int> size) {
 	}
 
 	glViewport(0, 0, windowWidth, windowHeight);
-	glfwSetWindowUserPointer(window, this);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetWindowUserPointer(window.get(), this);
+	glfwSetFramebufferSizeCallback(window.get(), framebuffer_size_callback);
 
 	// TODO: Add option to disable vsync
 	glfwSwapInterval(1);

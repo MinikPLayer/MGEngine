@@ -2,6 +2,7 @@
 
 #include "Log.hpp"
 
+#include "IRenderer.hpp"
 #ifdef RENDER_BACKEND_OGL_SUPPORT
 #include "GLRenderer.hpp"
 #include "GLFWInput.hpp"
@@ -15,8 +16,6 @@ class Engine {
 	static void check_configuration();
 
 	static std::shared_ptr<IRenderer> render;
-
-	static GLFWInput input;
 
 	static bool stopped;
 public:

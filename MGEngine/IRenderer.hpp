@@ -20,6 +20,8 @@ protected:
 	friend std::shared_ptr<IShader> IShader::create_default();
 	friend std::shared_ptr<IShader> IShader::create(std::string vertex, std::string fragment);
 
+	virtual bool _poll_events_() = 0;
+
 	std::vector<std::shared_ptr<IFramebuffer>> FBs;
 public:
 	virtual Vector2<int> get_main_screen_resolution() = 0;
@@ -31,11 +33,12 @@ public:
 
 	virtual void clear() = 0;
 
-	virtual bool poll_events() = 0;
 	virtual void draw(std::vector<std::shared_ptr<Mesh>>) = 0;
 	virtual void shutdown() = 0;
 
 	virtual RenderBackends get_backend_type() = 0;
+
+	bool poll_events();
 
 	std::shared_ptr<IFramebuffer> create_framebuffer(IFramebuffer::AttachmentTypes attachments, bool resize_with_window) {
 		auto size = get_resolution();
