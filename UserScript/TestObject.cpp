@@ -8,7 +8,13 @@
 
 
 void TestObject::loadTestObject() {
-	auto object = std::make_shared<Model>("assets/user/cube_diorama.fbx");
+	texture = std::make_shared<GLTexture>();
+	texture->loadFromFile("assets/user/Backpack/1001_albedo.jpg");
+	texture->bind(0);
+	auto textureShader = IShader::create("assets/engine/mainShader.vert", "assets/engine/mainShader_texture.frag");
+	testMaterial = Material::create(textureShader);
+
+	auto object = std::make_shared<Model>("assets/user/Backpack/Survival_BackPack_2.fbx", testMaterial);
 	add_component(object);
 }
 
@@ -26,6 +32,8 @@ void TestObject::start() {
 }
 
 void TestObject::update() {
+	texture->bind(0);
+
 	if (Input::is_key_pressed(KeyboardKeys::KEY_H)) {
 		GameObject::PrintObjectsHierarchy();
 	}

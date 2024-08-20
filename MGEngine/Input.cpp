@@ -1,10 +1,8 @@
 #include "Input.hpp"
 #include "InputMapping.hpp"
 
-void Input::init(std::unique_ptr<IInputBackend> backend)
-{
+void Input::init(std::unique_ptr<IInputBackend> backend) {
 	Input::backend = std::move(backend);
-
 	lastMousePos = Input::backend->get_cursor_position();
 }
 

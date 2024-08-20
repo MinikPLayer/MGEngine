@@ -3,11 +3,13 @@
 #include <Mesh.hpp>
 #include <Model.hpp>
 #include "ITexture.hpp"
+#include "GLTexture.hpp"
 
 class TestObject : public GameObject {
 	std::shared_ptr<ITexture> testTexture;
 
 	std::shared_ptr<Material> testMaterial;
+	std::shared_ptr<GLTexture> texture;
 
 	int exitMapping = -1;
 	int smallWindowMapping = -1;
