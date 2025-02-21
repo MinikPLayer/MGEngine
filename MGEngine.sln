@@ -48,4 +48,7 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC2B907A-DE1E-4371-A2DA-C71B500443E4}
 	EndGlobalSection
+	GlobalSection(RiderSharedRunConfigurations) = postSolution
+		File = UserScript.run\UserScript.run.xml
+	EndGlobalSection
 EndGlobal
