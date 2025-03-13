@@ -1,5 +1,5 @@
 # MGEngine
-My current, very Work In Progress attempt at creating a game engine with C++ and OpenGL.
+My current, very much Work In Progress attempt at creating a game engine with C++ and OpenGL.
 
 ## Design Philosophy
 Create a graphics API agnostic game engine with easy support for model loading, physics and graphics rendering.
