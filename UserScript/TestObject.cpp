@@ -4,6 +4,7 @@
 #include <TimeUtils.hpp>
 #include <GLTexture.hpp>
 #include "Input.hpp"
+#include <Camera.hpp>
 
 
 
@@ -29,6 +30,13 @@ void TestObject::start() {
 	Input::set_cursor_mode(CursorModes::Disabled);
 
 	loadTestObject();
+
+	auto mainCamera = Camera::GetMainCamera();
+	if (mainCamera == nullptr) {
+		throw std::runtime_error("Main camera is null in TestObject::start()");
+	}
+
+	mainCamera->set_clear_color(Color(0.1f, 0.1f, 0.1f));
 }
 
 void TestObject::update() {
