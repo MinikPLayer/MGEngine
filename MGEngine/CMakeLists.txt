@@ -67,7 +67,10 @@ add_library (MGEngineLib
 	"glad/glad.c"
 	"glad/glad.h")
 
-set_property(TARGET MGEngineLib PROPERTY CXX_STANDARD 20)
+set_property(TARGET MGEngineLib PROPERTY CXX_STANDARD 26)
+
+#list(APPEND CMAKE_PREFIX_PATH "D:/source/CPP/MGEngine/lib/share/lib/share/glm")
+#list(APPEND CMAKE_MODULE_PATH "D:/source/CPP/MGEngine/lib/share/lib/share/glm")
 
 find_package(glm CONFIG REQUIRED)
 target_link_libraries(MGEngineLib PRIVATE glm::glm)
@@ -90,5 +93,6 @@ target_link_libraries(MGEngineLib PRIVATE ZLIB::ZLIB)
 add_definitions(-D GLM_ENABLE_EXPERIMENTAL)
 
 target_include_directories(MGEngineLib PUBLIC "./")
+target_include_directories(MGEngineLib PUBLIC ${PROJECT_INCLUDE_DIR})
 
 # TODO: Add tests and install targets if needed.

@@ -3,9 +3,6 @@ add_executable(UserScript "main.cpp" "TestObject.hpp" "TestObject.cpp")
 target_include_directories(UserScript PUBLIC "../MGEngine")
 target_link_libraries(UserScript MGEngineLib)
 
-# find_package(glad CONFIG REQUIRED)
-# target_link_libraries(UserScript glad::glad)
-
 set_property(TARGET UserScript PROPERTY CXX_STANDARD 20)
 add_definitions(-D GLM_ENABLE_EXPERIMENTAL)
 
@@ -17,6 +14,11 @@ else()
     message("Unsupported platform")
 endif()
 
+
+add_custom_command(TARGET UserScript POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:UserScript> $<TARGET_FILE_DIR:UserScript>
+        COMMAND_EXPAND_LISTS
+)
 
 message("Binary dir: " ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_command(TARGET UserScript POST_BUILD
