@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.30)
+
 add_executable(UserScript "main.cpp" "TestObject.hpp" "TestObject.cpp")
 
 target_include_directories(UserScript PUBLIC "../MGEngine")
@@ -15,10 +17,12 @@ else()
 endif()
 
 
-add_custom_command(TARGET UserScript POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:UserScript> $<TARGET_FILE_DIR:UserScript>
-        COMMAND_EXPAND_LISTS
-)
+IF (WIN32)
+    add_custom_command(TARGET UserScript POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:UserScript> $<TARGET_FILE_DIR:UserScript>
+            COMMAND_EXPAND_LISTS
+    )
+ENDIF()
 
 message("Binary dir: " ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_command(TARGET UserScript POST_BUILD
