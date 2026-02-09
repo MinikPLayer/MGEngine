@@ -365,3 +365,5 @@ FodyWeavers.xsd
 
 out/
 /lib/
+
+/lib-src/

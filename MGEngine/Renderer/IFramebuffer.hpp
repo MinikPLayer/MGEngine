@@ -37,7 +37,7 @@ public:
 		return resize_with_resolution;
 	}
 
-	bool set_resize_with_resolution(bool value) {
+	void set_resize_with_resolution(bool value) {
 		resize_with_resolution = value;
 	}
 

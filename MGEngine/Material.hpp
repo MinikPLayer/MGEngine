@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Renderer/ITexture.hpp"
 #include "Renderer/IShader.hpp"
-#include "MacroUtils.hpp"
 #include "Color.hpp"
 #include <vector>
 #include "MaterialProperty.hpp"
