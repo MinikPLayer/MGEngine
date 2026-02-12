@@ -13,6 +13,9 @@ IF (UNIX)
     set(CMAKE_LINKER_TYPE "MOLD")
 endif (UNIX)
 
+#set(VCPKG_OVERLAY_TRIPLETS "D:\\my-vcpkg-triplets")
+#set(VCPKG_TARGET_TRIPLET "x64-win-llvm")
+
 project ("MGEngine")
 
 set(PROJECT_EXTERNAL_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/llvm")

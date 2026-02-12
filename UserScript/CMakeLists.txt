@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.30)
 add_executable(UserScript "main.cpp" "TestObject.hpp" "TestObject.cpp")
 
 target_include_directories(UserScript PUBLIC "../MGEngine")
-target_link_libraries(UserScript MGEngineLib)
+target_link_libraries(UserScript PUBLIC MGEngineLib)
 
 set_property(TARGET UserScript PROPERTY CXX_STANDARD 20)
 add_definitions(-D GLM_ENABLE_EXPERIMENTAL)
@@ -23,6 +23,9 @@ IF (WIN32)
             COMMAND_EXPAND_LISTS
     )
 ENDIF()
+
+find_package(glm CONFIG REQUIRED)
+target_link_libraries(UserScript PRIVATE glm::glm)
 
 message("Binary dir: " ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_command(TARGET UserScript POST_BUILD
