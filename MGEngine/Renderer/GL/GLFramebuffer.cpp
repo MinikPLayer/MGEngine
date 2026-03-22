@@ -42,7 +42,7 @@ void GLFramebuffer::_init_(AttachmentTypes attachments, Vector2<int> size) {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_attachment->get_raw_texture(), 0);
 	}
 
-	if ((attachments & (AttachmentTypes::DEPTH_STENCIL)) == AttachmentTypes::DEPTH_STENCIL) {
+	if ((attachments & AttachmentTypes::DEPTH_STENCIL) == AttachmentTypes::DEPTH_STENCIL) {
 		glGenRenderbuffers(1, &depth_stencil_attachment->get());
 		glBindRenderbuffer(GL_RENDERBUFFER, depth_stencil_attachment->get());
 

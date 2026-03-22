@@ -46,7 +46,7 @@ public:
 
     void init(AttachmentTypes attachmentTypes, bool resize_with_resolution, Vector2<int> size) {
         this->resize_with_resolution = resize_with_resolution;
-        this->attachments = attachments;
+        this->attachments = attachmentTypes;
         _init_(attachments, size);
     }
 
