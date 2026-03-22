@@ -367,3 +367,6 @@ out/
 /lib/
 
 /lib-src/
+
+/vcpkg-installed/
+/vcpkg_installed
