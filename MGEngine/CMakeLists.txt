@@ -95,4 +95,6 @@ add_definitions(-D GLM_ENABLE_EXPERIMENTAL)
 target_include_directories(MGEngineLib PUBLIC "./")
 target_include_directories(MGEngineLib PUBLIC ${PROJECT_INCLUDE_DIR})
 
+add_link_options(UserScript /DEBUG:FASTLINK /Z7)
+
 # TODO: Add tests and install targets if needed.

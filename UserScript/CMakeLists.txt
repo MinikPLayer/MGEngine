@@ -5,7 +5,7 @@ add_executable(UserScript "main.cpp" "TestObject.hpp" "TestObject.cpp")
 target_include_directories(UserScript PUBLIC "../MGEngine")
 target_link_libraries(UserScript PUBLIC MGEngineLib)
 
-set_property(TARGET UserScript PROPERTY CXX_STANDARD 20)
+set_property(TARGET UserScript PROPERTY CXX_STANDARD 26)
 add_definitions(-D GLM_ENABLE_EXPERIMENTAL)
 
 if(WIN32)
@@ -17,15 +17,17 @@ else()
 endif()
 
 
-IF (WIN32)
-    add_custom_command(TARGET UserScript POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:UserScript> $<TARGET_FILE_DIR:UserScript>
-            COMMAND_EXPAND_LISTS
-    )
-ENDIF()
+#IF (WIN32)
+#    add_custom_command(TARGET UserScript POST_BUILD
+#            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:UserScript> $<TARGET_FILE_DIR:UserScript>
+#            COMMAND_EXPAND_LISTS
+#    )
+#ENDIF()
 
 find_package(glm CONFIG REQUIRED)
 target_link_libraries(UserScript PRIVATE glm::glm)
+
+add_link_options(UserScript /DEBUG:FASTLINK /Z7)
 
 message("Binary dir: " ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_command(TARGET UserScript POST_BUILD
