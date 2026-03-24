@@ -7,6 +7,8 @@
 #include "Config.hpp"
 #include "Engine.hpp"
 
+#include <unordered_map>
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 
@@ -114,7 +116,7 @@ void GLRenderer::__draw_postprocess__() {
 }
 
 void GLRenderer::draw(std::vector<std::shared_ptr<Mesh>> meshes) {
-	std::map<std::shared_ptr<Material>, std::vector<std::shared_ptr<Mesh>>> materialMeshMap;
+	std::unordered_map<std::shared_ptr<Material>, std::vector<std::shared_ptr<Mesh>>> materialMeshMap;
 	materialMeshMap.insert(std::make_pair(basicMaterial, std::vector<std::shared_ptr<Mesh>>()));
 
 	for (auto mesh : meshes) {
