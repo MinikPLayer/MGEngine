@@ -1,4 +1,9 @@
 {
-  "dependencies": [ "glm", "glfw3", "assimp" ],
+  "dependencies": [
+    "glm",
+    "glfw3",
+    "assimp",
+    "gtest"
+  ],
   "builtin-baseline": "b472291f295551b7127359ea38fdd2ca092f6f1b"
 }

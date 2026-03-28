@@ -185,11 +185,11 @@ class InputMapping {
 	InputMappingSettings settings;
 public:
 	InputDevices get_device() {
-		return device;
+		return this->device;
 	}
 
 	std::string get_name() {
-		return name;
+		return this->name;
 	}
 
 	void update(GLFWwindow* window, Vector2<float> mouseMovement, float scrollDeltaX, float scrollDeltaY) {

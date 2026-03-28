@@ -1,5 +1,4 @@
 #include "TestObject.hpp"
-#include <Input.hpp>
 #include <Engine.hpp>
 #include <TimeUtils.hpp>
 #include <Renderer/GL/GLTexture.hpp>
@@ -40,8 +39,19 @@ void TestObject::update() {
 
 	testTexture->bind(0);
 
+    if(Input::key_is_pressed(Keyboard::KEY_M)) {
+        auto mapping = Input::get("CameraSideways");
+		if(!mapping.has_value()) {
+			LOG_WARNING("Input mapping CameraSideways not found!");
+			return;
+		}
+
+		const auto value = mapping.value().get_value();
+		LOG_INFO("Value: ", value);
+    }
+
 	if (Input::key_is_pressed(Keyboard::KEY_H)) {
-		GameObject::PrintObjectsHierarchy();
+		GameObject::PrintObjectsHierarchy();  
 	}
 	
 

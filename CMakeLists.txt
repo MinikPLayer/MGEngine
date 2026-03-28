@@ -26,6 +26,7 @@ set(PROJECT_INCLUDE_DIR "${PROJECT_EXTERNAL_LIB_DIR}/include")
 list(APPEND CMAKE_PREFIX_PATH "${PROJECT_EXTERNAL_LIB_DIR}")
 
 # Include sub-projects.
-add_subdirectory ("MGEngine")
-
+add_subdirectory("MGEngine")
 add_subdirectory("UserScript")
+
+add_subdirectory("tests")
