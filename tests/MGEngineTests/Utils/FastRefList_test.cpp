@@ -2,6 +2,8 @@
 
 #include "Utils/FastRefList.h"
 
+#include <unordered_set>
+
 TEST(FastRefList, Add) {
     FastRefList<int> list;
     
@@ -180,32 +182,51 @@ TEST(FastRefList, ThreadSynchronizationTest) {
             ASSERT_EQ(*val, j);
         }
     }
+    
+    delete[] handles;
 }
 
-struct CustomHandleProxy {
-private:
-    FastRefList<int>& ref;
-    FastRefHandle handle;
-
-public:
-    static CustomHandleProxy create(FastRefList<int>& listRef, int&& data) {
-        return CustomHandleProxy(listRef, listRef.add(std::move(data)));
-    }
-    
-    int* get() const {
-        return ref.get(this->handle);
-    }
-    
-    CustomHandleProxy(FastRefList<int>& listRef, const FastRefHandle newHandle) : ref(listRef), handle(newHandle) {}
-};
-
-
-TEST(FastRefList, CustomHandleProxy) {
+TEST(FastRefList, FastRefAutoHandle) {
     FastRefList<int> list;
+    {
+        const auto handle = FastRefAutoHandle<int>::create(list, 5);
+        const auto ret = handle.get();
 
-    const auto handle = CustomHandleProxy::create(list, 5);
-    const auto ret = handle.get();
+        ASSERT_NE(ret, nullptr);
+        ASSERT_EQ(*ret, 5);
+    }
+    // Auto remove
+    ASSERT_EQ(list.size(), 0);
+}
 
-    ASSERT_NE(ret, nullptr);
-    ASSERT_EQ(*ret, 5);
+TEST(FastRefList, Iteration) {
+    FastRefList<int> list;
+    
+    const int N = 100;
+    auto* handles = new FastRefHandle[N];
+    for (int i = 0; i < N; i++) {
+        handles[i] = list.add(std::move(i));    
+    }
+    
+    for (int i = 1; i < N; i += 2) {
+        list.remove(handles[i]);
+    }
+    
+    for (int i = 1; i < N; i += 2) {
+        handles[i] = list.add(std::move(i));
+    }
+
+    std::unordered_set<int> items;
+    for (int i = 0; i < N; i++) {
+        items.insert(i);
+    }
+    
+    for (auto& d : list.items()) {
+        ASSERT_TRUE(items.contains(d));
+        items.erase(d);
+    }
+    
+    ASSERT_EQ(items.size(), 0);
+    
+    delete[] handles;
 }

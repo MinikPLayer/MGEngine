@@ -1,8 +1,11 @@
 #ifndef MGENGINE_FRLIST_H
 #define MGENGINE_FRLIST_H
 
+#include <algorithm>
+#include <ranges>
 #include <vector>
 #include <shared_mutex>
+
 
 class FastRefHandle {
 public:
@@ -43,9 +46,17 @@ class FastRefList {
     std::vector<int> freeList;
     
 public:
+    auto items() {
+        return refs 
+            | std::views::filter([](const FastRefContainer& c) { return !c.isFreed; }) 
+            | std::views::transform([](FastRefContainer& c) -> T& { return c.data; });
+    }
+    
+    auto begin() { return items().begin(); }
+    auto end() { return items().end(); }
+    
     size_t capacity() {
         std::unique_lock lock(this->mutex);
-        
         return refs.size();
     }
     
@@ -114,5 +125,25 @@ public:
     }
 };
 
+template<class T>
+struct FastRefAutoHandle {
+private:
+    FastRefList<T>& ref;
+    FastRefHandle handle;
+
+public:
+    static FastRefAutoHandle create(FastRefList<T>& listRef, int&& data) {
+        return FastRefAutoHandle(listRef, listRef.add(std::move(data)));
+    }
+    
+    T* get() const {
+        return ref.get(this->handle);
+    }
+    
+    FastRefAutoHandle(FastRefList<T>& listRef, const FastRefHandle newHandle) : ref(listRef), handle(newHandle) {}
+    ~FastRefAutoHandle() {
+        ref.remove(handle);
+    }
+};
 
 #endif //MGENGINE_FRLIST_H
