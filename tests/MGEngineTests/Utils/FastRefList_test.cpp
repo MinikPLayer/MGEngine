@@ -1,18 +1,16 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "performance-move-const-arg"
 #include <gtest/gtest.h>
 
 #include "Utils/FastRefList.h"
 
-TEST(FastRefList2, Add) {
+TEST(FastRefList, Add) {
     FastRefList<int> list;
     
     int data = 5;
-    auto handle = list.add(std::move(data));
+    const auto handle = list.add(std::move(data));
     ASSERT_EQ(list.size(), 1);
     ASSERT_GE(list.size(), list.capacity());
     
-    auto ret = list.get(handle);
+    const auto ret = list.get(handle);
     ASSERT_NE(ret, nullptr);
     ASSERT_EQ(*ret, 5);
 }
@@ -21,25 +19,25 @@ TEST(FastRefList, Remove) {
     FastRefList<int> list;
 
     int data = 5;
-    auto handle = list.add(std::move(data));
-    auto ret = list.get(handle);
+    const auto handle = list.add(std::move(data));
+    const auto ret = list.get(handle);
 
     ASSERT_NE(ret, nullptr);
     ASSERT_EQ(*ret, 5);
     ASSERT_EQ(list.size(), 1);
     
-    auto removeResult = list.remove(handle);
+    const auto removeResult = list.remove(handle);
     ASSERT_TRUE(removeResult);
     ASSERT_EQ(list.size(), 0);
     
-    auto retAfterRemove = list.get(handle);
+    const auto retAfterRemove = list.get(handle);
     ASSERT_EQ(retAfterRemove, nullptr);
 }
 
 TEST(FastRefList, CantRemoveTwice) {
     FastRefList<int> list;
     
-    auto handle = list.add(5);
+    const auto handle = list.add(5);
     ASSERT_TRUE(list.remove(handle));
     ASSERT_FALSE(list.remove(handle));
 }
@@ -47,7 +45,7 @@ TEST(FastRefList, CantRemoveTwice) {
 TEST(FastRefList, CantGetAfterRemove) {
     FastRefList<int> list;
     
-    auto handle = list.add(5);
+    const auto handle = list.add(5);
     auto ptr = list.get(handle);
     ASSERT_NE(ptr, nullptr);
     ASSERT_EQ(*ptr, 5);
@@ -61,14 +59,14 @@ TEST(FastRefList, CantGetAfterRemove) {
 TEST(FastRefList, CantGetAfterRemoveAndReinsert_GenerationsTest) {
     FastRefList<int> list;
 
-    auto oldHandle = list.add(5);
+    const auto oldHandle = list.add(5);
     auto ptr = list.get(oldHandle);
     ASSERT_NE(ptr, nullptr);
     ASSERT_EQ(*ptr, 5);
 
     ASSERT_TRUE(list.remove(oldHandle));
 
-    auto newHandle = list.add(6);
+    const auto newHandle = list.add(6);
     ASSERT_EQ(oldHandle.Id, newHandle.Id);
     ASSERT_NE(oldHandle.Generation, newHandle.Generation);
     
@@ -116,7 +114,7 @@ TEST(FastRefList, AddAndRemoveMixed) {
     }
 }
 
-void runSimultaneously(const int threadCount, const std::function<void(int)> func) {
+void RunSimultaneously(const int threadCount, const std::function<void(int)> func) {
     std::shared_mutex waitToStartMtx;
     std::vector<std::thread> threads;
 
@@ -142,8 +140,8 @@ TEST(FastRefList, ThreadSynchronizationTest) {
     const int N = 10000;
     const int threadsN = 8;
 
-    auto handles = new FastRefHandle[N * threadsN];
-    runSimultaneously(threadsN, [&](int i) {
+    const auto handles = new FastRefHandle[N * threadsN];
+    RunSimultaneously(threadsN, [&](int i) {
         for(int j = 0; j < N; j++) {
             handles[i * N + j] = list.add(std::move(j));
         }
@@ -153,7 +151,7 @@ TEST(FastRefList, ThreadSynchronizationTest) {
 
     for (int i = 0; i < threadsN; ++i) {
         for (int j = 0; j < N; ++j) {
-            auto index = i * N + j;
+            const auto index = i * N + j;
             auto ptr = list.get(handles[index]);
             ASSERT_NE(ptr, nullptr);
             ASSERT_EQ(*ptr, j);   
@@ -161,7 +159,7 @@ TEST(FastRefList, ThreadSynchronizationTest) {
     }
     
     // Test mixed add / remove
-    runSimultaneously(threadsN, [&] (int i) {
+    RunSimultaneously(threadsN, [&] (int i) {
         for (int j = 0; j < N; j += 6) {
             for (int k = j; k < j + 6 && k < N ; ++k) {
                 list.remove(handles[i * N + k]);
@@ -183,4 +181,31 @@ TEST(FastRefList, ThreadSynchronizationTest) {
         }
     }
 }
-#pragma clang diagnostic pop
+
+struct CustomHandleProxy {
+private:
+    FastRefList<int>& ref;
+    FastRefHandle handle;
+
+public:
+    static CustomHandleProxy create(FastRefList<int>& listRef, int&& data) {
+        return CustomHandleProxy(listRef, listRef.add(std::move(data)));
+    }
+    
+    int* get() const {
+        return ref.get(this->handle);
+    }
+    
+    CustomHandleProxy(FastRefList<int>& listRef, const FastRefHandle newHandle) : ref(listRef), handle(newHandle) {}
+};
+
+
+TEST(FastRefList, CustomHandleProxy) {
+    FastRefList<int> list;
+
+    const auto handle = CustomHandleProxy::create(list, 5);
+    const auto ret = handle.get();
+
+    ASSERT_NE(ret, nullptr);
+    ASSERT_EQ(*ret, 5);
+}
