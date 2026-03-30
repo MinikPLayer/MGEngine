@@ -61,22 +61,22 @@ Color Camera::get_clear_color() {
 }
 
 void Camera::start() {
-	forwardMapping = Input::register_mapping(InputMapping("CameraForward", Keyboard::KEY_W, Keyboard::KEY_S));
-	sidewaysMapping = Input::register_mapping(InputMapping("CameraSideways", Keyboard::KEY_D, Keyboard::KEY_A));
+	forwardMapping = Input::registerMappingUnique(InputMapping("CameraForward", Keyboard::KEY_W, Keyboard::KEY_S));
+	sidewaysMapping = Input::registerMappingUnique(InputMapping("CameraSideways", Keyboard::KEY_D, Keyboard::KEY_A));
 
 	auto settings = InputMappingSettings();
 	settings.multiplier = 0.001f;
 	settings.deadzone = 0.0f;
-	rotateXMapping = Input::register_mapping(InputMapping("CameraRotateX", MouseAxis::X, settings));
-	rotateYMapping = Input::register_mapping(InputMapping("CameraRotateY", MouseAxis::Y, settings));
+	rotateXMapping = Input::registerMappingUnique(InputMapping("CameraRotateX", MouseAxis::X, settings));
+	rotateYMapping = Input::registerMappingUnique(InputMapping("CameraRotateY", MouseAxis::Y, settings));
 	// rotateXMapping = Input::register_mapping(InputMapping("CameraRotateX", Keyboard::ARROW_RIGHT, Keyboard::ARROW_LEFT));
 	// rotateYMapping = Input::register_mapping(InputMapping("CameraRotateY", Keyboard::ARROW_UP, Keyboard::ARROW_DOWN));
 }
 
 void Camera::update() {
 	auto rotation = this->transform.get_local_rotation();
-	auto rotateX = Input::get(rotateXMapping).value().get_value();
-	auto rotateY = Input::get(rotateYMapping).value().get_value();
+	auto rotateX = rotateXMapping.get()->get_value();
+	auto rotateY = rotateYMapping.get()->get_value();
 
 	rotation = rotation.rotated_around(Vector3<float>(0, 1, 0), rotateX);
 	rotation = rotation.rotated_around(rotation.right(), -rotateY);
@@ -86,8 +86,8 @@ void Camera::update() {
 	if(Input::key_is_pressed(Keyboard::KEY_LEFT_SHIFT))
 		speed *= 5;
 
-	auto right = -Input::get(sidewaysMapping).value().get_value() * speed * Time::DeltaTime();
-	auto forward = Input::get(forwardMapping).value().get_value() * speed * Time::DeltaTime();
+	auto right = -sidewaysMapping.get()->get_value() * speed * Time::DeltaTime();
+	auto forward = forwardMapping.get()->get_value() * speed * Time::DeltaTime();
 
 	auto movement = rotation.forward() * forward + rotation.right() * right;
 	this->transform.set_position(this->transform.get_position() + movement);

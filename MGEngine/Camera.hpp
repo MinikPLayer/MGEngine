@@ -4,17 +4,19 @@
 #include "GameObject.hpp"
 #include <glm/glm.hpp>
 
+#include "GLFWInput.hpp"
+
 class Camera : public GameObject {
 	Color clearColor;
 	static std::shared_ptr<Camera> mainCamera;
 
 	float aspectRatio = -1;
 
-	int forwardMapping = -1;
-	int sidewaysMapping = -1;
+	InputMappingReferenceUnique forwardMapping;
+	InputMappingReferenceUnique sidewaysMapping;
 
-	int rotateXMapping = -1;
-	int rotateYMapping = -1;
+	InputMappingReferenceUnique rotateXMapping;
+	InputMappingReferenceUnique rotateYMapping;
 
 	float moveSpeed = 10.f;
 public:

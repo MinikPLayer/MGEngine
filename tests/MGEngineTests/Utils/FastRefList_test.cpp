@@ -189,13 +189,52 @@ TEST(FastRefList, ThreadSynchronizationTest) {
 TEST(FastRefList, FastRefAutoHandle) {
     FastRefList<int> list;
     {
-        const auto handle = FastRefAutoHandle<int>::create(list, 5);
+        const auto handle = FastRefAutoHandle<int>::create(&list, 5);
         const auto ret = handle.get();
 
         ASSERT_NE(ret, nullptr);
         ASSERT_EQ(*ret, 5);
     }
     // Auto remove
+    ASSERT_EQ(list.size(), 1);
+}
+
+TEST(FastRefList, FastRefAutoHandleUnique) {
+    FastRefList<int> list;
+    {
+        const auto handle = FastRefAutoHandleUnique<int>::create(&list, 5);
+        const auto ret = handle.get();
+    
+        ASSERT_NE(ret, nullptr);
+        ASSERT_EQ(*ret, 5);
+    }
+    // Auto remove
+    ASSERT_EQ(list.size(), 0);
+}
+
+TEST(FastRefList, FastRefAutoHandleMove) {
+    FastRefList<int> list;
+    {
+        FastRefAutoHandleUnique<int> longLivedHandle;
+        {
+            auto handle = FastRefAutoHandleUnique<int>::create(&list, 5);
+            auto ret = handle.get();
+    
+            ASSERT_NE(ret, nullptr);
+            ASSERT_EQ(*ret, 5);
+            
+            longLivedHandle = std::move(handle);
+            ret = longLivedHandle.get();
+            ASSERT_NE(ret, nullptr);
+            ASSERT_EQ(*ret, 5);
+        }
+        // Don't auto remove the moved value
+        ASSERT_EQ(list.size(), 1);
+        
+        const auto retAfterSection = longLivedHandle.get();
+        ASSERT_NE(retAfterSection, nullptr);
+        ASSERT_EQ(*retAfterSection, 5);
+    }
     ASSERT_EQ(list.size(), 0);
 }
 

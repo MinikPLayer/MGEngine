@@ -66,7 +66,8 @@ add_library (MGEngineLib
 	"File.cpp"
 	"glad/glad.c"
 	"glad/glad.h"
-		Utils/FastRefList.h)
+		Utils/FastRefList.h
+		Utils/RefCounted.h)
 
 set_property(TARGET MGEngineLib PROPERTY CXX_STANDARD 26)
 
@@ -100,7 +101,7 @@ add_link_options(MGEngineLib /DEBUG:FASTLINK /Z7)
 
 # TODO: Add tests and install targets if needed.
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug") 
-	message("Enabling security checks")
-	add_compile_definitions(SC_WARNING_ON)
-endif()
+#if (CMAKE_BUILD_TYPE STREQUAL "Debug") 
+#	message("Enabling security checks")
+#	add_compile_definitions(SC_WARNING_ON)
+#endif()

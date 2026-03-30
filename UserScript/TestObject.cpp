@@ -40,13 +40,13 @@ void TestObject::update() {
 	testTexture->bind(0);
 
     if(Input::key_is_pressed(Keyboard::KEY_M)) {
-        auto mapping = Input::get("CameraSideways");
+        auto mapping = Input::findMapping("CameraSideways");
 		if(!mapping.has_value()) {
 			LOG_WARNING("Input mapping CameraSideways not found!");
 			return;
 		}
 
-		const auto value = mapping.value().get_value();
+		const auto value = mapping.value().get()->get_value();
 		LOG_INFO("Value: ", value);
     }
 

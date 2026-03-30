@@ -6,6 +6,8 @@
 #include <vector>
 #include <shared_mutex>
 
+#include "NonCopyable.hpp"
+
 
 class FastRefHandle {
 public:
@@ -126,23 +128,67 @@ public:
 };
 
 template<class T>
-struct FastRefAutoHandle {
-private:
-    FastRefList<T>& ref;
+class FastRefAutoHandle {
+protected:
+    FastRefList<T>* ref = nullptr;
     FastRefHandle handle;
-
+    
+    FastRefAutoHandle() {}
+    
 public:
-    static FastRefAutoHandle create(FastRefList<T>& listRef, int&& data) {
-        return FastRefAutoHandle(listRef, listRef.add(std::move(data)));
+    FastRefHandle getHandle() const {
+        return this->handle;
     }
     
     T* get() const {
-        return ref.get(this->handle);
+        if (ref == nullptr)
+            return nullptr;
+        
+        return ref->get(this->handle);
     }
     
-    FastRefAutoHandle(FastRefList<T>& listRef, const FastRefHandle newHandle) : ref(listRef), handle(newHandle) {}
-    ~FastRefAutoHandle() {
-        ref.remove(handle);
+    static FastRefAutoHandle create(FastRefList<T>* list, T&& data) {
+        return FastRefAutoHandle(list, list->add(std::move(data)));
+    }
+    
+    FastRefAutoHandle(FastRefList<T>* list, const FastRefHandle handle) : ref(list), handle(handle) {}
+    FastRefAutoHandle(FastRefList<T>* list, T&& data) : ref(list), handle(list->add(data)) {}
+};
+
+template<class T>
+class FastRefAutoHandleUnique : public FastRefAutoHandle<T> {
+public:
+    FastRefAutoHandleUnique(const FastRefAutoHandleUnique&) = delete;
+    FastRefAutoHandleUnique& operator=(const FastRefAutoHandleUnique&) = delete;
+    
+    FastRefAutoHandleUnique(FastRefAutoHandleUnique&& other) noexcept {
+        this->ref = other.ref;
+        this->handle = other.handle;
+        
+        other.ref = nullptr;
+    }
+    
+    FastRefAutoHandleUnique& operator=(FastRefAutoHandleUnique&& other) noexcept {
+        if (this != &other) {
+            this->ref = other.ref;
+            this->handle = other.handle;
+        
+            other.ref = nullptr;
+        }
+        
+        return *this;
+    }
+    
+    static FastRefAutoHandleUnique create(FastRefList<T>* list, T&& data) {
+        return FastRefAutoHandleUnique(list, list->add(std::move(data)));
+    }
+    
+    FastRefAutoHandleUnique() {}
+    FastRefAutoHandleUnique(FastRefList<T>* list, const FastRefHandle handle) : FastRefAutoHandle<T>(list, handle) {}
+    
+    ~FastRefAutoHandleUnique() {
+        if (this->ref != nullptr)
+            this->ref->remove(this->handle);
     }
 };
 

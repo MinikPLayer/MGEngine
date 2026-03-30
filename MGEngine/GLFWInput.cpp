@@ -15,8 +15,8 @@ void Input::init(GLFWwindow* window) {
 }
 
 int Input::curMappingId = 0;
-std::map<int, InputMapping> Input::idMappings;
-std::map<std::string, int> Input::nameToIdMappings;
+FastRefList<InputMapping> Input::mappings;
+std::map<std::string, FastRefHandle> Input::nameToIdMappings;
 Vector2<float> Input::lastMousePos = Vector2<float>(0, 0);
 float Input::scrollDeltaX = 0;
 float Input::scrollDeltaY = 0;

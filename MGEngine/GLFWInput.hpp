@@ -9,6 +9,8 @@
 #include "Vector2.hpp"
 #include <algorithm>
 
+#include "Utils/FastRefList.h"
+
 enum class Keyboard {
 	ARROW_LEFT = GLFW_KEY_LEFT,
 	ARROW_RIGHT = GLFW_KEY_RIGHT,
@@ -261,11 +263,13 @@ public:
 	}
 };
 
+using InputMappingReference = FastRefAutoHandle<InputMapping>;
+using InputMappingReferenceUnique = FastRefAutoHandleUnique<InputMapping>;
+
 class Input {
 	static int curMappingId;
-	static std::map<int, InputMapping> idMappings;
-
-	static std::map<std::string, int> nameToIdMappings;
+	static FastRefList<InputMapping> mappings;
+	static std::map<std::string, FastRefHandle> nameToIdMappings;
 
 	static Vector2<float> lastMousePos;
 	static float scrollDeltaX;
@@ -297,8 +301,8 @@ public:
 		auto newPos = Vector2<float>((float)xpos, (float)ypos);
 		auto mousePosDiff = newPos - lastMousePos;
 		lastMousePos = newPos;
-		for (auto it = idMappings.begin(); it != idMappings.end(); it++) {
-			it->second.update(window, mousePosDiff, sdx, sdy);
+		for (auto& mapping : mappings.items()) {
+			mapping.update(window, mousePosDiff, sdx, sdy);
 		}
 
 		glfwSetInputMode(window, GLFW_CURSOR, (int)cursorMode);
@@ -317,45 +321,27 @@ public:
 	}
 
 	// TODO: Add option to register multiple mappings with the same name (for different devices)
-	static int register_mapping(InputMapping mapping) {
+	static InputMappingReference registerMappingShared(InputMapping mapping) {
 #if SC_WARNING_ON
 		if (nameToIdMappings.contains(mapping.get_name())) {
 			ELOG_WARNING("Mapping already exists: \"", mapping.get_name(), "\"");
 		}
 #endif	
 
-		int id = curMappingId++;
-		idMappings.insert({ id, mapping });
-		nameToIdMappings.insert({ mapping.get_name(), id });
-
-		return id;
+		const auto newMapping = InputMappingReference::create(&mappings, std::move(mapping));
+		nameToIdMappings.insert({ mapping.get_name(), newMapping.getHandle() });
+		return newMapping;
 	}
-
-	static void update_mapping(InputMapping mapping) {
-		auto id = get_id(mapping.get_name());
-		if (!id.has_value()) {
-			ELOG_ERROR("Trying to update mapping that doesn't exist (\"" + mapping.get_name() + "\"");
-			return;
-		}
-
-		idMappings.at(id.value()) = mapping;
+	
+	static InputMappingReferenceUnique registerMappingUnique(InputMapping mapping) {
+		auto newMapping = InputMappingReferenceUnique::create(&mappings, std::move(mapping));
+		return std::move(newMapping);
 	}
-
-	static std::optional<InputMapping> get(int id) {
+	
+	static std::optional<InputMappingReference> findMapping(const std::string& name) {
 		try {
-			auto mapping = idMappings.at(id);
-			return mapping;
-		}
-		catch (std::out_of_range) {
-			ELOG_ERROR("Input id not found: ", id);
-			return std::nullopt;
-		};
-	}
-
-	static std::optional<int> get_id(std::string name) {
-		int id = 0;
-		try {
-			id = nameToIdMappings.at(name);
+			const auto& handle = nameToIdMappings.at(name);
+			return InputMappingReference(&mappings, handle);
 		}
 		catch (std::out_of_range) {
 			ELOG_ERROR("Input name not found: \"", name, "\"");
@@ -363,20 +349,13 @@ public:
 		};
 	}
 
-	static std::optional<InputMapping> get(std::string name) {
-		auto id = get_id(name);
-		if (!id.has_value())
-			return std::nullopt;
-
-		return get(id.value());
-	}
-
-	static bool remove_mapping(int id) {
-		auto mapping = get(id);
-		if (!mapping.has_value())
+	static bool removeMapping(const InputMappingReference& ref) {
+		const auto mapping = ref.get();
+		if (mapping == nullptr)
 			return false;
-
-		idMappings.erase(id);
-		nameToIdMappings.erase(mapping.value().get_name());
+		
+		nameToIdMappings.erase(mapping->get_name());
+		mappings.remove(ref.getHandle());
+		return true;
 	}
 };
