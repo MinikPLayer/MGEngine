@@ -12,11 +12,11 @@ class Camera : public GameObject {
 
 	float aspectRatio = -1;
 
-	InputMappingReferenceUnique forwardMapping;
-	InputMappingReferenceUnique sidewaysMapping;
+	FastRefHandle forwardMapping;
+	FastRefHandle sidewaysMapping;
 
-	InputMappingReferenceUnique rotateXMapping;
-	InputMappingReferenceUnique rotateYMapping;
+	FastRefHandle rotateXMapping;
+	FastRefHandle rotateYMapping;
 
 	float moveSpeed = 10.f;
 public:

@@ -75,8 +75,8 @@ void Camera::start() {
 
 void Camera::update() {
 	auto rotation = this->transform.get_local_rotation();
-	auto rotateX = rotateXMapping.get()->get_value();
-	auto rotateY = rotateYMapping.get()->get_value();
+	auto rotateX = Input::get(rotateXMapping)->get_value();
+	auto rotateY = Input::get(rotateYMapping)->get_value();
 
 	rotation = rotation.rotated_around(Vector3<float>(0, 1, 0), rotateX);
 	rotation = rotation.rotated_around(rotation.right(), -rotateY);
@@ -86,8 +86,8 @@ void Camera::update() {
 	if(Input::key_is_pressed(Keyboard::KEY_LEFT_SHIFT))
 		speed *= 5;
 
-	auto right = -sidewaysMapping.get()->get_value() * speed * Time::DeltaTime();
-	auto forward = forwardMapping.get()->get_value() * speed * Time::DeltaTime();
+	auto right = -Input::get(sidewaysMapping)->get_value() * speed * Time::DeltaTime();
+	auto forward = Input::get(forwardMapping)->get_value() * speed * Time::DeltaTime();
 
 	auto movement = rotation.forward() * forward + rotation.right() * right;
 	this->transform.set_position(this->transform.get_position() + movement);

@@ -263,9 +263,6 @@ public:
 	}
 };
 
-using InputMappingReference = FastRefAutoHandle<InputMapping>;
-using InputMappingReferenceUnique = FastRefAutoHandleUnique<InputMapping>;
-
 class Input {
 	static int curMappingId;
 	static FastRefList<InputMapping> mappings;
@@ -321,27 +318,31 @@ public:
 	}
 
 	// TODO: Add option to register multiple mappings with the same name (for different devices)
-	static InputMappingReference registerMappingShared(InputMapping mapping) {
+	static FastRefHandle registerMappingShared(InputMapping mapping) {
 #if SC_WARNING_ON
 		if (nameToIdMappings.contains(mapping.get_name())) {
 			ELOG_WARNING("Mapping already exists: \"", mapping.get_name(), "\"");
 		}
 #endif	
 
-		const auto newMapping = InputMappingReference::create(&mappings, std::move(mapping));
-		nameToIdMappings.insert({ mapping.get_name(), newMapping.getHandle() });
+		const auto newMapping = mappings.add(std::move(mapping));
+		nameToIdMappings.insert({ mapping.get_name(), newMapping });
 		return newMapping;
 	}
 	
-	static InputMappingReferenceUnique registerMappingUnique(InputMapping mapping) {
-		auto newMapping = InputMappingReferenceUnique::create(&mappings, std::move(mapping));
+	static FastRefHandle registerMappingUnique(InputMapping mapping) {
+		auto newMapping = mappings.add(std::move(mapping));
 		return std::move(newMapping);
 	}
-	
-	static std::optional<InputMappingReference> findMapping(const std::string& name) {
+
+	static InputMapping* get(const FastRefHandle& ref) {
+		return mappings.get(ref);
+	}
+
+	static std::optional<FastRefHandle> findMapping(const std::string& name) {
 		try {
 			const auto& handle = nameToIdMappings.at(name);
-			return InputMappingReference(&mappings, handle);
+			return handle;
 		}
 		catch (std::out_of_range) {
 			ELOG_ERROR("Input name not found: \"", name, "\"");
@@ -349,13 +350,7 @@ public:
 		};
 	}
 
-	static bool removeMapping(const InputMappingReference& ref) {
-		const auto mapping = ref.get();
-		if (mapping == nullptr)
-			return false;
-		
-		nameToIdMappings.erase(mapping->get_name());
-		mappings.remove(ref.getHandle());
-		return true;
+	static bool removeMapping(const FastRefHandle& ref) {
+		return mappings.remove(ref);
 	}
 };

@@ -65,9 +65,7 @@ add_library (MGEngineLib
 	"Vector3.hpp" 
 	"File.cpp"
 	"glad/glad.c"
-	"glad/glad.h"
-		Utils/FastRefList.h
-		Utils/RefCounted.h)
+	"glad/glad.h")
 
 set_property(TARGET MGEngineLib PROPERTY CXX_STANDARD 26)
 

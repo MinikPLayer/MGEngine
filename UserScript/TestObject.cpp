@@ -46,7 +46,7 @@ void TestObject::update() {
 			return;
 		}
 
-		const auto value = mapping.value().get()->get_value();
+		const auto value = Input::get(mapping.value())->get_value();
 		LOG_INFO("Value: ", value);
     }
 
