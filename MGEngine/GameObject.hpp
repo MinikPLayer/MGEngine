@@ -122,8 +122,8 @@ public:
 	GameObject(const GameObject&) = delete;
 	GameObject& operator=(const GameObject&) = delete;
 
-	GameObject(GameObject&&) = default;
-	GameObject& operator=(GameObject&&) = default;
+	GameObject(GameObject&&) = delete;
+	GameObject& operator=(GameObject&&) = delete;
 
 	GameObject() : transform(*this) {}
 	~GameObject();

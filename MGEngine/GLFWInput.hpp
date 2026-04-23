@@ -222,6 +222,9 @@ public:
 				case MouseAxis::ScrollY:
 					ret = scrollDeltaY;
 					break;
+				case MouseAxis::UNKNOWN:
+					ELOG_WARNING("Unknown mouse axis");
+					break;
 				}
 			}
 			break;
