@@ -87,8 +87,13 @@ std::shared_ptr<IFramebuffer> GLRenderer::_create_framebuffer_(IFramebuffer::Att
 }
 
 GLRenderer::~GLRenderer() {
-	glfwTerminate();
 	window = nullptr;
+	ppMesh = nullptr;
+	ppShader = nullptr;
+	ppMaterial = nullptr;
+	basicMaterial = nullptr;
+	FBs.clear();
+	glfwTerminate();
 }
 
 void GLRenderer::clear() {

@@ -12,8 +12,16 @@ void delRbo(GLuint& x) {
 	glDeleteRenderbuffers(1, &x);
 }
 
+void delShaderProgram(GLuint& x) {
+
+
+	glDeleteProgram(x);
+	x = 0;
+}
+
 void delShader(GLuint& x) {
 	glDeleteShader(x);
+	x = 0;
 }
 
 void delVao(GLuint& x) {

@@ -10,7 +10,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 class GLShader : public IShader {
-	std::optional<GL_Shader> shaderObject;
+	std::optional<GL_ShaderProgram> shaderObject;
 
 	// static GL_Shader load_GL(std::string vertexPath, std::string fragmentPath);
 	bool _init_(std::string vertexSource, std::string fragmentSource) override;

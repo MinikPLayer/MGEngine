@@ -41,6 +41,8 @@ void Engine::run() {
 		render->clear_screen();
 		render->draw(Mesh::__meshes);
 	}
+
+	ELOG_INFO("Engine stopped");
 }
 
 #if USE_GL

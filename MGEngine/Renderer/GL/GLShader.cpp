@@ -53,7 +53,7 @@ bool GLShader::_init_(std::string vSource, std::string fSource) {
 	if (!checkShaderLinkSuccess(shader))
 		return false;
 
-	shaderObject = GL_Shader(shader);
+	shaderObject = GL_ShaderProgram(shader);
 	return true;
 }
 

@@ -3,6 +3,11 @@
 #include <TimeUtils.hpp>
 #include <Renderer/GL/GLTexture.hpp>
 
+#include "File.hpp"
+
+std::string vSource;
+std::string fSource;
+
 void TestObject::start() {
 	auto renderer = Engine::get_renderer();
 	auto size = renderer.lock()->get_main_screen_resolution();
@@ -10,7 +15,7 @@ void TestObject::start() {
 	renderer.lock()->set_vertical_sync(true);
 
 	LOG_INFO("TestGameObject::Start()");
-	Engine::get_renderer().lock()->set_window_title("Hello MGEngine!");
+	Engine::get_renderer().lock()->set_window_title("Hello MGEngines!");
 	Input::SetCursorMode(CursorModes::Disabled);
 
 	auto textureShader = std::make_shared<GLShader>();
@@ -31,9 +36,72 @@ void TestObject::start() {
 		LOG_INFO("Late start event called for ", obj->get_type_name());
 		obj->get_transform().set_local_scale(Vector3(1.0f, 1.0f, 1.0f) * 0.01f);
 	};
+
+	vSource = File::LoadAllText("engine://shaders/mainShader.vert");
+	fSource = File::LoadAllText("engine://shaders/mainShader.frag");
+}
+
+bool _checkShaderCompilationSuccess(GLuint shader, std::string typeName) {
+	int success;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+	if (!success) {
+		char infoLog[512];
+		glGetShaderInfoLog(shader, 512, NULL, infoLog);
+		ELOG_FATAL(typeName, " shader compilation error - ", infoLog);
+		return false;
+	}
+	return true;
+}
+
+bool _checkShaderLinkSuccess(GLuint shader) {
+	int success;
+	glGetProgramiv(shader, GL_LINK_STATUS, &success);
+	if (!success) {
+		char infoLog[512];
+		glGetProgramInfoLog(shader, 512, NULL, infoLog);
+		ELOG_FATAL("Shader program link error - ", infoLog);
+		return false;
+	}
+	return true;
+}
+
+void allocateTestProgram() {
+	auto vShader = glCreateShader(GL_VERTEX_SHADER);
+	auto vSourcePtr = vSource.c_str();
+	glShaderSource(vShader, 1, &vSourcePtr, NULL);
+	glCompileShader(vShader);
+	if (!_checkShaderCompilationSuccess(vShader, "VERTEX")) {
+		LOG_ERROR("Vertex shader compilation failed!");
+		return;
+	}
+
+	const auto fShader = glCreateShader(GL_FRAGMENT_SHADER);
+	const auto fSourcePtr = fSource.c_str();
+	glShaderSource(fShader, 1, &fSourcePtr, NULL);
+	glCompileShader(fShader);
+	if (!_checkShaderCompilationSuccess(fShader, "FRAGMENT")) {
+		glDeleteShader(vShader);
+		LOG_ERROR("Fragment shader compilation failed.");
+		return;
+	}
+	const auto shader = glCreateProgram();
+	glAttachShader(shader, vShader);
+	glAttachShader(shader, fShader);
+	glLinkProgram(shader);
+
+	glDeleteShader(vShader);
+	glDeleteShader(fShader);
+	if (!_checkShaderLinkSuccess(shader)) {
+		LOG_ERROR("Shader linkage failed.");
+		return;
+	}
+
+	glDeleteProgram(shader);
 }
 
 void TestObject::update() {
+	allocateTestProgram();
+
 	auto prop = testMaterial->get_property("brightness");
 	prop.lock()->set_float(sin(Time::ElapsedTime()) * 0.5f + 0.5f);
 
